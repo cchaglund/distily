@@ -8,7 +8,10 @@ console.log('Background.js file loaded');
 }; */
 
 browser.runtime.onMessage.addListener(function (message) {
-  console.log(message);
+  if (message.type === 'openNewWindow') {
+    console.log(message);
+    browser.windows.create();
+  }
 });
 
 // Load existent stats with the storage API.

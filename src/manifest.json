@@ -28,7 +28,8 @@
     "http://myapi.com",
     "storage",
     "unlimitedStorage",
-    "webNavigation"
+    "webNavigation",
+    "tabs"
   ],
   "icons": {
     "128": "img/icon.png"

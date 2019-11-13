@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 
 import React, { useState } from 'react';
+import styled from '@emotion/styled';
 import './Popup.css';
 
 
@@ -50,11 +51,28 @@ import './Popup.css';
 
 // });
 
-const Popup = () => {
-  const [ projectName, setProjectName ] = useState();
+const CreateProject = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
-  const changeHandler = () => {
-    setProjectName( e.target.value );
+const Button = styled.button`
+  background-color: ${ props => props.active ? 'lightblue' : 'red' }
+`;
+
+const Popup = () => {
+  const [ projectName, setProjectName ] = useState('');
+
+  const changeHandler = (val) => {
+    setProjectName( val );
+  };
+
+  const createHandler = () => {
+    if (projectName.length !== 0 || projectName.length === '' ) {
+      browser.runtime.sendMessage({ type: 'openNewWindow' });
+    } else {
+      console.log('enter text first!');
+    }
   };
 
   return (
@@ -63,13 +81,17 @@ const Popup = () => {
         onClick={ () => console.log('create clicked')}>
           Create new project
       </div>
-      <input 
-        type="text" 
-        value={ projectName } 
-        onChange={ () => changeHandler }>
-        { projectName }
-      </input>
-      <button>Go</button>
+      <CreateProject>
+        <input 
+          type="text" 
+          value={ projectName } 
+          onChange={ (e) => changeHandler(e.target.value) } />
+        <Button
+          active={ projectName.length !== 0 || projectName.length === '' }
+          onClick={createHandler}>
+            Create
+        </Button>
+      </CreateProject>
     </div>
   );
 };
