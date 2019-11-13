@@ -69,7 +69,10 @@ const Popup = () => {
 
   const createHandler = () => {
     if (projectName.length !== 0 || projectName.length === '' ) {
-      browser.runtime.sendMessage({ type: 'openNewWindow' });
+      browser.runtime.sendMessage({ 
+        type: 'openNewWindow',
+        title: projectName 
+      });
     } else {
       console.log('enter text first!');
     }
