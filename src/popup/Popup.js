@@ -69,6 +69,7 @@ const Popup = () => {
         onChange={ () => changeHandler }>
         { projectName }
       </input>
+      <button>Go</button>
     </div>
   );
 };
