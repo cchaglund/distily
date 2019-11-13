@@ -27,7 +27,8 @@
   "permissions": [
     "http://myapi.com",
     "storage",
-    "unlimitedStorage"
+    "unlimitedStorage",
+    "webNavigation"
   ],
   "icons": {
     "128": "img/icon.png"

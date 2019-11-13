@@ -1,6 +1,10 @@
 .popup {
   text-align: center;
-  width: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 5rem;
 }
 
 .popup-greet {
