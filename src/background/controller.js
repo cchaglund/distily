@@ -3,6 +3,18 @@ class Controller  {
     this.browser = browser;
   }
 
+  initStorage () {
+    this.browser.storage.local.get()
+      .then( results => {
+        // Initialize if not yet initialized
+        if ( !results.projects ) {
+          results.projects = {};
+        }
+
+        this.browser.storage.local.set(results);
+      });
+  }
+
   createNewProject (projectTitle) {
     // Open new window
     this.browser.windows.create()
@@ -11,17 +23,11 @@ class Controller  {
 
         this.browser.storage.local.get()
           .then( results => {
-            // this should instead be added on the project itself, so that one can have multiple project windows open simultaneously
-            results.currentWindowID = newWindow.id;
-
-            // Initialize if not yet initialized
-            if ( !results.projects ) {
-              results.projects = {};
-            }
-
+            // TODO: do I need this check? the proj shouldn't exist when creating a new one
             if ( !results.projects[projectTitle] ) {
               results.projects[projectTitle] = {
-                tabs: {}
+                currentWindowID: newWindow.id,
+                urls: {}
               };
             }
 
@@ -32,7 +38,7 @@ class Controller  {
       });
   }
 
-  addPageToProject (evt) {
+  URLvisited (evt) {
     // Filter out any sub-frame related navigation event
     if (evt.frameId !== 0) {
       return;
@@ -40,14 +46,44 @@ class Controller  {
 
     const url = new URL(evt.url);
 
-    let bah = {
-      host: {}
-    };
+    this.browser.storage.local.get()
+      .then( res => {
+        Object.keys(res.projects).forEach( project => {
+          const currentProject = res.projects[project];
+          if (currentProject.currentWindowID === evt.windowId) {
+            if ( currentProject.urls[url.href] ) {
+              currentProject.urls[url.href].visited = currentProject.urls[url.href].visited + 1;
+              this.browser.storage.local.set(res);
+            } else {
+              this.addNewPage(url, evt.windowId);
+            }
+          }
+        }
+        );
+      });
+  }
 
-    bah.host[url.hostname] = bah.host[url.hostname] || 0;
-    bah.host[url.hostname]++;
+  addNewPage (url, windowId) {
+    if (url.href === 'about:blank') {
+      return;
+    }
 
-    console.log(bah);
+    this.browser.storage.local.get()
+      .then( results => {
+        if (results.projects) {
+          Object.keys(results.projects).forEach( project => {
+            const currentProject = results.projects[project];
+            if (currentProject.currentWindowID === windowId) {
+              currentProject.urls[url.href] = {
+                host: url.hostname,
+                path: url.pathname,
+                visited: 1
+              };
+              this.browser.storage.local.set(results);
+            }
+          });
+        }
+      });
   }
 
   newTabHandler (tab) {
