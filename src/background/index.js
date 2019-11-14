@@ -28,6 +28,32 @@ browser.webNavigation.onCompleted.addListener(evt => {
   Controller.URLvisited(evt);
 });
 
-// browser.tabs.onCreated.addListener( tab => {
-//   Controller.newTabHandler(tab);
-// });
+browser.tabs.onActivated.addListener( (activeTab) => {  
+  browser.tabs.get(activeTab.tabId)
+    .then( res => {
+      const url = new URL(res.url);
+
+      if (url.host === '') {
+        browser.tabs.onUpdated.addListener( (tabId, changeInfo) => {
+          if (changeInfo.url) {
+            const newUrl = new URL(changeInfo.url);
+            if (newUrl.host !== '') {
+              activeTab.url = newUrl.href;
+              activeTab.host = newUrl.hostname;
+              activeTab.path = newUrl.pathname;
+
+              Controller.tabActivated(activeTab);
+            }
+          }
+        }, {
+          tabId: activeTab.tabId
+        });
+      } else {
+        activeTab.url = url.href;
+        activeTab.host = url.hostname;
+        activeTab.path = url.pathname;
+
+        Controller.tabActivated(activeTab);
+      }
+    });
+});
