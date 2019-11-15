@@ -24,7 +24,6 @@ class Controller  {
   }
 
   tabActivated (activeInfo) {
-    console.log('only active tabs with url should be shown here: ', activeInfo);
     this.getStorage()
       .then( results => {
         Object.keys(results.projects).forEach( project => {
@@ -46,7 +45,6 @@ class Controller  {
         .then( results => {
           Object.keys(results.projects).forEach( project => {
             const currentProject = results.projects[project];
-            console.log(currentProject.currentWindowID === windowId);
             if (currentProject.currentWindowID === windowId) {
               const toReturn = {
                 name: project,
@@ -60,6 +58,44 @@ class Controller  {
     return newPromise;
   }
 
+  registerOpenProject (windowId, projectName) {
+    this.getStorage()
+      .then(res => {
+        if (!res.openProjects) {
+          res.openProjects = {};
+        }
+        res.openProjects[projectName] = {
+          windowId: windowId
+        };
+        this.setStorage({
+          openProjects: {
+            ...res.openProjects,
+            [projectName]: res.openProjects[projectName]
+          }
+        });
+      });
+  }
+
+  fetchCurrentProject () {
+    this.browser.windows.getCurrent()
+      .then( windowInfo => {
+        this.getStorage()
+          .then( res => {
+            if (!res.openProjects) {
+              return;
+            }
+            Object.keys(res.openProjects).forEach( projTitle => {
+              if ( res.openProjects[projTitle].windowId === windowInfo.id) {
+                this.browser.runtime.sendMessage({ 
+                  type: 'activeProjectTitle',
+                  data: projTitle,
+                });
+              }
+            });
+          });
+      });
+  }
+
   createNewProject (projectTitle) {
     // Open new window
     this.browser.windows.create()
@@ -68,34 +104,31 @@ class Controller  {
 
         this.getStorage()
           .then( results => {
-            // TODO: do I need this check? the proj shouldn't exist when creating a new one
             if (!results.projects) {
               results.projects = {};
             }
             
+            // TODO: do I need this check? the proj shouldn't exist when creating a new one
             if ( !results.projects[projectTitle] ) {
               results.projects[projectTitle] = {
                 currentWindowID: newWindow.id,
                 urls: {}
               };
+              this.registerOpenProject(newWindow.id, projectTitle);
             }
 
             // results.projects[projectTitle].tabs
-
             this.setStorage(results);
           });
       });
   }
 
   updateProject (project) {
-    console.log('proj to update', project);
     this.getStorage()
       .then(res => {
-        console.log(res);
         res.projects[project.name].urls = project.urls;
         // TODO: bit unecessary to rewrite the whole project object, don't really have to
         this.browser.storage.local.set(res);
-        console.log('project update!');
       });
   }
 
@@ -139,12 +172,12 @@ class Controller  {
       });
   }
 
-  newTabHandler (tab) {
-    console.log('tab created', tab);
-    if ( tab.windowId) {
-      // if tab.windowId matches any project window id, add the url to the project's tabs
-    }
-  }
+  // newTabHandler (tab) {
+  //   console.log('tab created', tab);
+  //   if ( tab.windowId) {
+  //     // if tab.windowId matches any project window id, add the url to the project's tabs
+  //   }
+  // }
 }
 
 export default Controller;

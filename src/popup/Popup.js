@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import './Popup.css';
 
@@ -61,17 +61,34 @@ const Button = styled.button`
 `;
 
 const Popup = () => {
-  const [ projectName, setProjectName ] = useState('');
+  const [ projectTitle, setProjectTitle ] = useState('');
+  const [ activeProjectTitle, setActiveProjectTitle ] = useState();
+
+  useEffect( () => {
+    browser.runtime.sendMessage({ 
+      type: 'popupOpened' 
+    });
+
+    browser.runtime.onMessage.addListener( message => {
+      if (message.type === 'activeProjectTitle') {
+        logProjectTitle(message.data);
+      }
+    });
+  }, []);
+
+  const logProjectTitle = (title) => {
+    setActiveProjectTitle(title);
+  };
 
   const changeHandler = (val) => {
-    setProjectName( val );
+    setProjectTitle( val );
   };
 
   const createHandler = () => {
-    if (projectName.length !== 0 || projectName.length === '' ) {
+    if (projectTitle.length !== 0 || projectTitle.length === '' ) {
       browser.runtime.sendMessage({ 
         type: 'openNewWindow',
-        title: projectName 
+        title: projectTitle 
       });
     } else {
       console.log('enter text first!');
@@ -87,14 +104,15 @@ const Popup = () => {
       <CreateProject>
         <input 
           type="text" 
-          value={ projectName } 
+          value={ projectTitle } 
           onChange={ (e) => changeHandler(e.target.value) } />
         <Button
-          active={ projectName.length !== 0 || projectName.length === '' }
+          active={ projectTitle.length !== 0 || projectTitle.length === '' }
           onClick={createHandler}>
             Create
         </Button>
       </CreateProject>
+      { activeProjectTitle ? activeProjectTitle : null }
     </div>
   );
 };

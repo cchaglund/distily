@@ -19,8 +19,13 @@ browser.runtime.onInstalled.addListener( () => {
 });
 
 browser.runtime.onMessage.addListener( message => {
-  if (message.type === 'openNewWindow') {
-    Controller.createNewProject(message.title);
+  switch (message.type) {
+    case 'openNewWindow':
+      Controller.createNewProject(message.title);
+      break;
+    case 'popupOpened':
+      Controller.fetchCurrentProject();
+      break;
   }
 });
 
