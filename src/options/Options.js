@@ -11,6 +11,7 @@ import {
 
 import './Options.css';
 import Overview from './Overview';
+import Project from './Project';
 
 const Options = () => {
   const [ projects, setProjects ] = useState();
@@ -48,8 +49,8 @@ const Options = () => {
           <Route path="/about">
             about
           </Route>
-          <Route path="/users">
-            sup
+          <Route path="/project">
+            <Project />
           </Route>
           <Route path="/">
             <Overview 
