@@ -96,6 +96,16 @@ class Controller  {
       });
   }
 
+  fetchAllProjectData () {
+    this.getStorage()
+      .then( res => {
+        this.browser.runtime.sendMessage({ 
+          type: 'projectsData',
+          data: res.projects,
+        });
+      });
+  }
+
   createNewProject (projectTitle) {
     // Open new window
     this.browser.windows.create()
@@ -147,7 +157,7 @@ class Controller  {
             project.urls[url.href].visited = project.urls[url.href].visited + 1;
             this.updateProject(project);
           } else {
-            this.addNewUrl(url, evt.windowId);
+            this.addUrlToProject(url, evt.windowId);
           }
         }
       }, err => {
@@ -171,7 +181,7 @@ class Controller  {
       });
   }
 
-  addNewUrl (newUrl, windowId) {
+  addUrlToProject (newUrl, windowId) {
     if (newUrl.href === 'about:blank') {
       return;
     }

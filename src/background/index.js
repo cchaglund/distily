@@ -26,6 +26,9 @@ browser.runtime.onMessage.addListener( message => {
     case 'popupOpened':
       Controller.fetchCurrentProject();
       break;
+    case 'optionsOpened':
+      Controller.fetchAllProjectData();
+      break;
   }
 });
 
