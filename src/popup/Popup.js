@@ -95,6 +95,11 @@ const Popup = () => {
     }
   };
 
+  const openOptions = () => {
+    browser.runtime.openOptionsPage();
+    window.close();
+  };
+
   return (
     <div className="popup">
       <div
@@ -113,6 +118,11 @@ const Popup = () => {
         </Button>
       </CreateProject>
       { activeProjectTitle ? activeProjectTitle : null }
+      <a 
+        href=''
+        onClick={openOptions}>
+        Open options
+      </a>
     </div>
   );
 };
