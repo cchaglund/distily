@@ -2,8 +2,15 @@
 
 import React, { useEffect, useState } from 'react';
 import '@polymer/paper-button/paper-button.js';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from 'react-router-dom';
 
 import './Options.css';
+import Overview from './Overview';
 
 const Options = () => {
   const [ projects, setProjects ] = useState();
@@ -20,19 +27,37 @@ const Options = () => {
     });
   }, []);
 
-  const projectList = projects ? Object.keys(projects).map( projTitle => {
-    return <li key={projTitle}>{projTitle}</li>;
-  }) : null;
-
-  // projects ? console.log(Object.keys(projects)) : null;
-
   return (
-    <div className="App-header">
-      Projects
-      <ul>
-        { projects ? projectList : null }
-      </ul>
-    </div>
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Overview</Link>
+            </li>
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+            <li>
+              <Link to="/users">Users</Link>
+            </li>
+          </ul>
+        </nav>
+
+        <Switch>
+          <Route path="/about">
+            about
+          </Route>
+          <Route path="/users">
+            sup
+          </Route>
+          <Route path="/">
+            <Overview 
+              projects={projects}/>
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 };
 
