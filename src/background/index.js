@@ -29,11 +29,15 @@ browser.runtime.onMessage.addListener( message => {
   }
 });
 
-browser.webNavigation.onCompleted.addListener(evt => {
+browser.windows.onRemoved.addListener( windowId => {
+  Controller.closeWindowHandler(windowId);
+});
+
+browser.webNavigation.onCompleted.addListener( evt => {
   Controller.URLvisited(evt);
 });
 
-browser.tabs.onActivated.addListener( (activeTab) => {  
+browser.tabs.onActivated.addListener( activeTab => {  
   browser.tabs.get(activeTab.tabId)
     .then( res => {
       const url = new URL(res.url);

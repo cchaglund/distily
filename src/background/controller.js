@@ -155,6 +155,22 @@ class Controller  {
       });
   }
 
+  closeWindowHandler ( windowId ) {
+    console.log( windowId );
+    this.getStorage()
+      .then(res => {
+        let updatedOpenProjects = { ...res.openProjects };
+        Object.keys( updatedOpenProjects ).forEach( projTitle => {
+          if ( updatedOpenProjects[ projTitle ].windowId === windowId ) {
+            delete updatedOpenProjects[ projTitle ];
+          }
+        });
+        this.setStorage({
+          openProjects: updatedOpenProjects
+        });
+      });
+  }
+
   addNewUrl (newUrl, windowId) {
     if (newUrl.href === 'about:blank') {
       return;
