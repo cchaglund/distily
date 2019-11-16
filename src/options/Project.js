@@ -1,21 +1,22 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import BarChart from './Charts/BarChart/chart.js';
 
 const Project = (props) => {
   const urls = props.location.params.data.urls;
 
-  const renderedUrls = urls ? Object.keys(urls).map( href => {
-    return (
-      <li key={href}>
-        {href}
-      </li>
-    );
-  }) : null;
+  const adjustedData = Object.keys(urls).map( url => {
+    return {
+      ...urls[url],
+      url: url
+    };
+  });
 
   return (
     <div>
       {props.location.params.title}
-      {renderedUrls}
+      <BarChart 
+        urls={adjustedData}/>
     </div>
   );
 };
