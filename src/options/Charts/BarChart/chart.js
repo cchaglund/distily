@@ -10,8 +10,6 @@ const BarChart = (props) => {
   const [data, setData] = useState(props.urls);
 
   const updateData = () => {
-    console.log('hej');
-    console.log('data in state', data);
     const updatedData = data.map( country => {
       const ran = Math.floor(Math.random() * 40);
       if (country.country === 'AE') {
