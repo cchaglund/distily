@@ -82,6 +82,23 @@ const getPlugins = (isEnvProduction = false, shouldUseSourceMap = false) => {
     )
   );
 
+  const newtabHtmlPlugin = new HtmlWebpackPlugin(
+    Object.assign(
+      {},
+      {
+        title: 'Newtab',
+        chunks: ['newtab'],
+        filename: 'newtab.html',
+        template: paths.newtabTemplate,
+      },
+      isEnvProduction
+        ? {
+          minify: minifyHtml,
+        }
+        : undefined
+    )
+  );
+
   const moduleNotFoundPlugin = new ModuleNotFoundPlugin(paths.appPath);
   const caseSensitivePathsPlugin = new CaseSensitivePathsPlugin();
   const watchMissingNodeModulesPlugin = new WatchMissingNodeModulesPlugin(paths.appNodeModules);
@@ -139,6 +156,7 @@ const getPlugins = (isEnvProduction = false, shouldUseSourceMap = false) => {
     optionsHtmlPlugin,
     popupHtmlPlugin,
     sidebarHtmlPlugin,
+    newtabHtmlPlugin,
     moduleNotFoundPlugin,
     caseSensitivePathsPlugin,
     watchMissingNodeModulesPlugin,

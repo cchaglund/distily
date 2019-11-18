@@ -16,6 +16,8 @@ const doesPopupExist = fs.existsSync(paths.appPopupJs);
 const doesPopupHtmlExist = fs.existsSync(paths.popupTemplate);
 const doesSidebarExist = fs.existsSync(paths.appSidebarJs);
 const doesSidebarHtmlExist = fs.existsSync(paths.sidebarTemplate);
+const doesNewtabExist = fs.existsSync(paths.appNewtabJs);
+const doesNewtabHtmlExist = fs.existsSync(paths.newtabTemplate);
 const doesBackgroundExist = fs.existsSync(paths.appBackgroundJs);
 const doesContentExist = fs.existsSync(paths.appContentJs);
 
@@ -39,6 +41,7 @@ module.exports = function (webpackEnv) {
     doesPopupExist && { 'popup': paths.appPopupJs },
     doesContentExist && { 'content': paths.appContentJs },
     doesSidebarExist && { 'sidebar': paths.appSidebarJs },
+    doesNewtabExist && { 'newtab': paths.appNewtabJs },
     doesOptionsExist && { 'options': paths.appOptionsJs },
   ].filter(Boolean);
 
@@ -113,6 +116,7 @@ module.exports = function (webpackEnv) {
       doesOptionsHtmlExist && plugins.optionsHtmlPlugin,
       doesPopupHtmlExist && plugins.popupHtmlPlugin,
       doesSidebarHtmlExist && plugins.sidebarHtmlPlugin,
+      doesNewtabHtmlExist && plugins.newtabHtmlPlugin,
       plugins.htmlIncAssetsPlugin,
       plugins.moduleNotFoundPlugin,
       isEnvDevelopment && plugins.CaseSensitivePathsPlugin,

@@ -7,6 +7,7 @@ import { linkTo } from '@storybook/addon-links';
 import { Button, Welcome } from '@storybook/react/demo';
 import Popup from '../src/popup/Popup';
 import Sidebar from '../src/sidebar/Sidebar';
+import Newtab from '../src/newtab/Newtab';
 import Options from '../src/options/Options';
 
 storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />);
@@ -23,4 +24,5 @@ storiesOf('Button', module)
 
 storiesOf('Popup', module).add('Default', () => <Popup />);
 storiesOf('Sidebar', module).add('Default', () => <Sidebar />);
+storiesOf('Newtab', module).add('Default', () => <Newtab />);
 storiesOf('Options', module).add('Default', () => <Options />);

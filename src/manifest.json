@@ -28,7 +28,8 @@
     "storage",
     "unlimitedStorage",
     "webNavigation",
-    "tabs"
+    "tabs",
+    "topSites"
   ],
   "icons": {
     "128": "img/icon.png"
@@ -39,5 +40,8 @@
   "options_ui": {
     "page": "./options.html",
     "open_in_tab": true
+  },
+  "chrome_url_overrides" : {
+    "newtab": "newtab.html"
   }
 }
