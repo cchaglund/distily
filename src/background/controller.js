@@ -211,7 +211,7 @@ class Controller  {
     if (evt.frameId !== 0) {
       return;
     }
-
+      
     const url = new URL(evt.url);
 
     this.getProjectWindow(evt.windowId)
@@ -221,13 +221,41 @@ class Controller  {
             project.urls[url.href].visited = project.urls[url.href].visited + 1;
             this.updateProject(project);
           } else {
-            this.addUrlToProject(url, evt.windowId);
+            this.addUrlToProject(url, evt.windowId, evt.tabId);
           }
         }
       }, err => {
         console.log(err);
       });
   }
+
+    // if (url.host === '') {
+  //   browser.tabs.onUpdated.addListener( (tabId, changeInfo) => {
+  //     if (changeInfo.url) {
+  //       browser.tabs.get(tabId)
+  //         .then(tab => {
+  //           const newUrl = new URL(changeInfo.url);
+  //           if (newUrl.host !== '') {
+  //             activeTab.title = tab.title;
+  //             activeTab.url = newUrl.href;
+  //             activeTab.host = newUrl.hostname;
+  //             activeTab.path = newUrl.pathname;
+
+  //             Controller.tabActivated(activeTab);
+  //           }
+  //         });
+  //     }
+  //   }, {
+  //     tabId: activeTab.tabId
+  //   });
+  // } else {
+  //   activeTab.title = res.title;
+  //   activeTab.url = url.href;
+  //   activeTab.host = url.hostname;
+  //   activeTab.path = url.pathname;
+
+  //   Controller.tabActivated(activeTab);
+  // }
 
   closeWindowHandler ( windowId ) {
     console.log( windowId );
@@ -245,21 +273,30 @@ class Controller  {
       });
   }
 
-  addUrlToProject (newUrl, windowId) {
+  addUrlToProject (newUrl, windowId, tabId) {
     console.log('HERE', newUrl);
     if ( newUrl.protocol === 'about:' ||newUrl.protocol === 'moz-extension:' ) {
       return;
     }
 
-    this.getProjectWindow(windowId)
-      .then( project => {
-        project.urls[newUrl.href] = {
-          host: newUrl.hostname,
-          path: newUrl.pathname,
-          visited: 1,
-          focused: 1,
-        };
-        this.updateProject(project);
+    this.browser.tabs.get(tabId)
+      .then( tab => {
+        const url = new URL(tab.url);
+
+        this.getProjectWindow(windowId)
+          .then( project => {
+            project.urls[newUrl.href] = {
+              host: newUrl.hostname,
+              path: newUrl.pathname,
+              visited: 1,
+              focused: 1,
+              title: tab.title,
+              url: url.href,
+            };
+            this.updateProject(project);
+          });
+
+        // this.tabActivated(tabInfo);
       });
   }
 

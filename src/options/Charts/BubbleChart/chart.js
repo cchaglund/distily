@@ -30,8 +30,10 @@ const MyResponsiveBubble = ({urls}) => {
         };
       }
 
+      const shortTitle = urls[url].title.slice(0,10);
+
       tempDomains[host].children.push({
-        name: urls[url].path + `${Math.random() * 10}`,
+        name: shortTitle,
         fullUrl: url,
         focused: urls[url].focused,
         visited: urls[url].visited

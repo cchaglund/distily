@@ -41,6 +41,9 @@ browser.windows.onRemoved.addListener( windowId => {
 
 browser.webNavigation.onCompleted.addListener( evt => {
   Controller.URLvisited(evt);
+  // get tab with completed nav, and set the title of the page from here
+
+  console.log('nav complete', evt);
 });
 
 browser.tabs.onActivated.addListener( activeTab => {  
@@ -48,27 +51,10 @@ browser.tabs.onActivated.addListener( activeTab => {
     .then( res => {
       const url = new URL(res.url);
 
-      if (url.host === '') {
-        browser.tabs.onUpdated.addListener( (tabId, changeInfo) => {
-          if (changeInfo.url) {
-            const newUrl = new URL(changeInfo.url);
-            if (newUrl.host !== '') {
-              activeTab.url = newUrl.href;
-              activeTab.host = newUrl.hostname;
-              activeTab.path = newUrl.pathname;
+      activeTab.url = url.href;
+      activeTab.host = url.hostname;
+      activeTab.path = url.pathname;
 
-              Controller.tabActivated(activeTab);
-            }
-          }
-        }, {
-          tabId: activeTab.tabId
-        });
-      } else {
-        activeTab.url = url.href;
-        activeTab.host = url.hostname;
-        activeTab.path = url.pathname;
-
-        Controller.tabActivated(activeTab);
-      }
+      Controller.tabActivated(activeTab);
     });
 });
