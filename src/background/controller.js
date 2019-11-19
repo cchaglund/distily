@@ -11,8 +11,19 @@ class Controller  {
           results.projects = {};
         }
 
+        if ( !results.state ) {
+          results.state = {};
+        }
+
         this.setStorage(results);
       });
+  }
+
+  sendMessage (type, data) {
+    this.browser.runtime.sendMessage({ 
+      type: type,
+      data: data
+    });
   }
 
   getStorage () {
@@ -23,85 +34,37 @@ class Controller  {
     this.browser.storage.local.set(data);
   }
 
-  tabActivated (activeInfo) {
-    this.getStorage()
-      .then( results => {
-        Object.keys(results.projects).forEach( project => {
-          const currentProject = results.projects[project];
-          if (currentProject.currentWindowID === activeInfo.windowId) {
-            if ( currentProject.urls[activeInfo.url] ) {
-              currentProject.urls[activeInfo.url].focused = currentProject.urls[activeInfo.url].focused + 1;
-              this.setStorage(results);
-            }
-          }
-        }
-        );
-      });
-  }
-
-  getProjectWindow (windowId) {
-    let newPromise = new Promise( (resolve) => {
-      this.getStorage()
-        .then( results => {
-          Object.keys(results.projects).forEach( project => {
-            const currentProject = results.projects[project];
-            if (currentProject.currentWindowID === windowId) {
-              const toReturn = {
-                name: project,
-                urls: currentProject.urls
-              };
-              resolve( toReturn );
-            } 
-          });
-        });
-    });
-    return newPromise;
-  }
-
-  registerOpenProject (windowId, projectName) {
-    this.getStorage()
+  loadPopup () {
+    this.fetchProjectTitle()
       .then(res => {
-        if (!res.openProjects) {
-          res.openProjects = {};
-        }
-        res.openProjects[projectName] = {
-          windowId: windowId
-        };
-        this.setStorage({
-          openProjects: {
-            ...res.openProjects,
-            [projectName]: res.openProjects[projectName]
+        this.browser.runtime.sendMessage({ 
+          type: 'activeProjectTitle',
+          data: {
+            title: res,
           }
         });
+      })
+      .catch(err => {
+        console.log(err);
       });
-  }
 
-  fetchCurrentProject () {
-    this.browser.windows.getCurrent()
-      .then( windowInfo => {
-        this.getStorage()
-          .then( res => {
-            if (!res.openProjects) {
-              return;
-            }
-            Object.keys(res.openProjects).forEach( projTitle => {
-              if ( res.openProjects[projTitle].windowId === windowInfo.id) {
-                this.browser.runtime.sendMessage({ 
-                  type: 'activeProjectTitle',
-                  data: projTitle,
-                });
-              }
-            });
-          });
-      });
-  }
-
-  fetchAllProjectData () {
-    this.getStorage()
-      .then( res => {
+    this.fetchAllProjectData()
+      .then(res => {
         this.browser.runtime.sendMessage({ 
           type: 'projectsData',
-          data: res.projects,
+          data: {
+            projects: res
+          }
+        });
+      });
+  }
+
+  loadOptions () {
+    this.fetchAllProjectData()
+      .then(res => {
+        this.browser.runtime.sendMessage({ 
+          type: 'projectsData',
+          data: res,
         });
       });
   }
@@ -127,10 +90,44 @@ class Controller  {
               this.registerOpenProject(newWindow.id, projectTitle);
             }
 
-            // results.projects[projectTitle].tabs
             this.setStorage(results);
           });
       });
+  }
+
+  registerOpenProject (windowId, projectName) {
+    this.getStorage()
+      .then(res => {
+        if (!res.openProjects) {
+          res.openProjects = {};
+        }
+
+        res.openProjects[projectName] = {
+          windowId: windowId
+        };
+
+        this.setStorage({
+          openProjects: {
+            ...res.openProjects,
+            [projectName]: res.openProjects[projectName]
+          }
+        });
+      });
+  }
+
+  openProject (projTitle) {
+    console.log('THIS', projTitle);
+    this.getStorage()
+      .then(res => {
+        if (!res.state.projectToOpen) {
+          res.state.projectToOpen = '';
+        }
+
+        res.state.projectToOpen = projTitle;
+        this.setStorage(res);
+      });
+
+    this.browser.runtime.openOptionsPage();
   }
 
   updateProject (project) {
@@ -139,6 +136,73 @@ class Controller  {
         res.projects[project.name].urls = project.urls;
         // TODO: bit unecessary to rewrite the whole project object, don't really have to
         this.browser.storage.local.set(res);
+      });
+  }
+
+  getProjectWindow (windowId) {
+    let newPromise = new Promise( (resolve) => {
+      this.getStorage()
+        .then( results => {
+          Object.keys(results.projects).forEach( project => {
+            const currentProject = results.projects[project];
+            if (currentProject.currentWindowID === windowId) {
+              const toReturn = {
+                name: project,
+                urls: currentProject.urls
+              };
+              resolve( toReturn );
+            } 
+          });
+        });
+    });
+    return newPromise;
+  }
+
+  fetchProjectTitle () {
+    const title = new Promise( (resolve, reject) => {
+      this.browser.windows.getCurrent()
+        .then( windowInfo => {
+          this.getStorage()
+            .then( res => {
+              if (!res.openProjects) {
+                reject('No open projects');
+              }
+              Object.keys(res.openProjects).forEach( projTitle => {
+                if ( res.openProjects[projTitle].windowId === windowInfo.id) {
+                  resolve(projTitle);
+                }
+              });
+            });
+        });
+    });
+    
+    return title;
+  }
+
+  fetchAllProjectData () {
+    const data = new Promise(resolve => {
+      this.getStorage()
+        .then( res => {
+          resolve(res.projects);
+        });
+    });
+
+    return data;
+  }
+
+  tabActivated (activeInfo) {
+    this.getStorage()
+      .then( results => {
+        Object.keys(results.projects).forEach( project => {
+          const currentProject = results.projects[project];
+          if (currentProject.currentWindowID === activeInfo.windowId) {
+            if ( currentProject.urls[activeInfo.url] ) {
+              currentProject.urls[activeInfo.url].focused = currentProject.urls[activeInfo.url].focused + 1;
+              this.setStorage(results);
+            }
+          }
+        }
+        );
       });
   }
 

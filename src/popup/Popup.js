@@ -4,53 +4,6 @@ import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import './Popup.css';
 
-
-// // Get the saved stats and render the data in the popup window.
-// const MAX_ITEMS = 5;
-
-// function sorter(array) {
-//   return Object.keys(array).sort((a, b) => {
-//     return array[a] <= array[b];
-//   });
-// }
-
-// function addElements(element, array, callback) {
-//   while(element.firstChild) {
-//     element.removeChild(element.firstChild);
-//   }
-
-//   for (let i=0; i < array.length; i++) {
-//     if (i >= MAX_ITEMS) {
-//       break;
-//     }
-
-//     const listItem = document.createElement('li');
-//     listItem.textContent = callback(array[i]);
-//     element.appendChild(listItem);
-//   }
-// }
-
-// const gettingStoredStats = browser.storage.local.get();
-
-// gettingStoredStats.then(results => {
-//   if (results.type.length === 0 || results.host.length === 0) {
-//     return;
-//   }
-
-//   let hostElement = document.getElementById('hosts');
-//   let sortedHosts = sorter(results.host);
-//   addElements(hostElement, sortedHosts, (host) => {
-//     return `${host}: ${results.host[host]} visit(s)`;
-//   });
-
-//   let typeElement = document.getElementById('types');
-//   let sortedTypes = sorter(results.type);
-//   addElements(typeElement, sortedTypes, (type) => {
-//     return `${type}: ${results.type[type]} use(s)`;
-//   });
-
-// });
-
 const CreateProject = styled.div`
   display: flex;
   flex-direction: column;
@@ -63,6 +16,7 @@ const Button = styled.button`
 const Popup = () => {
   const [ projectTitle, setProjectTitle ] = useState('');
   const [ activeProjectTitle, setActiveProjectTitle ] = useState();
+  const [ projects, setProjects ] = useState();
 
   useEffect( () => {
     browser.runtime.sendMessage({ 
@@ -70,8 +24,13 @@ const Popup = () => {
     });
 
     browser.runtime.onMessage.addListener( message => {
-      if (message.type === 'activeProjectTitle') {
-        logProjectTitle(message.data);
+      switch (message.type) {
+        case 'activeProjectTitle':
+          logProjectTitle(message.data.title);
+          break;
+        case 'projectsData':
+          setProjects(message.data.projects);
+          break;
       }
     });
   }, []);
@@ -100,6 +59,23 @@ const Popup = () => {
     window.close();
   };
 
+  const openProject = (projTitle) => {
+    browser.runtime.sendMessage({ 
+      type: 'openProject',
+      title: projTitle 
+    });
+  };
+
+  const projectList = projects ? Object.keys(projects).map( projTitle => {
+    return (
+      <li 
+        key={projTitle}
+        onClick={ () => openProject(projTitle)}>
+        {projTitle}
+      </li>
+    );
+  }) : null;
+
   return (
     <div className="popup">
       <div
@@ -123,6 +99,9 @@ const Popup = () => {
         onClick={openOptions}>
         Open options
       </a>
+      <ul>
+        { projectList }
+      </ul>
     </div>
   );
 };

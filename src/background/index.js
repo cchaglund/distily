@@ -24,10 +24,13 @@ browser.runtime.onMessage.addListener( message => {
       Controller.createNewProject(message.title);
       break;
     case 'popupOpened':
-      Controller.fetchCurrentProject();
+      Controller.loadPopup();
+      break;
+    case 'openProject':
+      Controller.openProject(message.title);
       break;
     case 'optionsOpened':
-      Controller.fetchAllProjectData();
+      Controller.loadOptions();
       break;
   }
 });

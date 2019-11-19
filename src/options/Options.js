@@ -6,7 +6,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  Redirect
 } from 'react-router-dom';
 
 import './Options.css';
@@ -15,6 +16,7 @@ import Project from './Project';
 
 const Options = () => {
   const [ projects, setProjects ] = useState();
+  const [ projectToShow, setProjectToShow ] = useState();
 
   useEffect( () => {
     browser.runtime.sendMessage({ 
@@ -22,14 +24,39 @@ const Options = () => {
     });
 
     browser.runtime.onMessage.addListener( message => {
-      if (message.type === 'projectsData') {
-        setProjects(message.data);
+      switch (message.type) {
+        case 'projectsData':
+          console.log(message);
+          setProjects(message.data);
+          loadProject();
+          break;
       }
     });
   }, []);
 
+  const loadProject = () => {
+    browser.storage.local.get()
+      .then(res => {
+        if (res.state.projectToOpen) {
+          setProjectToShow(res.state.projectToOpen);
+        }
+      });
+  };
+
+  const redirect = (proj) => {
+    return <Redirect
+      to={{ 
+        pathname: '/project',
+        params: {
+          title: proj,
+          data: projects[proj]
+        }
+      }} />;
+  };
+
   return (
     <Router>
+      { projectToShow ? redirect(projectToShow) : null }
       <div>
         <nav>
           <ul>
@@ -54,7 +81,7 @@ const Options = () => {
           </Route>
           <Route path="/">
             <Overview 
-              projects={projects}/>
+              projects={projects} />
           </Route>
         </Switch>
       </div>
