@@ -246,7 +246,8 @@ class Controller  {
   }
 
   addUrlToProject (newUrl, windowId) {
-    if (newUrl.href === 'about:blank') {
+    console.log('HERE', newUrl);
+    if ( newUrl.protocol === 'about:' ||newUrl.protocol === 'moz-extension:' ) {
       return;
     }
 
