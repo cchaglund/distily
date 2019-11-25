@@ -1,6 +1,9 @@
+import projectsDB from '../database/projects';
+
 class Controller  {
   constructor(browser) {
     this.browser = browser;
+    this.projectsDB = new projectsDB();
   }
 
   initStorage () {
@@ -73,7 +76,12 @@ class Controller  {
     // Open new window
     this.browser.windows.create()
       .then( res => {
-        const newWindow = res;
+        const newProject = {
+          title: projectTitle,
+          activeWindow: res.id
+        };
+
+        this.projectsDB.addProject(newProject);
 
         this.getStorage()
           .then( results => {
@@ -84,10 +92,10 @@ class Controller  {
             // TODO: do I need this check? the proj shouldn't exist when creating a new one
             if ( !results.projects[projectTitle] ) {
               results.projects[projectTitle] = {
-                currentWindowID: newWindow.id,
+                currentWindowID: res.id,
                 urls: {}
               };
-              this.registerOpenProject(newWindow.id, projectTitle);
+              this.registerOpenProject(res, projectTitle);
             }
 
             this.setStorage(results);
@@ -229,7 +237,7 @@ class Controller  {
       });
   }
 
-    // if (url.host === '') {
+  // if (url.host === '') {
   //   browser.tabs.onUpdated.addListener( (tabId, changeInfo) => {
   //     if (changeInfo.url) {
   //       browser.tabs.get(tabId)
@@ -290,7 +298,8 @@ class Controller  {
               path: newUrl.pathname,
               visited: 1,
               focused: 1,
-              title: tab.title,
+              // Title needs a unique title
+              title: tab.title + Math.floor(Math.random()*200),
               url: url.href,
             };
             this.updateProject(project);

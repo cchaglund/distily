@@ -83,6 +83,7 @@
     "html-loader": "^0.5.5",
     "html-webpack-include-assets-plugin": "^1.0.7",
     "html-webpack-plugin": "4.0.0-alpha.2",
+    "idb": "^4.0.5",
     "identity-obj-proxy": "3.0.0",
     "jest": "23.6.0",
     "jest-pnp-resolver": "1.0.1",

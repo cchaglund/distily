@@ -1,21 +1,14 @@
 /* eslint-disable no-undef */
 
-
-/* const defaultUninstallURL = () => {
-  return process.env.NODE_ENV === 'production'
-    ? 'https://wwww.github.com/kryptokinght'
-    : '';
-}; */
-
-
-import Contr from './controller.js';
+import Contr from './controller';
+import DB from '../database/database';
 
 console.log('Background.js file loaded');
-
 const Controller = new Contr( browser );
 
 browser.runtime.onInstalled.addListener( () => {
   Controller.initStorage();
+  DB.init();
 });
 
 browser.runtime.onMessage.addListener( message => {
