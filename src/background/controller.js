@@ -1,9 +1,8 @@
-import projectsDB from '../database/projects';
+import DB from '../database/index';
 
 class Controller  {
   constructor(browser) {
     this.browser = browser;
-    this.projectsDB = new projectsDB();
   }
 
   initStorage () {
@@ -37,70 +36,72 @@ class Controller  {
     this.browser.storage.local.set(data);
   }
 
-  loadPopup () {
-    this.fetchProjectTitle()
-      .then(res => {
-        this.browser.runtime.sendMessage({ 
-          type: 'activeProjectTitle',
-          data: {
-            title: res,
-          }
+  getProject (id) {
+    return new Promise( resolve => {
+      DB.projects.get(id)
+        .then( res => {
+          resolve(res.target.result);
         });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-
-    this.fetchAllProjectData()
-      .then(res => {
-        this.browser.runtime.sendMessage({ 
-          type: 'projectsData',
-          data: {
-            projects: res
-          }
-        });
-      });
+    });
   }
 
-  loadOptions () {
-    this.fetchAllProjectData()
-      .then(res => {
-        this.browser.runtime.sendMessage({ 
-          type: 'projectsData',
-          data: res,
+  getAllProjects () {
+    return new Promise( resolve => {
+      DB.projects.getAll()
+        .then( res => {
+          resolve(res);
         });
-      });
+    });
+  }
+
+  updateProject (id, data) {
+    return new Promise( resolve => {
+      DB.projects.update(id, data)
+        .then( res => {
+          resolve(res);
+        });
+    });
   }
 
   createNewProject (projectTitle) {
-    // Open new window
-    this.browser.windows.create()
-      .then( res => {
-        const newProject = {
-          title: projectTitle,
-          activeWindow: res.id
-        };
+    return new Promise( resolve => {
+      // Open new window
+      this.browser.windows.create()
+        .then( res => {
+          const newProject = {
+            title: projectTitle,
+            activeWindow: res.id
+          };
 
-        this.projectsDB.addProject(newProject);
+          console.log('hej?');
 
-        this.getStorage()
-          .then( results => {
-            if (!results.projects) {
-              results.projects = {};
-            }
-            
-            // TODO: do I need this check? the proj shouldn't exist when creating a new one
-            if ( !results.projects[projectTitle] ) {
-              results.projects[projectTitle] = {
-                currentWindowID: res.id,
-                urls: {}
-              };
-              this.registerOpenProject(res, projectTitle);
-            }
+          DB.projects.add(newProject)
+            .then(res => {
+              console.log(res);
+              resolve(res);
+            });
+        });
 
-            this.setStorage(results);
-          });
-      });
+
+
+      // this.getStorage()
+      //   .then( results => {
+      //     if (!results.projects) {
+      //       results.projects = {};
+      //     }
+          
+      //     // TODO: do I need this check? the proj shouldn't exist when creating a new one
+      //     if ( !results.projects[projectTitle] ) {
+      //       results.projects[projectTitle] = {
+      //         currentWindowID: res.id,
+      //         urls: {}
+      //       };
+      //       this.registerOpenProject(res, projectTitle);
+      //     }
+
+      //     this.setStorage(results);
+      //   });
+    });
   }
 
   registerOpenProject (windowId, projectName) {
@@ -123,27 +124,15 @@ class Controller  {
       });
   }
 
-  openProject (projTitle) {
-    console.log('THIS', projTitle);
-    this.getStorage()
-      .then(res => {
-        if (!res.state.projectToOpen) {
-          res.state.projectToOpen = '';
-        }
-
-        res.state.projectToOpen = projTitle;
-        this.setStorage(res);
-      });
-
-    this.browser.runtime.openOptionsPage();
-  }
-
-  updateProject (project) {
-    this.getStorage()
-      .then(res => {
-        res.projects[project.name].urls = project.urls;
-        // TODO: bit unecessary to rewrite the whole project object, don't really have to
-        this.browser.storage.local.set(res);
+  openProject (id) {
+    this.getProject(id)
+      .then(result => {
+        this.getStorage()
+          .then(res => {
+            res.state.projectToOpen = result;
+            this.setStorage(res);
+            this.browser.runtime.openOptionsPage();
+          });
       });
   }
 
@@ -266,17 +255,12 @@ class Controller  {
   // }
 
   closeWindowHandler ( windowId ) {
-    console.log( windowId );
-    this.getStorage()
+    this.getAllProjects()
       .then(res => {
-        let updatedOpenProjects = { ...res.openProjects };
-        Object.keys( updatedOpenProjects ).forEach( projTitle => {
-          if ( updatedOpenProjects[ projTitle ].windowId === windowId ) {
-            delete updatedOpenProjects[ projTitle ];
+        res.forEach( project => {
+          if (project.activeWindow === windowId) {
+            this.updateProject(project.id, {active: false});
           }
-        });
-        this.setStorage({
-          openProjects: updatedOpenProjects
         });
       });
   }

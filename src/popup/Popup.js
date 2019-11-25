@@ -3,6 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import './Popup.css';
+import Ctrl from '../background/controller';
+
+const Controller = new Ctrl(browser);
 
 const CreateProject = styled.div`
   display: flex;
@@ -15,42 +18,31 @@ const Button = styled.button`
 
 const Popup = () => {
   const [ projectTitle, setProjectTitle ] = useState('');
-  const [ activeProjectTitle, setActiveProjectTitle ] = useState();
   const [ projects, setProjects ] = useState();
+  const [ enteredProjectTitle, setEnteredProjectTitle ] = useState();
 
   useEffect( () => {
-    browser.runtime.sendMessage({ 
-      type: 'popupOpened' 
-    });
 
-    browser.runtime.onMessage.addListener( message => {
-      switch (message.type) {
-        case 'activeProjectTitle':
-          logProjectTitle(message.data.title);
-          break;
-        case 'projectsData':
-          setProjects(message.data.projects);
-          break;
-      }
-    });
+    Controller.getAllProjects()
+      .then(res => {
+        setProjects(res);
+
+        browser.windows.getCurrent()
+          .then(windowInfo => {
+            res.forEach( project => {
+              if (project.activeWindow === windowInfo.id) {
+                setProjectTitle(project.title);
+              }
+            });
+          });
+      });
   }, []);
 
-  const logProjectTitle = (title) => {
-    setActiveProjectTitle(title);
-  };
-
-  const changeHandler = (val) => {
-    setProjectTitle( val );
-  };
-
   const createHandler = () => {
-    if (projectTitle.length !== 0 || projectTitle.length === '' ) {
-      browser.runtime.sendMessage({ 
-        type: 'openNewWindow',
-        title: projectTitle 
-      });
+    if ( enteredProjectTitle ) {
+      Controller.createNewProject(enteredProjectTitle);
     } else {
-      console.log('enter text first!');
+      console.log('Enter title!');
     }
   };
 
@@ -59,41 +51,37 @@ const Popup = () => {
     window.close();
   };
 
-  const openProject = (projTitle) => {
-    browser.runtime.sendMessage({ 
-      type: 'openProject',
-      title: projTitle 
-    });
+  const openProject = (id) => {
+    Controller.openProject(id);
   };
 
-  const projectList = projects ? Object.keys(projects).map( projTitle => {
+  const projectList = projects ? Object.keys(projects).map( proj => {
     return (
       <li 
-        key={projTitle}
-        onClick={ () => openProject(projTitle)}>
-        {projTitle}
+        key={projects[proj].id}
+        onClick={ () => openProject(projects[proj].id)}>
+        {projects[proj].title}
       </li>
     );
   }) : null;
 
   return (
     <div className="popup">
-      <div
-        onClick={ () => console.log('create clicked')}>
-          Create new project
+      <div>
+        Create new project
       </div>
       <CreateProject>
         <input 
           type="text" 
-          value={ projectTitle } 
-          onChange={ (e) => changeHandler(e.target.value) } />
+          value={ enteredProjectTitle ? enteredProjectTitle : '' } 
+          onChange={ (e) => setEnteredProjectTitle(e.target.value) } />
         <Button
-          active={ projectTitle.length !== 0 || projectTitle.length === '' }
+          active={ enteredProjectTitle }
           onClick={createHandler}>
             Create
         </Button>
       </CreateProject>
-      { activeProjectTitle ? activeProjectTitle : null }
+      { projectTitle }
       <a 
         href=''
         onClick={openOptions}>

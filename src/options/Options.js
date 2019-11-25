@@ -13,50 +13,90 @@ import {
 import './Options.css';
 import Overview from './Overview';
 import Project from './Project';
+import Ctrl from '../background/controller';
+
+const Controller = new Ctrl(browser);
 
 const Options = () => {
   const [ projects, setProjects ] = useState();
   const [ projectToShow, setProjectToShow ] = useState();
 
   useEffect( () => {
+
+    // getAllProjects();
+
     browser.runtime.sendMessage({ 
       type: 'optionsOpened' 
     });
 
-    browser.runtime.onMessage.addListener( message => {
-      switch (message.type) {
-        case 'projectsData':
-          console.log(message);
-          setProjects(message.data);
-          loadProject();
-          break;
-      }
-    });
-  }, []);
+    Controller.getAllProjects()
+      .then((res) => {
+        setProjects(res);
+      });
 
-  const loadProject = () => {
+    // Controller.createNewProject('My new proj').then((res) =>console.log(res));
+    // Controller.getProject(5).then((res) =>console.log('THIS SHOULD BE SAME A',res));
+    // Controller.updateProject(25, {title: 'poo'}).then((res) =>console.log(res));
+
     browser.storage.local.get()
       .then(res => {
-        if (res.state.projectToOpen) {
-          setProjectToShow(res.state.projectToOpen);
-        }
+        setProjectToShow(res.state.projectToOpen);
+        // Reset the project that's now been shown
+        browser.storage.local.set({
+          state: {
+            projectToOpen: null
+          }
+        });
       });
-  };
+  }, []);
 
-  const redirect = (proj) => {
-    return <Redirect
-      to={{ 
-        pathname: '/project',
-        params: {
-          title: proj,
-          data: projects[proj]
-        }
-      }} />;
-  };
+  // const createProject = (title) => {
+  //   browser.runtime.sendMessage({ 
+  //     type: 'createProject',
+  //     message: title 
+  //   });
+  // };
+
+  // const getProject = (id) => {
+  //   DB.projects.get(id)
+  //     .then( res => {
+  //       console.log('Project: ', res.target.result);
+  //     });
+  // };
+
+  // const getAllProjects = () => {
+  //   DB.projects.getAll()
+  //     .then( res => {
+  //       console.log('Projects: ', res);
+  //     });
+  // };
+
+  // const updateProject = (id, data) => {
+  //   DB.projects.update(id, data)
+  //     .then( res => {
+  //       console.log('Updated: ', res);
+  //     });
+  // };
+
+  //   browser.storage.local.get()
+  //     .then(res => {
+  //       if (res.state.projectToOpen) {
+  //         setProjectToShow(res.state.projectToOpen);
+  //       }
+  //     });
+  // };
+
 
   return (
     <Router>
-      { projectToShow ? redirect(projectToShow) : null }
+      { projectToShow ? <Redirect
+        to={{ 
+          pathname: '/project',
+          params: {
+            title: projectToShow.title,
+            data: projectToShow
+          }
+        }} /> : null }
       <div>
         <nav>
           <ul>

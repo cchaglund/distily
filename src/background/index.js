@@ -16,14 +16,11 @@ browser.runtime.onMessage.addListener( message => {
     case 'openNewWindow':
       Controller.createNewProject(message.title);
       break;
-    case 'popupOpened':
-      Controller.loadPopup();
+    case 'createProject':
+      Controller.createNewProject(message.title);
       break;
     case 'openProject':
       Controller.openProject(message.title);
-      break;
-    case 'optionsOpened':
-      Controller.loadOptions();
       break;
   }
 });
@@ -35,8 +32,6 @@ browser.windows.onRemoved.addListener( windowId => {
 browser.webNavigation.onCompleted.addListener( evt => {
   Controller.URLvisited(evt);
   // get tab with completed nav, and set the title of the page from here
-
-  console.log('nav complete', evt);
 });
 
 browser.tabs.onActivated.addListener( activeTab => {  

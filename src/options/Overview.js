@@ -2,19 +2,20 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Overview = (props) => {
-  const projectList = props.projects ? Object.keys(props.projects).map( projTitle => {
-    console.log(projTitle);
+  const projectList = props.projects ? Object.keys(props.projects).map( index => {
+    const project = props.projects[index];
+
     return (
-      <li key={projTitle}>
+      <li key={project.id}>
         <Link
           to={{ 
             pathname: '/project',
             params: {
-              title: projTitle,
-              data: props.projects[projTitle]
+              title: project.title,
+              data: project
             }
           }}>
-          {projTitle}
+          {project.title}
         </Link>
       </li>
     );

@@ -1,19 +1,13 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
-
-// import { openDB, deleteDB, wrap, unwrap } from 'idb';
-// // import idb from 'idb';
-
 import DB from './database';
 
 class ProjectsDB {
   addProject (projectObject) {
-    let project = {
-      active: true,
-      activeWindow: projectObject.activeWindow,
-      title: projectObject.title,
-      prevSession: null,
-      stats: {
+    let promise = new Promise( resolve => {
+      let project = {
+        active: true,
+        activeWindow: projectObject.activeWindow,
+        title: projectObject.title,
+        prevSession: null,
         totalTime: null,
         totalUrls: null,
         totalVisits: null,
@@ -21,40 +15,105 @@ class ProjectsDB {
         timesOpened: null,
         lastOpened: Date.now(),
         created: Date.now()
-      }
-    };
+      };
 
-    const data = {
-      store: 'projects',
-      method: 'add',
-      mode: 'readwrite',
-      payload: project,
-      callback: {
-        success: (e) => console.log('Project added. ID = ', e.target.result),
-        complete: (e) => console.log('Project add tx complete', e),
-        error: (e) => console.log('Project could not be added', e),
-      }
-    };
+      const data = {
+        store: 'projects',
+        method: 'add',
+        mode: 'readwrite',
+        payload: project,
+        callback: {
+          success: (e) => {
+            console.log('Project added. ID = ', e.target.result);
+            resolve(e.target.result);
+          },
+          complete: (e) => console.log('Project add tx complete', e),
+          error: (e) => console.log('Error adding project', e),
+        }
+      };
 
-    DB.connect(data);
+      DB.connect(data);
+    });
+
+    return promise;
   }
-
-
 
   getProject (id) {
-    const dbPromise = this.openProjects();
+    let promise = new Promise( resolve => {
+      const data = {
+        store: 'projects',
+        method: 'get',
+        mode: 'readonly',
+        payload: id,
+        callback: {
+          success: (project) => {
+            resolve(project);
+          },
+          complete: (e) => console.log('Get project tx complete', e),
+          error: (e) => console.log('Error getting project', e),
+        }
+      };
 
-    dbPromise.then( db => {
-      const tx = db.transaction('projects', 'readonly');
-      const store = tx.objectStore('projects');
-
-      return store.get(id);
-    }).then( value => {
-      console.log('retrieved ', value);
-      return value;
+      DB.connect(data);
     });
+
+    return promise;
+  }
+
+  getAllProjects () {
+    let promise = new Promise( resolve => {
+      const data = {
+        store: 'projects',
+        method: 'getAll',
+        mode: 'readonly',
+        payload: null,
+        callback: {
+          success: (res) => {
+            resolve(res.target.result);
+          },
+          complete: (e) => console.log('Completed retrieval of all projects', e),
+          error: (e) => console.log('Error getting all projects', e),
+        }
+      };
+
+      DB.connect(data);
+    });
+
+    return promise;
+  }
+
+  updateProject (id, newData) {
+    let promise = new Promise( resolve => {
+      this.getProject(id)
+        .then( res => {
+          let project = {
+            ...res.target.result,
+            ...newData
+          };
+
+          const data = {
+            store: 'projects',
+            method: 'put',
+            mode: 'readwrite',
+            payload: project,
+            callback: {
+              success: (e) => {
+                console.log('Project updated', e);
+                resolve(e);
+              },
+              complete: (e) => console.log('Project update tx complete', e),
+              error: (e) => console.log('Error updating project', e),
+            }
+          };
+
+          DB.connect(data);
+        });
+    });
+    
+    return promise;
   }
 }
+
 
 //   openProjects () {
 //     const db = openDB('projects', 1);

@@ -27,17 +27,16 @@ const DB = {
   },
 
   connect: (data) => {
-    console.log('uuuhm?', data);
     let dbReq = indexedDB.open('distily', 1);
 
     dbReq.onsuccess = event => {
       let db = event.target.result;
 
       const tx = db
-        .transaction([data.store], data.mode)
+        .transaction(data.store, data.mode)
         .objectStore(data.store)[data.method](data.payload);
 
-      tx.onsuccess = e => data.callback.success(e);
+      tx.onsuccess = e => data.callback.success(e, tx);
       tx.oncomplete = e => data.callback.complete(e);
       tx.onerror = e => data.callback.error(e);
     };
@@ -45,7 +44,7 @@ const DB = {
     dbReq.onerror = event => {
       alert('error opening database ' + event.target.errorCode);
     };
-  }
+  },
 };
 
 export default DB;
