@@ -14,7 +14,8 @@ const DB = {
       db.createObjectStore('urls', {
         keyPath: 'id',
         autoIncrement: true
-      });
+      })
+        .createIndex('hash', 'hash', {unique: true});
     };
 
     dbReq.onsuccess = event => {

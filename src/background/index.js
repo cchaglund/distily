@@ -7,7 +7,7 @@ console.log('Background.js file loaded');
 const Controller = new Contr( browser );
 
 browser.runtime.onInstalled.addListener( () => {
-  Controller.initStorage();
+  Controller.initState();
   DB.init();
 });
 
@@ -30,8 +30,7 @@ browser.windows.onRemoved.addListener( windowId => {
 });
 
 browser.webNavigation.onCompleted.addListener( evt => {
-  Controller.URLvisited(evt);
-  // get tab with completed nav, and set the title of the page from here
+  Controller.handleURL(evt);
 });
 
 browser.tabs.onActivated.addListener( activeTab => {  

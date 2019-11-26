@@ -1,14 +1,23 @@
-import projectsDB from './projects';
+import projectsObject from './projects';
+import urlsObject from './urls';
 
-const projObj = new projectsDB();
+const projectsDB = new projectsObject();
+const urlsDB = new urlsObject();
 
 const DB = {
   projects: {
-    add: (project) => projObj.addProject(project),
-    update: (id, data) => projObj.updateProject(id, data),
-    get: (id) => projObj.getProject(id),
-    getAll: () => projObj.getAllProjects(),
-    delete: (id) => projObj.deleteProject(id)
+    add: (project) => projectsDB.addProject(project),
+    update: (id, data) => projectsDB.updateProject(id, data),
+    get: (id) => projectsDB.getProject(id),
+    getAll: () => projectsDB.getAllProjects(),
+    delete: (id) => projectsDB.deleteProject(id)
+  },
+  urls: {
+    add: (url, projectID) => urlsDB.addURL(url, projectID),
+    update: (id, data) => urlsDB.updateURL(id, data),
+    get: (id) => urlsDB.getURL(id),
+    getAllByProject: (projectID) => urlsDB.getAllURLs(projectID),
+    delete: (id) => urlsDB.deleteURL(id)
   }
 };
 

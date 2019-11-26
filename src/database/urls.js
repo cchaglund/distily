@@ -1,126 +1,140 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 
-// import { openDB, deleteDB, wrap, unwrap } from 'idb';
-import idb from 'idb';
+import DB from './database';
 
-const openProjects = () => {
-  const db = idb.open('projects', 1);
-  return db;
-};
+class URLsDB {
+  addURL (url) {
+    let promise = new Promise( resolve => {
+      let URL = {
+        title: url.title,
+        time: null,
+        visits: 1,
+        focuses: 1,
+        lastOpened: Date.now(),
+        added: Date.now(),
+        hash: url.hash,
+        project: url.project,
+        href: url.href,
+        host: url.host,
+      };
 
-const addProject = (project) => {
-  const dbPromise = openProjects();
+      const data = {
+        store: 'urls',
+        method: 'add',
+        mode: 'readwrite',
+        payload: URL,
+        callback: {
+          success: (e) => {
+            resolve(e.target.result);
+          },
+          complete: (e) => console.log('URL add tx complete', e),
+          error: (e) => console.log('Error adding URL', e),
+        }
+      };
 
-  dbPromise.then( db => {
-    const tx = db.transaction('projects', 'readwrite');
-    const store = tx.objectStore('projects');
-
-    store.add({
-      active: true,
-      activeWindow: project.activeWindow,
-      title: project.title,
-      prevSession: null,
-      stats: {
-        totalTime: null,
-        totalUrls: null,
-        totalVisits: null,
-        totalFocuses: null,
-        timesOpened: null,
-        lastOpened: new Date().getTime(),
-        created: new Date().getTime()
-      }
+      DB.connect(data);
     });
 
-    return tx.complete;
-  })
-    .then( (receipt) => {
-      console.log('added ' + project.title);
-      console.log(receipt);
-      return receipt;
+    return promise;
+  }
+
+  getURL (id) {
+    let promise = new Promise( resolve => {
+      const data = {
+        store: 'urls',
+        method: 'get',
+        mode: 'readonly',
+        payload: id,
+        callback: {
+          success: (URL) => {
+            resolve(URL);
+          },
+          complete: (e) => console.log('Get URL tx complete', e),
+          error: (e) => console.log('Error getting URL', e),
+        }
+      };
+
+      DB.connect(data);
     });
-};
 
-const getProject = (id) => {
-  const dbPromise = openProjects();
+    return promise;
+  }
 
-  dbPromise.then( db => {
-    const tx = db.transaction('projects', 'readonly');
-    const store = tx.objectStore('projects');
+  getAllURLs () {
+    let promise = new Promise( resolve => {
+      const data = {
+        store: 'urls',
+        method: 'getAll',
+        mode: 'readonly',
+        payload: null,
+        callback: {
+          success: (res) => {
+            resolve(res.target.result);
+          },
+          complete: (e) => console.log('Completed retrieval of all URLs', e),
+          error: (e) => console.log('Error getting all URLs', e),
+        }
+      };
 
-    return store.get(id);
-  }).then( value => {
-    console.log('retrieved ', value);
-    return value;
-  });
-};
+      DB.connect(data);
+    });
 
-const getAllProjects = () => {
-  const dbPromise = openProjects();
+    return promise;
+  }
 
-  dbPromise.then( db => {
-    var tx = db.transaction('projects', 'readonly');
-    var store = tx.objectStore('projects');
+  updateURL (url) {
+    let promise = new Promise( resolve => {
+      this.getURL(url.id)
+        .then( res => {
+          let URL = {
+            ...res.target.result,
+            ...url
+          };
+
+          const data = {
+            store: 'urls',
+            method: 'put',
+            mode: 'readwrite',
+            payload: URL,
+            callback: {
+              success: (e) => {
+                resolve(e);
+              },
+              complete: (e) => console.log('URL update tx complete', e),
+              error: (e) => console.log('Error updating URL', e),
+            }
+          };
+
+          DB.connect(data);
+        });
+    });
     
-    return store.getAll();
-  }).then(items => {
-    console.log('Items by name:', items);
-    return items;
-  });
-};
+    return promise;
+  }
+}
 
-const updateProject = (id, data) => {
-  const dbPromise = openProjects();
+export default URLsDB;
 
-  dbPromise.then( db => {
-    const tx = db.transaction('projects', 'readwrite');
-    const store = tx.objectStore('projects');
+// const example = (count = 0) => {
+//   const dbPromise = openProjects();
 
-    const item = {
-      id: id,
-      [data.property]: data.value
-    };
+//   dbPromise.then( db => {
+//     const tx = db.transaction('projects', 'readwrite');
+//     const store = tx.objectStore('projects');
+//     var index = store.index('lastOpened');
 
-    store.put(item);
-
-    return tx.complete;
-  })
-    .then( () => console.log('updated project ' + id));
-};
-
-const deleteProject = (id) => {
-  const dbPromise = openProjects();
-
-  dbPromise.then( db => {
-    const tx = db.transaction('projects', 'readwrite');
-    const store = tx.objectStore('projects');
-
-    store.delete(id);
-
-    return tx.complete;
-  })
-    .then( () => console.log('deleted project ' + id));
-};
-
-const example = (count = 0) => {
-  const dbPromise = openProjects();
-
-  dbPromise.then( db => {
-    const tx = db.transaction('projects', 'readwrite');
-    const store = tx.objectStore('projects');
-    var index = store.index('lastOpened');
-
-    return index.openCursor(range);
-  }).then(function showRange(cursor) {
-    if (!cursor) {return;}
-    console.log('Cursored at:', cursor.key);
-    for (var field in cursor.value) {
-      console.log(cursor.value[field]);
-    }
-    return cursor.continue().then(showRange);
-  }).then(function() {
-    console.log('Done cursoring');
-  });
-};
+//     return index.openCursor(range);
+//   }).then(function showRange(cursor) {
+//     if (!cursor) {return;}
+//     console.log('Cursored at:', cursor.key);
+//     for (var field in cursor.value) {
+//       console.log(cursor.value[field]);
+//     }
+//     return cursor.continue().then(showRange);
+//   }).then(function() {
+//     console.log('Done cursoring');
+//   });
+// };
 
 
