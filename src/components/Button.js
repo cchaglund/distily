@@ -30,6 +30,7 @@ const Button = ({size, text, type, clicked}) => {
     margin-top: 0.2rem;
     margin-bottom: 0.2rem;
     border: 1px solid ${color};
+    cursor: pointer;
   `;
 
   const ButtonText = styled.h5`

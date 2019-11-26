@@ -27,7 +27,7 @@ const ProjectsContainer = styled.div`
 `;
 
 const Popup = () => {
-  const [ projectTitle, setProjectTitle ] = useState('');
+  const [ currentProject, setCurrentProject ] = useState('');
   const [ projects, setProjects ] = useState();
   const [ error, setError ] = useState();
 
@@ -41,7 +41,7 @@ const Popup = () => {
           .then(windowInfo => {
             res.forEach( project => {
               if (project.activeWindow === windowInfo.id) {
-                setProjectTitle(project.title);
+                setCurrentProject(project);
               }
             });
           });
@@ -77,12 +77,12 @@ const Popup = () => {
       `
     }>
       <h5 css={css`margin: 0; margin-bottom: 1rem`}>Working on</h5>
-      <h4 css={css`padding-left: 1rem; margin: 0; margin-bottom: 0.5rem`}>{projectTitle}</h4>
+      <h4 css={css`padding-left: 1rem; margin: 0; margin-bottom: 0.5rem`}>{currentProject.title}</h4>
       <div css={css`padding-left: 1rem`}>
         <Button
           type={'nav'}
           size={'regular'}
-          onClick={openOptions}
+          clicked={() => openProject(currentProject.id)}
           text={'Overview'} />
       </div>
     </div>
@@ -90,7 +90,7 @@ const Popup = () => {
 
   return (
     <PopupContainer>
-      { projectTitle ? projectDetails : null }
+      { currentProject ? projectDetails : null }
       <CreateContainer>
         { error }
         <TextInput
@@ -108,7 +108,7 @@ const Popup = () => {
       <Button
         type={'nav'}
         size={'regular'}
-        onClick={openOptions}
+        clicked={() => openOptions()}
         text={'Dashboard'} />
     </PopupContainer>
   );
