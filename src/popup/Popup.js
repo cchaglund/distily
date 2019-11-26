@@ -20,6 +20,7 @@ const Popup = () => {
   const [ projectTitle, setProjectTitle ] = useState('');
   const [ projects, setProjects ] = useState();
   const [ enteredProjectTitle, setEnteredProjectTitle ] = useState();
+  const [ error, setError ] = useState();
 
   useEffect( () => {
 
@@ -40,7 +41,14 @@ const Popup = () => {
 
   const createHandler = () => {
     if ( enteredProjectTitle ) {
-      Controller.createNewProject(enteredProjectTitle);
+      Controller.uniqueProjectTitleCheck(enteredProjectTitle)
+        .then(res => {
+          if (res === true) {
+            setError('Name already exists');
+            return;
+          }
+          Controller.createNewProject(enteredProjectTitle);
+        });
     } else {
       console.log('Enter title!');
     }
@@ -71,6 +79,7 @@ const Popup = () => {
         Create new project
       </div>
       <CreateProject>
+        { error }
         <input 
           type="text" 
           value={ enteredProjectTitle ? enteredProjectTitle : '' } 

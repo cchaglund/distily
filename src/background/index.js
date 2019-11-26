@@ -33,15 +33,15 @@ browser.webNavigation.onCompleted.addListener( evt => {
   Controller.handleURL(evt);
 });
 
-browser.tabs.onActivated.addListener( activeTab => {  
-  browser.tabs.get(activeTab.tabId)
-    .then( res => {
-      const url = new URL(res.url);
+// browser.tabs.onActivated.addListener( activeTab => {  
+//   browser.tabs.get(activeTab.tabId)
+//     .then( res => {
+//       const url = new URL(res.url);
 
-      activeTab.url = url.href;
-      activeTab.host = url.hostname;
-      activeTab.path = url.pathname;
+//       activeTab.url = url.href;
+//       activeTab.host = url.hostname;
+//       activeTab.path = url.pathname;
 
-      Controller.tabActivated(activeTab);
-    });
-});
+//       Controller.tabActivated(activeTab);
+//     });
+// });

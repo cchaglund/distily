@@ -12,7 +12,7 @@ class ProjectsDB {
         totalUrls: null,
         totalVisits: null,
         totalFocuses: null,
-        timesOpened: null,
+        timesOpened: 1,
         lastOpened: Date.now(),
         created: Date.now()
       };
@@ -88,7 +88,8 @@ class ProjectsDB {
         .then( res => {
           let project = {
             ...res.target.result,
-            ...newData
+            ...newData,
+            timesOpened: res.target.result.timesOpened + 1
           };
 
           const data = {

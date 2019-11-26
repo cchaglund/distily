@@ -101,6 +101,22 @@ class Controller  {
     });
   }
 
+  uniqueProjectTitleCheck (title) {
+    return new Promise( resolve => {
+      this.getAllProjects()
+        .then( res => {
+          let titleTaken = false;
+          res.forEach(project => {
+            if (project.title === title) {
+              titleTaken = true;
+              return;
+            }
+          });
+          resolve(titleTaken);
+        });
+    });
+  }
+
   openProject (id) {
     this.getProject(id)
       .then(result => {
@@ -252,6 +268,7 @@ class Controller  {
                     .then( tab => {
                       url.title = tab.title;
                       url.project = project.id;
+                      console.log('y', url);
                       this.createNewURL(url);
                     });
                 }
@@ -270,7 +287,9 @@ class Controller  {
         .then(res => {
           if (res.length !== 0) {
             res.forEach( url => {
-              if (url.hash === urlHash) {
+              if (url.hash === urlHash && url.project === projectID) {
+                console.log('why no work', urlHash);
+                console.log('why no work', projectID);
                 exists = true;
                 URLobject = url;
               }

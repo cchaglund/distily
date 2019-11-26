@@ -9,13 +9,12 @@ const DB = {
       db.createObjectStore('projects', {
         keyPath: 'id',
         autoIncrement: true
-      });
+      }).createIndex('title', 'title');
 
       db.createObjectStore('urls', {
         keyPath: 'id',
         autoIncrement: true
-      })
-        .createIndex('hash', 'hash', {unique: true});
+      }).createIndex('hash', 'hash');
     };
 
     dbReq.onsuccess = event => {

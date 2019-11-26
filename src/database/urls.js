@@ -6,7 +6,7 @@ import DB from './database';
 class URLsDB {
   addURL (url) {
     let promise = new Promise( resolve => {
-      let URL = {
+      let newURL = {
         title: url.title,
         time: null,
         visits: 1,
@@ -19,11 +19,13 @@ class URLsDB {
         host: url.host,
       };
 
+      console.log(newURL);
+
       const data = {
         store: 'urls',
         method: 'add',
         mode: 'readwrite',
-        payload: URL,
+        payload: newURL,
         callback: {
           success: (e) => {
             resolve(e.target.result);
