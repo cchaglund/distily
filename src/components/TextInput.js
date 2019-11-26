@@ -4,10 +4,11 @@ import { useState } from 'react';
 import { css, jsx } from '@emotion/core';
 import Button from './Button';
 
-const TextInput = ({type, text, size, clickMethod}) => {
+const TextInput = ({type, text, size, clicked}) => {
   const [ enteredProjectTitle, setEnteredProjectTitle ] = useState('');
 
   const style = css`
+    max-width: 500px;
     display: flex;
     width: 100%;
     margin-bottom: 1rem;
@@ -15,7 +16,7 @@ const TextInput = ({type, text, size, clickMethod}) => {
   `;
 
   const inputStyle = css`
-    width: 100%;
+    flex: 1;
     padding-left: 1rem;
     border: none;
     border-bottom: 1px solid #707070;
@@ -39,7 +40,7 @@ const TextInput = ({type, text, size, clickMethod}) => {
         type={type}
         text={text}
         size={size}
-        clicked={() => clickMethod(enteredProjectTitle)} />
+        clicked={() => clicked(enteredProjectTitle)} />
     </div>
   );
 };

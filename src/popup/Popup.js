@@ -97,7 +97,7 @@ const Popup = () => {
           text={'Create'}
           type={'action'}
           size={'regular'}
-          clickMethod={ (newTitle) => createHandler(newTitle) }/>
+          clicked={ (newTitle) => createHandler(newTitle) }/>
       </CreateContainer>
       <ProjectsContainer>
         <h6>Open project</h6>

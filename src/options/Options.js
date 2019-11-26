@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import '@polymer/paper-button/paper-button.js';
+import styled from '@emotion/styled';
 import {
   BrowserRouter as Router,
   Switch,
@@ -24,10 +25,6 @@ const Options = () => {
   useEffect( () => {
 
     // getAllProjects();
-
-    browser.runtime.sendMessage({ 
-      type: 'optionsOpened' 
-    });
 
     Controller.getAllProjects()
       .then((res) => {
@@ -86,6 +83,20 @@ const Options = () => {
   //     });
   // };
 
+  const LinkWrapper = styled.div`
+    padding: 1rem 1.5rem;
+  `;
+
+  const StyledLink = styled(Link)`
+    text-decoration: none;
+    color: black;
+  `;
+
+  const StyledNav = styled.nav`
+    height: 2rem;
+    padding: 1rem;
+    display: flex;
+  `;
 
   return (
     <Router>
@@ -98,19 +109,17 @@ const Options = () => {
           }
         }} /> : null }
       <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Overview</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/users">Users</Link>
-            </li>
-          </ul>
-        </nav>
+        <StyledNav>
+          <LinkWrapper>
+            <StyledLink to="/">Dashboard</StyledLink>
+          </LinkWrapper>
+          <LinkWrapper>
+            <StyledLink to="/about">About</StyledLink>
+          </LinkWrapper>
+          <LinkWrapper>
+            <StyledLink to="/users">Users</StyledLink>
+          </LinkWrapper>
+        </StyledNav>
 
         <Switch>
           <Route path="/about">
