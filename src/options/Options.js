@@ -11,8 +11,8 @@ import {
 } from 'react-router-dom';
 
 import './Options.css';
-import Overview from './Overview';
-import Project from './Project';
+import Overview from './views/Overview';
+import Project from './views/Project';
 import Ctrl from '../background/controller';
 
 const Controller = new Ctrl(browser);

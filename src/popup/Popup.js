@@ -1,25 +1,34 @@
+/** @jsx jsx */
 /* eslint-disable no-undef */
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
+import { css, jsx } from '@emotion/core';
 import './Popup.css';
 import Ctrl from '../background/controller';
+import Button from '../components/Button';
+import ProjectsList from '../components/ProjectsList';
+import TextInput from '../components/TextInput';
 
 const Controller = new Ctrl(browser);
 
-const CreateProject = styled.div`
+const PopupContainer = styled.div`
+  width: 250px;
+  padding: 2rem;
+`;
+
+const CreateContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const Button = styled.button`
-  background-color: ${ props => props.active ? 'lightblue' : 'red' }
+const ProjectsContainer = styled.div`
+  margin-top: 1.5rem;
 `;
 
 const Popup = () => {
   const [ projectTitle, setProjectTitle ] = useState('');
   const [ projects, setProjects ] = useState();
-  const [ enteredProjectTitle, setEnteredProjectTitle ] = useState();
   const [ error, setError ] = useState();
 
   useEffect( () => {
@@ -39,19 +48,15 @@ const Popup = () => {
       });
   }, []);
 
-  const createHandler = () => {
-    if ( enteredProjectTitle ) {
-      Controller.uniqueProjectTitleCheck(enteredProjectTitle)
-        .then(res => {
-          if (res === true) {
-            setError('Name already exists');
-            return;
-          }
-          Controller.createNewProject(enteredProjectTitle);
-        });
-    } else {
-      console.log('Enter title!');
-    }
+  const createHandler = (title) => {
+    Controller.uniqueProjectTitleCheck(title)
+      .then(res => {
+        if (res === true) {
+          setError('Name already exists');
+          return;
+        }
+        Controller.createNewProject(title);
+      });
   };
 
   const openOptions = () => {
@@ -63,43 +68,49 @@ const Popup = () => {
     Controller.openProject(id);
   };
 
-  const projectList = projects ? Object.keys(projects).map( proj => {
-    return (
-      <li 
-        key={projects[proj].id}
-        onClick={ () => openProject(projects[proj].id)}>
-        {projects[proj].title}
-      </li>
-    );
-  }) : null;
+  const projectDetails = (
+    <div css={
+      css`
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 2rem;
+      `
+    }>
+      <h5 css={css`margin: 0; margin-bottom: 1rem`}>Working on</h5>
+      <h4 css={css`padding-left: 1rem; margin: 0; margin-bottom: 0.5rem`}>{projectTitle}</h4>
+      <div css={css`padding-left: 1rem`}>
+        <Button
+          type={'nav'}
+          size={'regular'}
+          onClick={openOptions}
+          text={'Overview'} />
+      </div>
+    </div>
+  );
 
   return (
-    <div className="popup">
-      <div>
-        Create new project
-      </div>
-      <CreateProject>
+    <PopupContainer>
+      { projectTitle ? projectDetails : null }
+      <CreateContainer>
         { error }
-        <input 
-          type="text" 
-          value={ enteredProjectTitle ? enteredProjectTitle : '' } 
-          onChange={ (e) => setEnteredProjectTitle(e.target.value) } />
-        <Button
-          active={ enteredProjectTitle }
-          onClick={createHandler}>
-            Create
-        </Button>
-      </CreateProject>
-      { projectTitle }
-      <a 
-        href=''
-        onClick={openOptions}>
-        Open options
-      </a>
-      <ul>
-        { projectList }
-      </ul>
-    </div>
+        <TextInput
+          text={'Create'}
+          type={'action'}
+          size={'regular'}
+          clickMethod={ (newTitle) => createHandler(newTitle) }/>
+      </CreateContainer>
+      <ProjectsContainer>
+        <h6>Open project</h6>
+        { projects ? <ProjectsList 
+          projects={projects}
+          method={(projID) => openProject(projID)} /> : null }
+      </ProjectsContainer>
+      <Button
+        type={'nav'}
+        size={'regular'}
+        onClick={openOptions}
+        text={'Dashboard'} />
+    </PopupContainer>
   );
 };
 
