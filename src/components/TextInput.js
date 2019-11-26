@@ -8,7 +8,6 @@ const TextInput = ({type, text, size, clicked}) => {
   const [ enteredProjectTitle, setEnteredProjectTitle ] = useState('');
 
   const style = css`
-    max-width: 500px;
     display: flex;
     width: 100%;
     margin-bottom: 1rem;

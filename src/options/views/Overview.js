@@ -34,7 +34,7 @@ const Overview = (props) => {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-column-gap: 40px;
+    grid-column-gap: 180px;
     grid-template-rows: auto;
     grid-template-areas: 
       "create search"
