@@ -80,8 +80,6 @@ const UrlsList = ({urls, clicked, type}) => {
       );
     });
 
-    console.log(ready);
-
     return ready;
   };
   

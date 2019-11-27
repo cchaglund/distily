@@ -3,6 +3,8 @@ import styled from '@emotion/styled';
 import Url from './Url';
 
 const Button = ({size, text, type, clicked, data}) => {
+  const Color = require('color');
+
   let color;
 
   switch (type) {
@@ -23,6 +25,8 @@ const Button = ({size, text, type, clicked, data}) => {
       break;
   }
 
+  const hoverColor = Color(color).darken(0.05).hsl().string();
+
   const ButtonContainer = styled.div`
     background-color: ${color};
     width: ${ size === 'wide' ? 'auto' : 'max-content'};
@@ -32,6 +36,9 @@ const Button = ({size, text, type, clicked, data}) => {
     margin-bottom: 0.3rem;
     border: 1px solid ${color};
     cursor: pointer;
+    &:hover {
+      background-color: ${hoverColor};
+    }
   `;
 
   const ButtonText = styled.h5`
