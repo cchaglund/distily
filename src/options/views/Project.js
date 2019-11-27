@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
-/** @jsx jsx */
 
-import { useState, useEffect} from 'react';
+import React, { useState, useEffect} from 'react';
 import { withRouter } from 'react-router-dom';
 import Ctrl from '../../background/controller';
 import Layout from '../../components/Layout';
