@@ -12,7 +12,7 @@ import {
 } from 'react-router-dom';
 
 import './Options.css';
-import Overview from './views/Overview';
+import Dashboard from './views/Dashboard';
 import Project from './views/Project';
 import Ctrl from '../background/controller';
 
@@ -104,7 +104,6 @@ const Options = () => {
         to={{ 
           pathname: '/project',
           params: {
-            title: projectToShow.title,
             data: projectToShow
           }
         }} /> : null }
@@ -129,8 +128,8 @@ const Options = () => {
             <Project />
           </Route>
           <Route path="/">
-            <Overview 
-              projects={projects} />
+            <Dashboard 
+              projects={projects}/>
           </Route>
         </Switch>
       </div>

@@ -2,12 +2,12 @@ import React from 'react';
 import styled from '@emotion/styled';
 import Button from './Button';
 
-const ProjectsList = ({projects, method}) => {
+const ProjectsList = ({projects, clicked}) => {
   const projectsList = Object.keys(projects).map( proj => {
     return (
       <Button
         key={projects[proj].id}
-        onClick={ () => method(projects[proj].id)}
+        clicked={ () => clicked(projects[proj].id)}
         text={projects[proj].title} 
         type={'project'}
         size={'wide'} />

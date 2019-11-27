@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import Url from './Url';
 
-const Button = ({size, text, type, clicked}) => {
+const Button = ({size, text, type, clicked, data}) => {
   let color;
 
   switch (type) {
@@ -14,7 +15,7 @@ const Button = ({size, text, type, clicked}) => {
     case 'search':
       color = '#FDFFD1';
       break;
-    case 'link':
+    case 'url':
       color = '#F2F9FF';
       break;
     case 'project':
@@ -25,10 +26,10 @@ const Button = ({size, text, type, clicked}) => {
   const ButtonContainer = styled.div`
     background-color: ${color};
     width: ${ size === 'wide' ? 'auto' : 'max-content'};
-    padding: ${ size === 'wide' ? '0.1rem 0.15rem' : '0.4rem 0.6rem'};
-    ${ size === 'wide' ? 'padding-left: 1rem;' : null}
-    margin-top: 0.2rem;
-    margin-bottom: 0.2rem;
+    padding: ${ size === 'wide' ? '0.2rem 0.3rem' : '0.4rem 0.6rem'};
+    ${ size === 'wide' ? 'padding-left: 1rem; padding-right: 1rem;' : null}
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
     border: 1px solid ${color};
     cursor: pointer;
   `;
@@ -40,7 +41,8 @@ const Button = ({size, text, type, clicked}) => {
   return (
     <ButtonContainer
       onClick={() => clicked()}>
-      <ButtonText>{ text }</ButtonText>
+      { type === 'url' ? <Url data={data}/>
+        : <ButtonText>{ text }</ButtonText> }
     </ButtonContainer>
   );
 };

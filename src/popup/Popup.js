@@ -103,7 +103,7 @@ const Popup = () => {
         <h6>Open project</h6>
         { projects ? <ProjectsList 
           projects={projects}
-          method={(projID) => openProject(projID)} /> : null }
+          clicked={(projID) => openProject(projID)} /> : null }
       </ProjectsContainer>
       <Button
         type={'nav'}

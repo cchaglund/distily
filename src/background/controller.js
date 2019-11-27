@@ -52,6 +52,15 @@ class Controller  {
     });
   }
 
+  getAllURLS() {
+    return new Promise( resolve => {
+      DB.urls.getAll()
+        .then( res => {
+          resolve(res);
+        });
+    });
+  }
+
   updateProject (id, data) {
     return new Promise( resolve => {
       DB.projects.update(id, data)

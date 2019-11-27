@@ -16,7 +16,8 @@ const DB = {
     add: (url, projectID) => urlsDB.addURL(url, projectID),
     update: (id, data) => urlsDB.updateURL(id, data),
     get: (id) => urlsDB.getURL(id),
-    getAllByProject: (projectID) => urlsDB.getAllURLs(projectID),
+    getAll: () => urlsDB.getAllURLS(),
+    getAllByProject: (projectID) => urlsDB.getAllProjectURLs(projectID),
     delete: (id) => urlsDB.deleteURL(id)
   }
 };

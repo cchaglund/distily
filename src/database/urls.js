@@ -63,6 +63,32 @@ class URLsDB {
     return promise;
   }
 
+  getAllProjectURLs (projectID) {
+    let promise = new Promise( resolve => {
+      const data = {
+        store: 'urls',
+        method: 'getAll',
+        mode: 'readonly',
+        payload: null,
+        callback: {
+          success: (res) => {
+            const urls = res.target.result;
+            const projectUrls = urls.filter(url => {
+              return url.project === projectID;
+            });
+            resolve(projectUrls);
+          },
+          complete: (e) => console.log('Completed retrieval of all URLs', e),
+          error: (e) => console.log('Error getting all URLs', e),
+        }
+      };
+
+      DB.connect(data);
+    });
+
+    return promise;
+  }
+
   getAllURLs () {
     let promise = new Promise( resolve => {
       const data = {

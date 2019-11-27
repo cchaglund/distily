@@ -99,7 +99,7 @@ class ProjectsDB {
             payload: project,
             callback: {
               success: (e) => {
-                console.log('Project updated', e);
+                console.log('Project updated');
                 resolve(e);
               },
               complete: (e) => console.log('Project update tx complete', e),
