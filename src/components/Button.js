@@ -1,6 +1,11 @@
+/* eslint-disable no-undef */
+
 import React from 'react';
 import styled from '@emotion/styled';
 import Url from './Url';
+import Ctrl from '../background/controller';
+
+const Controller = new Ctrl(browser);
 
 const Button = ({size, text, type, clicked, data}) => {
   const Color = require('color');
@@ -45,9 +50,15 @@ const Button = ({size, text, type, clicked, data}) => {
     margin: 0;
   `;
 
+  const openUrl = data => {
+    Controller.openUrl(data);
+  };
+
   return (
     <ButtonContainer
-      onClick={() => clicked()}>
+      onClick={() => {
+        type === 'url' ? openUrl(data) : clicked();
+      }}>
       { type === 'url' ? <Url data={data}/>
         : <ButtonText>{ text }</ButtonText> }
     </ButtonContainer>

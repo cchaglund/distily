@@ -138,6 +138,23 @@ class Controller  {
       });
   }
 
+  openUrl (url) {
+    this.browser.tabs.create({
+      url: url.href
+    });
+    // this.getAllProjects()
+    //   .then(res => {
+    //     this.browser.windows.getCurrent()
+    //       .then(windowInfo => {
+    //         res.forEach( project => {
+    //           if (project.activeWindow === windowInfo.id) {
+    //             // do something
+    //           }
+    //         });
+    //       });
+    //   });
+  }
+
   closeWindowHandler ( windowId ) {
     this.getAllProjects()
       .then(res => {

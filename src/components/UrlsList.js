@@ -36,7 +36,7 @@ const UrlsList = ({urls, clicked, type}) => {
       return (
         <Button
           key={url.id}
-          clicked={ () => clicked(url.id)}
+          clicked={ () => clicked(url)}
           text={url.title} 
           type={'url'}
           size={'wide'} 
@@ -62,7 +62,7 @@ const UrlsList = ({urls, clicked, type}) => {
         return (
           <Button
             key={url.id}
-            clicked={ () => clicked(url.id)}
+            clicked={ () => clicked(url)}
             text={url.title} 
             type={'url'}
             size={'wide'} 

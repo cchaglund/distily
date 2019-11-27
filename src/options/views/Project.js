@@ -104,8 +104,7 @@ const Project = (props) => {
           { urls ? <UrlsList
             key='1'
             urls={urls}
-            type={'recent'}
-            clicked={() => console.log('trying to open url')} /> : null }
+            type={'recent'} /> : null }
         </div>,
         <div>
           <h5>Top URLS</h5>
@@ -124,7 +123,7 @@ const Project = (props) => {
             key='2'
             urls={urls}
             type={'top'}
-            clicked={() => console.log('trying to open url')} /> : null }
+            clicked={(id) => console.log('trying to open url', id)} /> : null }
         </div>,
         <div>
           <h5>By domain</h5>
@@ -132,7 +131,7 @@ const Project = (props) => {
             key='3'
             urls={urls}
             type={'host'}
-            clicked={() => console.log('trying to open url')} /> : null }
+            clicked={(id) => console.log('trying to open url', id)} /> : null }
         </div>
       ]} />
   );
