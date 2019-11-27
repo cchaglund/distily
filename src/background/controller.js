@@ -101,6 +101,20 @@ class Controller  {
     });
   }
 
+  resumeProject (projectIndex) {
+    console.log('hej?');
+    this.browser.windows.create()
+      .then( res => {
+        const data = {
+          active: true,
+          activeWindow: res.id,
+          // timesOpened: project.timesOpened + 1
+        };
+
+        this.updateProject(projectIndex, data);
+      });
+  }
+
   createNewURL (urlObject) {
     return new Promise( resolve => {
       DB.urls.add(urlObject)
@@ -294,8 +308,8 @@ class Controller  {
                     .then( tab => {
                       url.title = tab.title;
                       url.project = project.id;
-                      console.log('y', url);
                       this.createNewURL(url);
+                      // this.updateProject(project.id, { totalUrls: project.totalUrls + 1 });
                     });
                 }
               });

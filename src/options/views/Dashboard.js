@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 import React from 'react';
 import TextInput from '../../components/TextInput';
 import Layout from '../../components/Layout';
@@ -5,32 +7,14 @@ import ProjectsList from '../../components/ProjectsList';
 import {
   withRouter
 } from 'react-router-dom';
+import Ctrl from '../../background/controller';
+
+const Controller = new Ctrl(browser);
 
 const Dashboard = (props) => {
-  // const projectList = props.projects ? Object.keys(props.projects).map( index => {
-  //   const project = props.projects[index];
-
-  //   return (
-  //     <Link
-  //       key={project.id}
-  //       to={{ 
-  //         pathname: '/project',
-  //         params: {
-  //           title: project.title,
-  //           data: project
-  //         }
-  //       }}>
-  //       <Button 
-  //         type={'project'}
-  //         text={project.title}
-  //         size={'wide'} />
-  //     </Link>
-  //   );
-  // }) : null;
-
-  const openProject = projId => {
+  const openProject = projIndex => {
     // indexedDB starts at 1, so to get the project by index I take id - 1
-    let project = props.projects[projId - 1];
+    let project = props.projects[projIndex - 1];
 
     props.history.push({
       pathname: '/project',
@@ -40,6 +24,11 @@ const Dashboard = (props) => {
         }
       }
     });
+  };
+
+  const resumeProject = projIndex => {
+    // let project = props.projects[projIndex - 1];
+    Controller.resumeProject(projIndex);
   };
 
   return (
@@ -60,21 +49,21 @@ const Dashboard = (props) => {
           <h6>Recent projects</h6>
           { props.projects ? <ProjectsList 
             projects={props.projects} 
-            clicked={(projId) => openProject(projId)} /> : null }
+            clicked={(projIndex) => resumeProject(projIndex)} /> : null }
         </div>,
         <div>
           <h5>Top URLS</h5>
           <h6>Recent projects</h6>
           { props.projects ? <ProjectsList 
             projects={props.projects} 
-            clicked={(projId) => openProject(projId)} /> : null }
+            clicked={(projIndex) => openProject(projIndex)} /> : null }
         </div>,
         <div>
           <h5>Inspect</h5>
           <h6>Recent projects</h6>
           { props.projects ? <ProjectsList 
             projects={props.projects} 
-            clicked={(projId) => openProject(projId)} /> : null }
+            clicked={(projIndex) => openProject(projIndex)} /> : null }
         </div>
       ]} />
   );

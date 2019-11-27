@@ -89,7 +89,6 @@ class ProjectsDB {
           let project = {
             ...res.target.result,
             ...newData,
-            timesOpened: res.target.result.timesOpened + 1
           };
 
           const data = {

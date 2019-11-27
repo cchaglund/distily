@@ -68,6 +68,10 @@ const Popup = () => {
     Controller.openProject(id);
   };
 
+  const resumeProject = projIndex => {
+    Controller.resumeProject(projIndex);
+  };
+
   const projectDetails = (
     <div css={
       css`
@@ -103,7 +107,7 @@ const Popup = () => {
         <h6>Open project</h6>
         { projects ? <ProjectsList 
           projects={projects}
-          clicked={(projID) => openProject(projID)} /> : null }
+          clicked={(projID) => resumeProject(projID)} /> : null }
       </ProjectsContainer>
       <Button
         type={'nav'}

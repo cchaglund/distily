@@ -23,65 +23,36 @@ const Options = () => {
   const [ projectToShow, setProjectToShow ] = useState();
 
   useEffect( () => {
-
-    // getAllProjects();
-
     Controller.getAllProjects()
-      .then((res) => {
-        setProjects(res);
-      });
+      .then((projects) => {
+        setProjects(projects);
 
-    // Controller.createNewProject('My new proj').then((res) =>console.log(res));
-    // Controller.getProject(5).then((res) =>console.log('THIS SHOULD BE SAME A',res));
-    // Controller.updateProject(25, {title: 'poo'}).then((res) =>console.log(res));
-
-    browser.storage.local.get()
-      .then(res => {
-        setProjectToShow(res.state.projectToOpen);
-        // Reset the project that's now been shown
-        browser.storage.local.set({
-          state: {
-            projectToOpen: null
-          }
-        });
+        browser.storage.local.get()
+          .then(res => {
+            if (res.state.projectToOpen) {
+              setProjectToShow(res.state.projectToOpen);
+              // Reset the project that's now been shown
+              browser.storage.local.set({
+                state: {
+                  projectToOpen: null
+                }
+              });
+            } else {
+              const active = projects.filter(project => {
+                return project.active;
+              });
+              if (active.length !== 0) {
+                browser.windows.getCurrent()
+                  .then(windowInfo => {
+                    if (active[0].activeWindow === windowInfo.id) {
+                      setProjectToShow(active[0]);
+                    }
+                  });
+              }
+            }
+          });
       });
   }, []);
-
-  // const createProject = (title) => {
-  //   browser.runtime.sendMessage({ 
-  //     type: 'createProject',
-  //     message: title 
-  //   });
-  // };
-
-  // const getProject = (id) => {
-  //   DB.projects.get(id)
-  //     .then( res => {
-  //       console.log('Project: ', res.target.result);
-  //     });
-  // };
-
-  // const getAllProjects = () => {
-  //   DB.projects.getAll()
-  //     .then( res => {
-  //       console.log('Projects: ', res);
-  //     });
-  // };
-
-  // const updateProject = (id, data) => {
-  //   DB.projects.update(id, data)
-  //     .then( res => {
-  //       console.log('Updated: ', res);
-  //     });
-  // };
-
-  //   browser.storage.local.get()
-  //     .then(res => {
-  //       if (res.state.projectToOpen) {
-  //         setProjectToShow(res.state.projectToOpen);
-  //       }
-  //     });
-  // };
 
   const LinkWrapper = styled.div`
     padding: 1rem 1.5rem;
