@@ -5,7 +5,7 @@ import { css, jsx } from '@emotion/core';
 import Button from './Button';
 
 const TextInput = ({type, text, size, clicked}) => {
-  const [ enteredProjectTitle, setEnteredProjectTitle ] = useState('');
+  const [ input, setInput ] = useState('');
 
   const style = css`
     display: flex;
@@ -24,14 +24,14 @@ const TextInput = ({type, text, size, clicked}) => {
 
   const updateTitle = e => {
     console.log(e.target.value);
-    setEnteredProjectTitle(e.target.value);
+    setInput(e.target.value);
   };
 
   return (
     <div css={style}>
       <input
         css={inputStyle}
-        value={ enteredProjectTitle } 
+        value={ input } 
         onChange={ updateTitle }
         type='text' 
         placeholder='Project title' />
@@ -39,7 +39,7 @@ const TextInput = ({type, text, size, clicked}) => {
         type={type}
         text={text}
         size={size}
-        clicked={() => clicked(enteredProjectTitle)} />
+        clicked={() => clicked(input)} />
     </div>
   );
 };

@@ -20,9 +20,15 @@ const Controller = new Ctrl(browser);
 
 const Options = () => {
   const [ projects, setProjects ] = useState();
+  const [ urls, setUrls ] = useState();
   const [ projectToShow, setProjectToShow ] = useState();
 
   useEffect( () => {
+    Controller.getAllURLS()
+      .then(urls => {
+        setUrls(urls);
+      });
+
     Controller.getAllProjects()
       .then((projects) => {
         setProjects(projects);
@@ -100,7 +106,8 @@ const Options = () => {
           </Route>
           <Route path="/">
             <Dashboard 
-              projects={projects}/>
+              projects={projects}
+              urls={urls}/>
           </Route>
         </Switch>
       </div>

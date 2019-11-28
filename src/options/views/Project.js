@@ -19,6 +19,7 @@ const Project = (props) => {
   const [ project, setProject ] = useState();
   const [ createdDate, setCreatedDate ] = useState();
   const [ lastOpenedDate, setLastOpenedDate ] = useState();
+  const [ timesOpened, setTimesOpened ] = useState();
 
   useEffect(() => {
     // data can come from two places, depending on if it's from outside of, or within the router (dashboard or every other component)
@@ -27,6 +28,7 @@ const Project = (props) => {
     setProject(project);
     setCreatedDate(new Date(project.created).toLocaleDateString());
     setLastOpenedDate(new Date(project.lastOpened).toLocaleDateString());
+    setTimesOpened(project.timesOpened);
 
     Controller.getAllProjectURLS(project.id)
       .then((res) => {
@@ -51,7 +53,7 @@ const Project = (props) => {
       <h3>{ project ? project.title : null }</h3>
       <Div>
         <Span>URLs visited: { urls ? urls.length : '-' }</Span>
-        <Span>Times opened: x</Span>
+        <Span>Times opened: { timesOpened }</Span>
         <Span>Created: { createdDate }</Span>
         <Span>Last Opened: { lastOpenedDate }</Span>
       </Div>

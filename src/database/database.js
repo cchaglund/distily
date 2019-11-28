@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 const DB = {
   init: () => {
     let db;
@@ -24,10 +26,16 @@ const DB = {
     dbReq.onerror = event => {
       alert('error opening database ' + event.target.errorCode);
     };
+
+    dbReq.onabort = e => console.log('was aborted');
+    dbReq.onblocked = e => console.log('was blocked');
+    dbReq.onversionchange = e => console.log('version change');
+    dbReq.onclose = e => console.log('close');
   },
 
   connect: (data) => {
     let dbReq = indexedDB.open('distily', 1);
+    console.log('this far?', data);
 
     dbReq.onsuccess = event => {
       let db = event.target.result;
@@ -37,13 +45,29 @@ const DB = {
         .objectStore(data.store)[data.method](data.payload);
 
       tx.onsuccess = e => data.callback.success(e, tx);
-      tx.oncomplete = e => data.callback.complete(e);
-      tx.onerror = e => data.callback.error(e);
+      tx.onabort = e => console.log('was aborted');
+      tx.onblocked = e => console.log('was blocked');
+      tx.onversionchange = e => console.log('version change');
+      tx.onclose = e => console.log('close');
+      tx.oncomplete = e => {
+        console.log('complete');
+        data.callback.complete(e);
+      };
+      tx.onupgradeneeded = e => console.log('upgrade needed');
+      tx.onerror = e => {
+        console.log('error', e);
+        data.callback.error(e);
+      };
     };
 
     dbReq.onerror = event => {
       alert('error opening database ' + event.target.errorCode);
     };
+    dbReq.onabort = e => console.log('was aborted');
+    dbReq.onblocked = e => console.log('was blocked');
+    dbReq.onversionchange = e => console.log('version change');
+    dbReq.onclose = e => console.log('close');
+    dbReq.onupgradeneeded = e => console.log('upgrade needed');
   },
 };
 

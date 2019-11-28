@@ -4,6 +4,7 @@ import React from 'react';
 import TextInput from '../../components/TextInput';
 import Layout from '../../components/Layout';
 import ProjectsList from '../../components/ProjectsList';
+import UrlsList from '../../components/UrlsList';
 import {
   withRouter
 } from 'react-router-dom';
@@ -31,17 +32,30 @@ const Dashboard = (props) => {
     Controller.resumeProject(projIndex);
   };
 
+  const createProject = (title) => {
+    Controller.createNewProject(title)
+      .then( res => {
+        res === false ? setError('Name already exists') : null;
+      });
+  };
+
+  const search = (term) => {
+    console.log('searching for ', term);
+  };
+
   return (
     <Layout
       topComponents={{
         left: <TextInput
           text={'Create new project'}
           type={'action'}
-          size={'regular'} />,
+          size={'regular'}
+          clicked={ (newTitle) => createProject(newTitle) } />,
         right: <TextInput
           text={'Search project'}
           type={'search'}
-          size={'regular'}/>
+          size={'regular'}
+          clicked={ (term) => search(term) } />
       }}
       columnsData={[
         <div>
@@ -53,9 +67,9 @@ const Dashboard = (props) => {
         </div>,
         <div>
           <h5>Top URLS</h5>
-          <h6>Recent projects</h6>
-          { props.projects ? <ProjectsList 
-            projects={props.projects} 
+          { props.urls ? <UrlsList 
+            urls={props.urls}
+            type={'top'}
             clicked={(projIndex) => openProject(projIndex)} /> : null }
         </div>,
         <div>

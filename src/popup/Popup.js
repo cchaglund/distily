@@ -49,13 +49,9 @@ const Popup = () => {
   }, []);
 
   const createHandler = (title) => {
-    Controller.uniqueProjectTitleCheck(title)
-      .then(res => {
-        if (res === true) {
-          setError('Name already exists');
-          return;
-        }
-        Controller.createNewProject(title);
+    Controller.createNewProject(title)
+      .then( res => {
+        res === false ? setError('Name already exists') : null;
       });
   };
 

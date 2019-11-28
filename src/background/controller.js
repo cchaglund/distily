@@ -84,34 +84,43 @@ class Controller  {
 
   createNewProject (projectTitle) {
     return new Promise( resolve => {
-      // Open new window
-      this.browser.windows.create()
-        .then( res => {
-          const newProject = {
-            title: projectTitle,
-            activeWindow: res.id
-          };
+      this.uniqueProjectTitleCheck(projectTitle)
+        .then(res => {
+          if (res === false) {
+            resolve(res);
+            return;
+          }
+          // Open new window
+          this.browser.windows.create()
+            .then( res => {
+              const newProject = {
+                title: projectTitle,
+                activeWindow: res.id
+              };
 
-          DB.projects.add(newProject)
-            .then(res => {
-              console.log(res);
-              resolve(res);
+              DB.projects.add(newProject)
+                .then(res => {
+                  console.log(res);
+                  resolve(res);
+                });
             });
         });
     });
   }
 
   resumeProject (projectIndex) {
-    console.log('hej?');
+    // open window with this.browser.windows.create('', 'Window name', )
     this.browser.windows.create()
-      .then( res => {
-        const data = {
-          active: true,
-          activeWindow: res.id,
-          // timesOpened: project.timesOpened + 1
-        };
-
-        this.updateProject(projectIndex, data);
+      .then( windowInfo => {
+        this.getProject(projectIndex)
+          .then(project => {
+            this.updateProject(projectIndex, {
+              active: true,
+              activeWindow: windowInfo.id,
+              lastOpened: Date.now(),
+              timesOpened: project.timesOpened + 1
+            });
+          });
       });
   }
 
@@ -128,14 +137,14 @@ class Controller  {
     return new Promise( resolve => {
       this.getAllProjects()
         .then( res => {
-          let titleTaken = false;
+          let uniqueTitle = true;
           res.forEach(project => {
             if (project.title === title) {
-              titleTaken = true;
+              uniqueTitle = false;
               return;
             }
           });
-          resolve(titleTaken);
+          resolve(uniqueTitle);
         });
     });
   }
