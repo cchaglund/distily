@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import { css, jsx } from '@emotion/core';
+import styled from '@emotion/styled';
 import Button from './Button';
 
-const TextInput = ({type, text, size, clicked}) => {
+const TextInput = ({type, text, size, clicked, error}) => {
   const [ input, setInput ] = useState('');
 
   const style = css`
@@ -22,23 +23,32 @@ const TextInput = ({type, text, size, clicked}) => {
     margin-right: 0.4rem;
   `;
 
+  const Error = styled.p`
+    height: 1rem;
+    color: red;
+    font-size: 0.7rem;
+  `;
+
   const updateTitle = e => {
     setInput(e.target.value);
   };
 
   return (
-    <div css={style}>
-      <input
-        css={inputStyle}
-        value={ input } 
-        onChange={ updateTitle }
-        type='text' 
-        placeholder='Project title' />
-      <Button 
-        type={type}
-        text={text}
-        size={size}
-        clicked={() => clicked(input)} />
+    <div>
+      <div css={style}>
+        <input
+          css={inputStyle}
+          value={ input } 
+          onChange={ updateTitle }
+          type='text' 
+          placeholder='Project title' />
+        <Button 
+          type={type}
+          text={text}
+          size={size}
+          clicked={() => clicked(input)} />
+      </div>
+      <Error>{error ? error : null }</Error>
     </div>
   );
 };

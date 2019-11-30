@@ -55,7 +55,7 @@ const Popup = () => {
     });
 
     if (titleExists.length !== 0) {
-      setError('Name already exists');
+      setError(`Project '${title}' already exists`);
       return;
     }
 
@@ -108,12 +108,12 @@ const Popup = () => {
     <PopupContainer>
       { currentProject ? projectDetails : null }
       <CreateContainer>
-        { error }
         <TextInput
           text={'Create'}
           type={'action'}
           size={'regular'}
-          clicked={ (newTitle) => createHandler(newTitle) }/>
+          clicked={ (newTitle) => createHandler(newTitle) }
+          error={ error ? error : null}/>
       </CreateContainer>
       <ProjectsContainer>
         <h6>Open project</h6>

@@ -35,8 +35,7 @@ const Button = ({size, text, type, clicked, data}) => {
   const ButtonContainer = styled.div`
     background-color: ${color};
     width: ${ size === 'wide' ? 'auto' : 'max-content'};
-    padding: ${ size === 'wide' ? '0.2rem 0.3rem' : '0.4rem 0.6rem'};
-    ${ size === 'wide' ? 'padding-left: 1rem; padding-right: 1rem;' : null}
+    padding: ${ size === 'wide' ? '0.2rem 1rem' : '0.4rem 1rem'};
     margin-top: 0.3rem;
     margin-bottom: 0.3rem;
     border: 1px solid ${color};

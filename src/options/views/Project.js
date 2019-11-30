@@ -42,8 +42,6 @@ const Project = (props) => {
       }
     });
 
-    
-    
     setCreatedDate(new Date(project.created).toLocaleDateString());
     setLastOpenedDate(new Date(project.lastOpened).toLocaleDateString());
     setTimesOpened(project.timesOpened);
@@ -124,6 +122,11 @@ const Project = (props) => {
             key='1'
             urls={urls}
             type={'recent'} /> : null }
+          <Button 
+            type={'nav'}
+            text={'Show more'}
+            size={'regular'}
+            clicked={() => showMore()} />
         </div>,
         <div>
           <h5>Top URLS</h5>
@@ -143,6 +146,11 @@ const Project = (props) => {
             urls={urls}
             type={'top'}
             clicked={(id) => console.log('trying to open url', id)} /> : null }
+          <Button 
+            type={'nav'}
+            text={'Show more'}
+            size={'regular'}
+            clicked={() => showMore()} />
         </div>,
         <div>
           <h5>By domain</h5>
@@ -151,6 +159,11 @@ const Project = (props) => {
             urls={urls}
             type={'host'}
             clicked={(id) => console.log('trying to open url', id)} /> : null }
+          <Button 
+            type={'nav'}
+            text={'Show more'}
+            size={'regular'}
+            clicked={() => showMore()} />
         </div>
       ]} />
   );

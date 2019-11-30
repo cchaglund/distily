@@ -5,6 +5,7 @@ import TextInput from '../../components/TextInput';
 import Layout from '../../components/Layout';
 import ProjectsList from '../../components/ProjectsList';
 import UrlsList from '../../components/UrlsList';
+import Button from '../../components/Button';
 import {
   withRouter
 } from 'react-router-dom';
@@ -39,7 +40,7 @@ const Dashboard = (props) => {
     });
 
     if (titleExists.length !== 0) {
-      setError('Name already exists');
+      setError(`Project '${title}' already exists`);
       return;
     }
 
@@ -53,16 +54,21 @@ const Dashboard = (props) => {
     console.log('searching for ', term);
   };
 
+  const showMore = () => {
+    console.log('showing more');
+  };
+  
+
   return (
     <div>
-      { error ? error : null}
       <Layout
         topComponents={{
           left: <TextInput
             text={'Create new project'}
             type={'action'}
             size={'regular'}
-            clicked={ (newTitle) => createHandler(newTitle) } />,
+            clicked={ (newTitle) => createHandler(newTitle) } 
+            error={ error ? error : null}/>,
           right: <TextInput
             text={'Search project'}
             type={'search'}
@@ -76,13 +82,24 @@ const Dashboard = (props) => {
             { props.projects ? <ProjectsList 
               projects={props.projects} 
               clicked={(projIndex) => resumeProject(projIndex)} /> : null }
+            <Button 
+              type={'nav'}
+              text={'Show more'}
+              size={'regular'}
+              clicked={() => showMore()} />
           </div>,
           <div>
             <h5>Top URLS</h5>
+            <h6>All time</h6>
             { props.urls ? <UrlsList 
               urls={props.urls}
               type={'top'}
               clicked={(projIndex) => openProject(projIndex)} /> : null }
+            <Button 
+              type={'nav'}
+              text={'Show more'}
+              size={'regular'}
+              clicked={() => showMore()} />
           </div>,
           <div>
             <h5>Inspect</h5>
@@ -90,6 +107,11 @@ const Dashboard = (props) => {
             { props.projects ? <ProjectsList 
               projects={props.projects} 
               clicked={(projIndex) => openProject(projIndex)} /> : null }
+            <Button 
+              type={'nav'}
+              text={'Show more'}
+              size={'regular'}
+              clicked={() => showMore()} />
           </div>
         ]} />
     </div>
