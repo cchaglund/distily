@@ -2,10 +2,15 @@ import React, {useState} from 'react';
 import styled from '@emotion/styled';
 import Button from './Button';
 
-const ProjectsList = ({projects, clicked}) => {
+const ProjectsList = ({projects, clicked, clickAction}) => {
   const [ openOptions, setOpenOptions] = useState();
 
   const clickHandler = (projId) => {
+    if (clickAction === 'open') {
+      clicked(projId);
+      return;
+    }
+    
     const Div = styled.div`
       margin-left: 1rem;
     `;

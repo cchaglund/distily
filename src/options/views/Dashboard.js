@@ -48,15 +48,6 @@ const Dashboard = (props) => {
     });
   };
 
-  // const resumeProject = projIndex => {
-  //   browser.runtime.sendMessage({
-  //     type: 'resumeProject',
-  //     data: {
-  //       projectId: projIndex
-  //     }
-  //   });
-  // };
-
   const resumeProject = (projId, openType, tabCount) => {
     browser.runtime.sendMessage({
       type: 'resumeProject',
@@ -113,7 +104,8 @@ const Dashboard = (props) => {
             <h5>Jump back in</h5>
             <h6>Recent projects</h6>
             { props.projects ? <ProjectsList 
-              projects={props.projects} 
+              projects={props.projects}
+              clickAction={'resume'}
               clicked={(projIndex, openType, tabCount) => resumeProject(projIndex, openType, tabCount)} /> : null }
             <Button 
               type={'nav'}
@@ -138,7 +130,8 @@ const Dashboard = (props) => {
             <h5>Inspect</h5>
             <h6>Recent projects</h6>
             { props.projects ? <ProjectsList 
-              projects={props.projects} 
+              projects={props.projects}
+              clickAction={'open'}
               clicked={(projIndex) => openProject(projIndex)} /> : null }
             <Button 
               type={'nav'}
