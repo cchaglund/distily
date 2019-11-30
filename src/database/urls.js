@@ -4,6 +4,16 @@
 import DB from './database';
 
 class URLsDB {
+  broadcastUpdatedUrls () {
+    this.getAllProjects()
+      .then( res => {
+        browser.runtime.sendMessage({
+          type: 'allProjects',
+          data: res
+        });
+      });
+  }
+
   addURL (url) {
     let promise = new Promise( resolve => {
       let newURL = {

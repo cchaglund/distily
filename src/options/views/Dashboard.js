@@ -8,9 +8,6 @@ import UrlsList from '../../components/UrlsList';
 import {
   withRouter
 } from 'react-router-dom';
-import Ctrl from '../../background/controller';
-
-const Controller = new Ctrl(browser);
 
 const Dashboard = (props) => {
   const [ error, setError ] = useState();
@@ -30,8 +27,10 @@ const Dashboard = (props) => {
   };
 
   const resumeProject = projIndex => {
-    // let project = props.projects[projIndex - 1];
-    Controller.resumeProject(projIndex);
+    browser.runtime.sendMessage({
+      type: 'resumeProject',
+      data: projIndex
+    });
   };
 
   const createHandler = (title) => {
