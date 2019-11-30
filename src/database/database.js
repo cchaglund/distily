@@ -43,7 +43,9 @@ const DB = {
         .transaction(data.store, data.mode)
         .objectStore(data.store)[data.method](data.payload);
 
-      tx.onsuccess = e => data.callback.success(e, tx);
+      tx.onsuccess = e => {
+        data.callback.success(e, tx);
+      };
       tx.onabort = e => console.log('was aborted');
       tx.onblocked = e => console.log('was blocked');
       tx.onversionchange = e => console.log('version change');

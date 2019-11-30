@@ -1,6 +1,17 @@
+/* eslint-disable no-undef */
 import DB from './database';
 
 class ProjectsDB {
+  broadcastUpdatedProjects () {
+    this.getAllProjects()
+      .then( res => {
+        browser.runtime.sendMessage({
+          type: 'allProjects',
+          data: res
+        });
+      });
+  }
+
   addProject (projectObject) {
     let promise = new Promise( resolve => {
       let project = {
@@ -25,6 +36,7 @@ class ProjectsDB {
         callback: {
           success: (e) => {
             console.log('Project added. ID = ', e.target.result);
+            this.broadcastUpdatedProjects();
             resolve(e.target.result);
           },
           complete: (e) => console.log('Project add tx complete', e),
@@ -99,6 +111,7 @@ class ProjectsDB {
             callback: {
               success: (e) => {
                 console.log('Project updated');
+                this.broadcastUpdatedProjects();
                 resolve(e);
               },
               complete: (e) => console.log('Project update tx complete', e),
