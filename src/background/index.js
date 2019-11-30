@@ -22,6 +22,16 @@ browser.runtime.onMessage.addListener( message => {
     case 'openProject':
       Controller.openProject(message.title);
       break;
+    case 'resumeProject':
+      Controller.resumeProject(message.data);
+      break;
+
+    case 'getAllProjects':
+      Controller.getAllProjects();
+      break;
+    case 'getCurrentProject':
+      Controller.getCurrentProject();
+      break;
   }
 });
 

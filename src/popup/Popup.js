@@ -5,12 +5,9 @@ import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import './Popup.css';
-import Ctrl from '../background/controller';
 import Button from '../components/Button';
 import ProjectsList from '../components/ProjectsList';
 import TextInput from '../components/TextInput';
-
-const Controller = new Ctrl(browser);
 
 const PopupContainer = styled.div`
   width: 250px;
@@ -27,32 +24,51 @@ const ProjectsContainer = styled.div`
 `;
 
 const Popup = () => {
-  const [ currentProject, setCurrentProject ] = useState('');
+  const [ currentProject, setCurrentProject ] = useState();
   const [ projects, setProjects ] = useState();
   const [ error, setError ] = useState();
 
   useEffect( () => {
+    browser.runtime.sendMessage({
+      type: 'getAllProjects'
+    });
 
-    Controller.getAllProjects()
-      .then(res => {
-        setProjects(res);
+    browser.runtime.sendMessage({
+      type: 'getCurrentProject'
+    });
 
-        browser.windows.getCurrent()
-          .then(windowInfo => {
-            res.forEach( project => {
-              if (project.activeWindow === windowInfo.id) {
-                setCurrentProject(project);
-              }
-            });
-          });
-      });
+    browser.runtime.onMessage.addListener( message => {
+      switch (message.type) {
+        case 'allProjects':
+          setProjects(message.data);
+          break;
+        case 'currentProject':
+          console.log('got curr proj', message.data);
+          setCurrentProject(message.data);
+          break;
+      }
+    });
+
+    // Controller.getAllProjects()
+    //   .then(res => {
+    //     setProjects(res);
+
+    //     browser.windows.getCurrent()
+    //       .then(windowInfo => {
+    //         res.forEach( project => {
+    //           if (project.activeWindow === windowInfo.id) {
+    //             setCurrentProject(project);
+    //           }
+    //         });
+    //       });
+    //   });
   }, []);
 
   const createHandler = (title) => {
-    Controller.createNewProject(title)
-      .then( res => {
-        res === false ? setError('Name already exists') : null;
-      });
+    // Controller.createNewProject(title)
+    //   .then( res => {
+    //     res === false ? setError('Name already exists') : null;
+    //   });
   };
 
   const openOptions = () => {
@@ -61,11 +77,15 @@ const Popup = () => {
   };
 
   const openProject = (id) => {
-    Controller.openProject(id);
+    // Controller.openProject(id);
   };
 
   const resumeProject = projIndex => {
-    Controller.resumeProject(projIndex);
+    browser.runtime.sendMessage({
+      type: 'resumeProject',
+      data: projIndex
+    });
+    // Controller.resumeProject(projIndex);
   };
 
   const projectDetails = (
@@ -77,12 +97,12 @@ const Popup = () => {
       `
     }>
       <h5 css={css`margin: 0; margin-bottom: 1rem`}>Working on</h5>
-      <h4 css={css`padding-left: 1rem; margin: 0; margin-bottom: 0.5rem`}>{currentProject.title}</h4>
+      <h4 css={css`padding-left: 1rem; margin: 0; margin-bottom: 0.5rem`}>{currentProject ? currentProject.title : null}</h4>
       <div css={css`padding-left: 1rem`}>
         <Button
           type={'nav'}
           size={'regular'}
-          clicked={() => openProject(currentProject.id)}
+          clicked={() => openProject(currentProject ? currentProject.id : null)}
           text={'Overview'} />
       </div>
     </div>
