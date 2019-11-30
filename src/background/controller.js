@@ -78,6 +78,10 @@ class Controller  {
     return new Promise( resolve => {
       DB.urls.getAll()
         .then( res => {
+          this.browser.runtime.sendMessage({
+            type: 'allUrls',
+            data: res
+          });
           resolve(res);
         });
     });

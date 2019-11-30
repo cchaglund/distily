@@ -43,25 +43,10 @@ const Popup = () => {
           setProjects(message.data);
           break;
         case 'currentProject':
-          console.log('got curr proj', message.data);
           setCurrentProject(message.data);
           break;
       }
     });
-
-    // Controller.getAllProjects()
-    //   .then(res => {
-    //     setProjects(res);
-
-    //     browser.windows.getCurrent()
-    //       .then(windowInfo => {
-    //         res.forEach( project => {
-    //           if (project.activeWindow === windowInfo.id) {
-    //             setCurrentProject(project);
-    //           }
-    //         });
-    //       });
-    //   });
   }, []);
 
   const createHandler = (title) => {

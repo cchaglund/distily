@@ -14,50 +14,38 @@ import {
 import './Options.css';
 import Dashboard from './views/Dashboard';
 import Project from './views/Project';
-import Ctrl from '../background/controller';
-
-const Controller = new Ctrl(browser);
 
 const Options = () => {
   const [ projects, setProjects ] = useState();
   const [ urls, setUrls ] = useState();
-  const [ projectToShow, setProjectToShow ] = useState();
+  const [ currentProject, setCurrentProject ] = useState();
 
   useEffect( () => {
-    Controller.getAllURLS()
-      .then(urls => {
-        setUrls(urls);
-      });
+    browser.runtime.sendMessage({
+      type: 'getAllProjects'
+    });
 
-    Controller.getAllProjects()
-      .then((projects) => {
-        setProjects(projects);
+    browser.runtime.sendMessage({
+      type: 'getCurrentProject'
+    });
 
-        browser.storage.local.get()
-          .then(res => {
-            if (res.state.projectToOpen) {
-              setProjectToShow(res.state.projectToOpen);
-              // Reset the project that's now been shown
-              browser.storage.local.set({
-                state: {
-                  projectToOpen: null
-                }
-              });
-            } else {
-              const active = projects.filter(project => {
-                return project.active;
-              });
-              if (active.length !== 0) {
-                browser.windows.getCurrent()
-                  .then(windowInfo => {
-                    if (active[0].activeWindow === windowInfo.id) {
-                      setProjectToShow(active[0]);
-                    }
-                  });
-              }
-            }
-          });
-      });
+    browser.runtime.sendMessage({
+      type: 'getAllUrls'
+    });
+
+    browser.runtime.onMessage.addListener( message => {
+      switch (message.type) {
+        case 'allProjects':
+          setProjects(message.data);
+          break;
+        case 'currentProject':
+          setCurrentProject(message.data);
+          break;
+        case 'allUrls':
+          setUrls(message.data);
+          break;
+      }
+    });
   }, []);
 
   const LinkWrapper = styled.div`
@@ -77,11 +65,11 @@ const Options = () => {
 
   return (
     <Router>
-      { projectToShow ? <Redirect
+      { currentProject ? <Redirect
         to={{ 
           pathname: '/project',
           params: {
-            data: projectToShow
+            data: currentProject
           }
         }} /> : null }
       <div>
@@ -106,8 +94,8 @@ const Options = () => {
           </Route>
           <Route path="/">
             <Dashboard 
-              projects={projects}
-              urls={urls}/>
+              projects={projects ? projects : null}
+              urls={urls ? urls : null }/>
           </Route>
         </Switch>
       </div>
