@@ -86,7 +86,10 @@ const Popup = () => {
   };
 
   const openProject = (id) => {
-    // Controller.openProject(id);
+    browser.runtime.sendMessage({
+      type: 'openProject',
+      data: id
+    });
   };
 
   const resumeProject = projIndex => {

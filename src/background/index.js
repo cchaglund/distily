@@ -20,7 +20,7 @@ browser.runtime.onMessage.addListener( message => {
       Controller.createNewProject(message.data);
       break;
     case 'openProject':
-      Controller.openProject(message.title);
+      Controller.openProject(message.data);
       break;
     case 'resumeProject':
       Controller.resumeProject(message.data);
