@@ -42,7 +42,6 @@ const Options = () => {
           setCurrentProject(message.data);
           break;
         case 'allUrls':
-          console.log('did options get all urls?');
           setUrls(message.data);
           break;
       }

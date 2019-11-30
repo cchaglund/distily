@@ -41,10 +41,11 @@ class Controller  {
           .then(windowInfo => {
             res.forEach( project => {
               if (project.activeWindow === windowInfo.id) {
-                this.browser.runtime.sendMessage({
+                const sending = this.browser.runtime.sendMessage({
                   type: 'currentProject',
                   data: project
                 });
+                sending.then(() => console.log('sent'), (e) => console.log('error: ', e));
               }
             });
           });
@@ -53,13 +54,13 @@ class Controller  {
 
   getAllProjects () {
     return new Promise( resolve => {
-      console.log('getting projects');
       DB.projects.getAll()
         .then( res => {
-          this.browser.runtime.sendMessage({
+          const sending = this.browser.runtime.sendMessage({
             type: 'allProjects',
             data: res
           });
+          sending.then(() => console.log('sent'), (e) => console.log('error: ', e));
           resolve(res);
         });
     });
@@ -69,10 +70,11 @@ class Controller  {
     return new Promise( resolve => {
       DB.urls.getAllByProject(projectID)
         .then( res => {
-          this.browser.runtime.sendMessage({
+          const sending = this.browser.runtime.sendMessage({
             type: 'projectUrls',
             data: res
           });
+          sending.then(() => console.log('sent'), (e) => console.log('error: ', e));
           resolve(res);
         });
     });
@@ -82,10 +84,11 @@ class Controller  {
     return new Promise( resolve => {
       DB.urls.getAll()
         .then( res => {
-          this.browser.runtime.sendMessage({
+          const sending = this.browser.runtime.sendMessage({
             type: 'allUrls',
             data: res
           });
+          sending.then(() => console.log('sent'), (e) => console.log('error: ', e));
           resolve(res);
         });
     });
@@ -367,8 +370,6 @@ class Controller  {
           if (res.length !== 0) {
             res.forEach( url => {
               if (url.hash === urlHash && url.project === projectID) {
-                console.log('why no work', urlHash);
-                console.log('why no work', projectID);
                 exists = true;
                 URLobject = url;
               }

@@ -23,7 +23,6 @@ const TextInput = ({type, text, size, clicked}) => {
   `;
 
   const updateTitle = e => {
-    console.log(e.target.value);
     setInput(e.target.value);
   };
 

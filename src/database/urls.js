@@ -7,11 +7,11 @@ class URLsDB {
   broadcastUpdatedUrls () {
     this.getAllURLs()
       .then( res => {
-        console.log('updating urls');
-        browser.runtime.sendMessage({
+        const sending = browser.runtime.sendMessage({
           type: 'allUrls',
           data: res
         });
+        sending.then(() => console.log('sent'), (e) => console.log('error: ', e));
       });
   }
 
@@ -29,8 +29,6 @@ class URLsDB {
         href: url.href,
         host: url.host,
       };
-
-      console.log(newURL);
 
       const data = {
         store: 'urls',

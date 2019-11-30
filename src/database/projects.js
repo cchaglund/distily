@@ -5,10 +5,11 @@ class ProjectsDB {
   broadcastUpdatedProjects () {
     this.getAllProjects()
       .then( res => {
-        browser.runtime.sendMessage({
+        const sending = browser.runtime.sendMessage({
           type: 'allProjects',
           data: res
         });
+        sending.then(() => console.log('sent'), (e) => console.log('error: ', e));
       });
   }
 
@@ -35,7 +36,6 @@ class ProjectsDB {
         payload: project,
         callback: {
           success: (e) => {
-            console.log('Project added. ID = ', e.target.result);
             this.broadcastUpdatedProjects();
             resolve(e.target.result);
           },
@@ -110,7 +110,6 @@ class ProjectsDB {
             payload: project,
             callback: {
               success: (e) => {
-                console.log('Project updated');
                 this.broadcastUpdatedProjects();
                 resolve(e);
               },
