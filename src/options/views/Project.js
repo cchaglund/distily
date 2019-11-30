@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect} from 'react';
 import { withRouter } from 'react-router-dom';
-import Ctrl from '../../background/controller';
 import Layout from '../../components/Layout';
 import TextInput from '../../components/TextInput';
 import Button from '../../components/Button';
@@ -11,8 +10,6 @@ import styled from '@emotion/styled';
 
 // import BarChart from './Charts/BarChart/chart.js';
 // import BubbleChart from './Charts/BubbleChart/chart.js';
-
-const Controller = new Ctrl(browser);
 
 const Project = (props) => {
   const [ urls, setUrls ] = useState();
@@ -24,16 +21,32 @@ const Project = (props) => {
   useEffect(() => {
     // data can come from two places, depending on if it's from outside of, or within the router (dashboard or every other component)
     const project = props.location.params ? props.location.params.data : props.location.state.params.data;
-    
     setProject(project);
+
+    browser.runtime.sendMessage({
+      type: 'getAllProjectUrls',
+      data: project.id
+    });
+
+    browser.runtime.onMessage.addListener( message => {
+      switch (message.type) {
+        case 'projectUrls':
+          setUrls(message.data);
+          break;
+        case 'allUrls': {
+          const projUrls = message.data.filter( url => {
+            return url.project === project.id;
+          });
+          setUrls(projUrls);
+        }
+      }
+    });
+
+    
+    
     setCreatedDate(new Date(project.created).toLocaleDateString());
     setLastOpenedDate(new Date(project.lastOpened).toLocaleDateString());
     setTimesOpened(project.timesOpened);
-
-    Controller.getAllProjectURLS(project.id)
-      .then((res) => {
-        setUrls(res);
-      });
   }, []);  
 
   const Div = styled.div`

@@ -69,6 +69,10 @@ class Controller  {
     return new Promise( resolve => {
       DB.urls.getAllByProject(projectID)
         .then( res => {
+          this.browser.runtime.sendMessage({
+            type: 'projectUrls',
+            data: res
+          });
           resolve(res);
         });
     });

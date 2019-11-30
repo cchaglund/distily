@@ -35,6 +35,9 @@ browser.runtime.onMessage.addListener( message => {
     case 'getAllUrls':
       Controller.getAllURLS();
       break;
+    case 'getAllProjectUrls':
+      Controller.getAllProjectURLS(message.data);
+      break;
   }
 });
 
