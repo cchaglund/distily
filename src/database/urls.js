@@ -5,10 +5,11 @@ import DB from './database';
 
 class URLsDB {
   broadcastUpdatedUrls () {
-    this.getAllProjects()
+    this.getAllURLs()
       .then( res => {
+        console.log('updating urls');
         browser.runtime.sendMessage({
-          type: 'allProjects',
+          type: 'allUrls',
           data: res
         });
       });
@@ -38,6 +39,7 @@ class URLsDB {
         payload: newURL,
         callback: {
           success: (e) => {
+            this.broadcastUpdatedUrls();
             resolve(e.target.result);
           },
           complete: (e) => console.log('URL add tx complete', e),
@@ -137,6 +139,7 @@ class URLsDB {
             payload: URL,
             callback: {
               success: (e) => {
+                this.broadcastUpdatedUrls();
                 resolve(e);
               },
               complete: (e) => console.log('URL update tx complete', e),
