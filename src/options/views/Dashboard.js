@@ -7,7 +7,7 @@ import ProjectsList from '../../components/ProjectsList';
 import UrlsList from '../../components/UrlsList';
 import Button from '../../components/Button';
 import {
-  withRouter
+  withRouter,
 } from 'react-router-dom';
 
 const Dashboard = (props) => {
@@ -56,8 +56,7 @@ const Dashboard = (props) => {
 
   const showMore = () => {
     console.log('showing more');
-  };
-  
+  };  
 
   return (
     <div>

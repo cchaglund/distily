@@ -100,6 +100,7 @@ const Project = (props) => {
 
   return (
     <Layout
+      projectTitle={ project ? project.title : null}
       topComponents={{
         left: leftComponent,
         right: rightComponent

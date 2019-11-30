@@ -3,17 +3,21 @@
 import { useState, useEffect} from 'react';
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
+import {
+  Link,
+  withRouter,
+} from 'react-router-dom';
 
-const Layout = ({topComponents, columnsData}) => {
+const Layout = (props) => {
   const [ colAreas, setColAreas ] = useState();
   const [ colFractions, setColFractions ] = useState();
 
   useEffect(() => {
-    const colTemplateAreas = columnsData.map((col, index) => {
+    const colTemplateAreas = props.columnsData.map((col, index) => {
       return 'a' + index.toString();
     });
 
-    const colTemplateColums = columnsData.map(() => {
+    const colTemplateColums = props.columnsData.map(() => {
       return '1fr';
     });
 
@@ -56,7 +60,7 @@ const Layout = ({topComponents, columnsData}) => {
     flex-direction: column;
   `;
 
-  const renderedColumns = columnsData.map((col, index) => {
+  const renderedColumns = props.columnsData.map((col, index) => {
     return (
       <div 
         key={index}
@@ -68,21 +72,48 @@ const Layout = ({topComponents, columnsData}) => {
     );
   });
 
+  const LinkWrapper = styled.div`
+    padding: 1rem 1.5rem;
+  `;
+
+  const StyledLink = styled(Link)`
+    text-decoration: none;
+    color: black;
+  `;
+
+  const StyledNav = styled.nav`
+    height: 2rem;
+    padding: 1rem;
+    display: flex;
+  `;
+  console.log(props);
+
   return (
-    <LayoutContainer>
-      <TopSection>
-        <div css={ css`grid-area: left`}>
-          { topComponents.left }
-        </div>
-        <div css={ css`grid-area: right`}>
-          { topComponents.right }
-        </div>
-      </TopSection>
-      <BottomSection>
-        { renderedColumns }
-      </BottomSection>
-    </LayoutContainer>
+    <div>
+      <StyledNav>
+        <LinkWrapper>
+          <StyledLink to="/">Dashboard</StyledLink>
+        </LinkWrapper>
+        { props.location.pathname === '/project' ? <LinkWrapper 
+          to="/project">Project > {props.projectTitle ? props.projectTitle : null}</LinkWrapper> 
+          : null}
+      </StyledNav>
+
+      <LayoutContainer>
+        <TopSection>
+          <div css={ css`grid-area: left`}>
+            { props.topComponents.left }
+          </div>
+          <div css={ css`grid-area: right`}>
+            { props.topComponents.right }
+          </div>
+        </TopSection>
+        <BottomSection>
+          { renderedColumns }
+        </BottomSection>
+      </LayoutContainer>
+    </div>
   );
 };
 
-export default Layout;
+export default withRouter(Layout);
