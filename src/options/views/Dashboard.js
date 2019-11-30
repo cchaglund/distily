@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TextInput from '../../components/TextInput';
 import Layout from '../../components/Layout';
 import ProjectsList from '../../components/ProjectsList';
@@ -12,6 +12,27 @@ import {
 
 const Dashboard = (props) => {
   const [ error, setError ] = useState();
+
+  useEffect(() => {
+    browser.runtime.sendMessage({
+      type: 'getCurrentProject'
+    });
+
+    browser.runtime.onMessage.addListener( message => {
+      switch (message.type) {
+        case 'currentProject':
+          props.history.push({
+            pathname: '/project',
+            state: {
+              params: {
+                data: message.data
+              }
+            }
+          });
+          break;
+      }
+    });
+  }, []);
   
   const openProject = projIndex => {
     // indexedDB starts at 1, so to get the project by index I take id - 1

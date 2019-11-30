@@ -86,7 +86,6 @@ const Layout = (props) => {
     padding: 1rem;
     display: flex;
   `;
-  console.log(props);
 
   return (
     <div>

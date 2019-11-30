@@ -19,8 +19,7 @@ const Project = (props) => {
   const [ timesOpened, setTimesOpened ] = useState();
 
   useEffect(() => {
-    // data can come from two places, depending on if it's from outside of, or within the router (dashboard or every other component)
-    const project = props.location.params ? props.location.params.data : props.location.state.params.data;
+    const project = props.location.state.params.data;
     setProject(project);
 
     browser.runtime.sendMessage({

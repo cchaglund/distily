@@ -48,13 +48,6 @@ const Options = () => {
 
   return (
     <Router>
-      { currentProject ? <Redirect
-        to={{ 
-          pathname: '/project',
-          params: {
-            data: currentProject
-          }
-        }} /> : null }
       <div>
         <Switch>
           <Route path="/about">
@@ -65,6 +58,7 @@ const Options = () => {
           </Route>
           <Route path="/">
             <Dashboard 
+              currentProject={ currentProject ? currentProject.id : null }
               projects={projects ? projects : null}
               urls={urls ? urls : null }/>
           </Route>
