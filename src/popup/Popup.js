@@ -32,39 +32,20 @@ const Popup = () => {
   const [ error, setError ] = useState();
 
   useEffect( () => {
-    browser.runtime.sendMessage({
-      type: 'getAllProjects'
-    });
 
-    browser.runtime.sendMessage({
-      type: 'getCurrentProject'
-    });
+    Controller.getAllProjects()
+      .then(res => {
+        setProjects(res);
 
-    browser.runtime.onMessage.addListener( message => {
-      switch (message.type) {
-        case 'allProjects':
-          setProjects(message.data);
-          break;
-        case 'currentProject':
-          console.log('got curr proj', message.data);
-          setCurrentProject(message.data);
-          break;
-      }
-    });
-
-    // Controller.getAllProjects()
-    //   .then(res => {
-    //     setProjects(res);
-
-    //     browser.windows.getCurrent()
-    //       .then(windowInfo => {
-    //         res.forEach( project => {
-    //           if (project.activeWindow === windowInfo.id) {
-    //             setCurrentProject(project);
-    //           }
-    //         });
-    //       });
-    //   });
+        browser.windows.getCurrent()
+          .then(windowInfo => {
+            res.forEach( project => {
+              if (project.activeWindow === windowInfo.id) {
+                setCurrentProject(project);
+              }
+            });
+          });
+      });
   }, []);
 
   const createHandler = (title) => {
@@ -84,11 +65,7 @@ const Popup = () => {
   };
 
   const resumeProject = projIndex => {
-    browser.runtime.sendMessage({
-      type: 'resumeProject',
-      data: projIndex
-    });
-    // Controller.resumeProject(projIndex);
+    Controller.resumeProject(projIndex);
   };
 
   const projectDetails = (

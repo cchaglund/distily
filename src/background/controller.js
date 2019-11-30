@@ -34,33 +34,11 @@ class Controller  {
     });
   }
 
-  getCurrentProject () {
-    DB.projects.getAll()
-      .then( res => {
-        this.browser.windows.getCurrent()
-          .then(windowInfo => {
-            res.forEach( project => {
-              if (project.activeWindow === windowInfo.id) {
-                this.browser.runtime.sendMessage({
-                  type: 'currentProject',
-                  data: project
-                });
-              }
-            });
-          });
-      });
-  }
-
   getAllProjects () {
     return new Promise( resolve => {
-      console.log('getting projects');
       DB.projects.getAll()
         .then( res => {
           resolve(res);
-          this.browser.runtime.sendMessage({
-            type: 'allProjects',
-            data: res
-          });
         });
     });
   }

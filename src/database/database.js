@@ -35,6 +35,7 @@ const DB = {
 
   connect: (data) => {
     let dbReq = indexedDB.open('distily', 1);
+    console.log('this far?', data);
 
     dbReq.onsuccess = event => {
       let db = event.target.result;
