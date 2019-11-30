@@ -65,10 +65,19 @@ const Popup = () => {
   }, []);
 
   const createHandler = (title) => {
-    // Controller.createNewProject(title)
-    //   .then( res => {
-    //     res === false ? setError('Name already exists') : null;
-    //   });
+    const titleExists = projects.filter( project => {
+      return project.title === title;
+    });
+
+    if (titleExists.length !== 0) {
+      setError('Name already exists');
+      return;
+    }
+
+    browser.runtime.sendMessage({
+      type: 'createProject',
+      data: title
+    });
   };
 
   const openOptions = () => {
@@ -85,7 +94,6 @@ const Popup = () => {
       type: 'resumeProject',
       data: projIndex
     });
-    // Controller.resumeProject(projIndex);
   };
 
   const projectDetails = (

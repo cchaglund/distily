@@ -56,11 +56,11 @@ class Controller  {
       console.log('getting projects');
       DB.projects.getAll()
         .then( res => {
-          resolve(res);
           this.browser.runtime.sendMessage({
             type: 'allProjects',
             data: res
           });
+          resolve(res);
         });
     });
   }
