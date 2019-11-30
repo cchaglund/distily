@@ -44,7 +44,18 @@ const Project = (props) => {
     setCreatedDate(new Date(project.created).toLocaleDateString());
     setLastOpenedDate(new Date(project.lastOpened).toLocaleDateString());
     setTimesOpened(project.timesOpened);
-  }, []);  
+  }, []);
+
+  const resumeProject = (openType, tabCount) => {
+    browser.runtime.sendMessage({
+      type: 'resumeProject',
+      data: {
+        projectId: project.id,
+        openType: openType,
+        tabCount: tabCount
+      }
+    });
+  };
 
   const Div = styled.div`
     display: flex;
@@ -112,11 +123,13 @@ const Project = (props) => {
             <Button
               type={'action'}
               size={'regular'}
-              text={'Recent 5'} />
+              text={'Recent 5'}
+              clicked={() => resumeProject('recent', 5)} />
             <Button
               type={'action'}
               size={'regular'}
-              text={'Recent 10'} />
+              text={'Recent 10'} 
+              clicked={() => resumeProject('recent', 10)} />
           </Div>
           { urls ? <UrlsList
             key='1'
@@ -135,11 +148,13 @@ const Project = (props) => {
             <Button
               type={'action'}
               size={'regular'}
-              text={'Top 5'} />
+              text={'Top 5'} 
+              clicked={() => resumeProject('top', 5)} />
             <Button
               type={'action'}
               size={'regular'}
-              text={'Top 10'} />
+              text={'Top 10'} 
+              clicked={() => resumeProject('top', 10)} />
           </Div>
           { urls ? <UrlsList 
             key='2'

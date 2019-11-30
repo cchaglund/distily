@@ -141,19 +141,48 @@ class Controller  {
     });
   }
 
-  resumeProject (projectIndex) {
-    // open window with this.browser.windows.create('', 'Window name', )
+  resumeProject (data) {
     this.browser.windows.create()
       .then( windowInfo => {
-        this.getProject(projectIndex)
+        if (data.openType) {
+          this.getAllProjectURLS(data.projectId)
+            .then( res => {
+              const sortUrls = (property, tabCount) => {
+                let sortedUrls = [...res ];
+
+                sortedUrls.sort( (urlA, urlB) => {
+                  return (urlA[property] < urlB[property]) ? 1 : -1;
+                });
+
+                for (let i = 0; i < tabCount; i++) {
+                  this.browser.tabs.create({
+                    windowId: windowInfo.id,
+                    url: sortedUrls[i].href
+                  });
+                }
+              };
+
+              switch (data.openType) {
+                case 'recent':
+                  sortUrls('lastOpened', data.tabCount);
+                  break;
+                case 'top':
+                  sortUrls('visits', data.tabCount) ;
+                  break;
+              }
+            });
+        }
+        
+        this.getProject(data.projectId)
           .then(project => {
-            this.updateProject(projectIndex, {
+            this.updateProject(data.projectId, {
               active: true,
               activeWindow: windowInfo.id,
               lastOpened: Date.now(),
               timesOpened: project.timesOpened + 1
             });
           });
+          
       });
   }
 

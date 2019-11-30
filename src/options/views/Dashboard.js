@@ -51,7 +51,9 @@ const Dashboard = (props) => {
   const resumeProject = projIndex => {
     browser.runtime.sendMessage({
       type: 'resumeProject',
-      data: projIndex
+      data: {
+        projectId: projIndex
+      }
     });
   };
 
