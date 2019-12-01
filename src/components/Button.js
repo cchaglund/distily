@@ -45,9 +45,17 @@ const Button = ({size, text, type, clicked, data}) => {
     }
   `;
 
-  const ButtonText = styled.h5`
+  const ButtonText = styled.h6`
     margin: 0;
   `;
+
+  const TitleText = styled.span`
+    margin: 0;
+    font-size: 0.7rem;
+    font-weight: bold;
+  `;
+
+  const BtnText = type === 'url' || type === 'project' ? TitleText : ButtonText;
 
   const openUrl = data => {
     Controller.openUrl(data);
@@ -59,7 +67,7 @@ const Button = ({size, text, type, clicked, data}) => {
         type === 'url' ? openUrl(data) : clicked();
       }}>
       { type === 'url' ? <Url data={data}/>
-        : <ButtonText>{ text }</ButtonText> }
+        : <BtnText>{ text }</BtnText> }
     </ButtonContainer>
   );
 };

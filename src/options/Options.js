@@ -11,6 +11,8 @@ import {
 import './Options.css';
 import Dashboard from './views/Dashboard';
 import Project from './views/Project';
+import ThemeProvider from '../assets/provider';
+import './Options.css';
 
 const Options = () => {
   const [ projects, setProjects ] = useState();
@@ -47,7 +49,7 @@ const Options = () => {
 
   return (
     <Router>
-      <div>
+      <ThemeProvider>
         <Switch>
           <Route path="/about">
             about
@@ -62,7 +64,7 @@ const Options = () => {
               urls={urls ? urls : null }/>
           </Route>
         </Switch>
-      </div>
+      </ThemeProvider>
     </Router>
   );
 };

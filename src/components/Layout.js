@@ -73,7 +73,7 @@ const Layout = (props) => {
   });
 
   const LinkWrapper = styled.div`
-    padding: 1rem 1.5rem;
+    padding: 0.5rem 0.8rem;
   `;
 
   const StyledLink = styled(Link)`
@@ -82,8 +82,7 @@ const Layout = (props) => {
   `;
 
   const StyledNav = styled.nav`
-    height: 2rem;
-    padding: 1rem;
+    padding: 0 1rem;
     display: flex;
   `;
 
@@ -91,10 +90,14 @@ const Layout = (props) => {
     <div>
       <StyledNav>
         <LinkWrapper>
-          <StyledLink to="/">Dashboard</StyledLink>
+          <StyledLink to="/">
+            <h5>Dashboard</h5>
+          </StyledLink>
         </LinkWrapper>
         { props.location.pathname === '/project' ? <LinkWrapper 
-          to="/project">Project > {props.projectTitle ? props.projectTitle : null}</LinkWrapper> 
+          to="/project">
+          <h5>Project > {props.projectTitle ? props.projectTitle : null}</h5>
+        </LinkWrapper> 
           : null}
       </StyledNav>
 
