@@ -1,6 +1,8 @@
 /* eslint-disable no-undef */
 
 import React, { useState, useEffect } from 'react';
+import styled from '@emotion/styled';
+import { withTheme } from 'emotion-theming';
 import TextInput from '../../components/TextInput';
 import Layout from '../../components/Layout';
 import ProjectsList from '../../components/ProjectsList';
@@ -83,6 +85,15 @@ const Dashboard = (props) => {
     console.log('showing more');
   };  
 
+  const BottomSection = styled.div`
+    ${props.theme.BottomSection}
+  `;
+
+  const Column = styled.div`
+    ${ props.theme.Column}
+    grid-area: ${ props => props.area};
+  `;
+
   return (
     <div>
       <Layout
@@ -99,8 +110,9 @@ const Dashboard = (props) => {
             size={'regular'}
             clicked={ (term) => search(term) } />
         }}
-        columnsData={[
-          <div>
+      >
+        <BottomSection>
+          <Column area={ 'left' }>
             <h5>Jump back in</h5>
             <h6>Recent projects</h6>
             { props.projects ? <ProjectsList 
@@ -112,8 +124,8 @@ const Dashboard = (props) => {
               text={'Show more'}
               size={'regular'}
               clicked={() => showMore()} />
-          </div>,
-          <div>
+          </Column>
+          <Column area={ 'mid' }>
             <h5>Top URLS</h5>
             <h6>All time</h6>
             { props.urls ? <UrlsList 
@@ -125,8 +137,8 @@ const Dashboard = (props) => {
               text={'Show more'}
               size={'regular'}
               clicked={() => showMore()} />
-          </div>,
-          <div>
+          </Column>
+          <Column area={ 'right' }>
             <h5>Inspect</h5>
             <h6>Recent projects</h6>
             { props.projects ? <ProjectsList 
@@ -138,10 +150,11 @@ const Dashboard = (props) => {
               text={'Show more'}
               size={'regular'}
               clicked={() => showMore()} />
-          </div>
-        ]} />
+          </Column>
+        </BottomSection>
+      </Layout>
     </div>
   );
 };
 
-export default withRouter(Dashboard);
+export default withTheme(withRouter(Dashboard));

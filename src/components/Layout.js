@@ -9,20 +9,20 @@ import {
 } from 'react-router-dom';
 
 const Layout = (props) => {
-  const [ colAreas, setColAreas ] = useState();
-  const [ colFractions, setColFractions ] = useState();
+  // const [ colAreas, setColAreas ] = useState();
+  // const [ colFractions, setColFractions ] = useState();
 
   useEffect(() => {
-    const colTemplateAreas = props.columnsData.map((col, index) => {
-      return 'a' + index.toString();
-    });
+    // const colTemplateAreas = props.columnsData.map((col, index) => {
+    //   return 'a' + index.toString();
+    // });
 
-    const colTemplateColums = props.columnsData.map(() => {
-      return '1fr';
-    });
+    // const colTemplateColums = props.columnsData.map(() => {
+    //   return '1fr';
+    // });
 
-    setColFractions(colTemplateColums.join(' '));
-    setColAreas(colTemplateAreas.join(' '));
+    // setColFractions(colTemplateColums.join(' '));
+    // setColAreas(colTemplateAreas.join(' '));
   }, []);
 
   const LayoutContainer = styled.div`
@@ -43,34 +43,34 @@ const Layout = (props) => {
       "left right"
   `;
 
-  const BottomSection = styled.div`
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-    width: 100%;
-    display: grid;
-    grid-template-columns: ${ colFractions };
-    grid-column-gap: 50px;
-    grid-template-rows: auto;
-    grid-template-areas: 
-      "${ colAreas }"
-  `;
+  // const BottomSection = styled.div`
+  //   margin-top: 2rem;
+  //   margin-bottom: 2rem;
+  //   width: 100%;
+  //   display: grid;
+  //   grid-template-columns: ${ colFractions };
+  //   grid-column-gap: 50px;
+  //   grid-template-rows: auto;
+  //   grid-template-areas: 
+  //     "${ colAreas }"
+  // `;
   
-  const Column = styled.div`
-    display: flex;
-    flex-direction: column;
-  `;
+  // const Column = styled.div`
+  //   display: flex;
+  //   flex-direction: column;
+  // `;
 
-  const renderedColumns = props.columnsData.map((col, index) => {
-    return (
-      <div 
-        key={index}
-        css={ css`grid-area: a${index.toString()}`}>
-        <Column>
-          { col }
-        </Column>
-      </div>
-    );
-  });
+  // const renderedColumns = props.columnsData.map((col, index) => {
+  //   return (
+  //     <div 
+  //       key={index}
+  //       css={ css`grid-area: a${index.toString()}`}>
+  //       <Column>
+  //         { col }
+  //       </Column>
+  //     </div>
+  //   );
+  // });
 
   const LinkWrapper = styled.div`
     padding: 0.5rem 0.8rem;
@@ -110,9 +110,10 @@ const Layout = (props) => {
             { props.topComponents.right }
           </div>
         </TopSection>
-        <BottomSection>
-          { renderedColumns }
-        </BottomSection>
+        <div>
+          {props.children}
+          {/* { renderedColumns } */}
+        </div>
       </LayoutContainer>
     </div>
   );

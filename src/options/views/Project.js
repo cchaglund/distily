@@ -6,6 +6,7 @@ import Layout from '../../components/Layout';
 import TextInput from '../../components/TextInput';
 import Button from '../../components/Button';
 import UrlsList from '../../components/UrlsList';
+import Overview from './Overview';
 import styled from '@emotion/styled';
 
 // import BarChart from './Charts/BarChart/chart.js';
@@ -17,6 +18,7 @@ const Project = (props) => {
   const [ createdDate, setCreatedDate ] = useState();
   const [ lastOpenedDate, setLastOpenedDate ] = useState();
   const [ timesOpened, setTimesOpened ] = useState();
+  const [ child, setChild ] = useState('project');
 
   useEffect(() => {
     const project = props.location.state.params.data;
@@ -82,15 +84,18 @@ const Project = (props) => {
         <Button
           type={'nav'}
           size={'regular'}
-          text={'Overview'} />
+          text={'Overview'}
+          clicked={() => changeView('overview')} />
         <Button
           type={'nav'}
           size={'regular'}
-          text={'History'} />
+          text={'History'} 
+          clicked={() => changeView('history')}/>
         <Button
           type={'nav'}
           size={'regular'}
-          text={'Charts'} />
+          text={'Charts'} 
+          clicked={() => changeView('charts')}/>
       </Div>
     </div>
   );
@@ -101,6 +106,10 @@ const Project = (props) => {
       type={'search'}
       size={'regular'}/>
   );
+
+  const changeView = (text) => {
+    setChild(text);
+  };
 
   {/*
   <BarChart 
@@ -115,72 +124,9 @@ const Project = (props) => {
         left: leftComponent,
         right: rightComponent
       }}
-      columnsData={[
-        <div>
-          <h5>Recent URLs</h5>
-          <h6>Bulk open</h6>
-          <Div>
-            <Button
-              type={'action'}
-              size={'regular'}
-              text={'Recent 5'}
-              clicked={() => resumeProject('recent', 5)} />
-            <Button
-              type={'action'}
-              size={'regular'}
-              text={'Recent 10'} 
-              clicked={() => resumeProject('recent', 10)} />
-          </Div>
-          { urls ? <UrlsList
-            key='1'
-            urls={urls}
-            type={'recent'} /> : null }
-          <Button 
-            type={'nav'}
-            text={'Show more'}
-            size={'regular'}
-            clicked={() => showMore()} />
-        </div>,
-        <div>
-          <h5>Top URLS</h5>
-          <h6>Bulk open</h6>
-          <Div>
-            <Button
-              type={'action'}
-              size={'regular'}
-              text={'Top 5'} 
-              clicked={() => resumeProject('top', 5)} />
-            <Button
-              type={'action'}
-              size={'regular'}
-              text={'Top 10'} 
-              clicked={() => resumeProject('top', 10)} />
-          </Div>
-          { urls ? <UrlsList 
-            key='2'
-            urls={urls}
-            type={'top'}
-            clicked={(id) => console.log('trying to open url', id)} /> : null }
-          <Button 
-            type={'nav'}
-            text={'Show more'}
-            size={'regular'}
-            clicked={() => showMore()} />
-        </div>,
-        <div>
-          <h5>By domain</h5>
-          { urls ? <UrlsList 
-            key='3'
-            urls={urls}
-            type={'host'}
-            clicked={(id) => console.log('trying to open url', id)} /> : null }
-          <Button 
-            type={'nav'}
-            text={'Show more'}
-            size={'regular'}
-            clicked={() => showMore()} />
-        </div>
-      ]} />
+    >
+      <Overview urls={urls ? urls : null } project={project ? project : null} />
+    </Layout>
   );
 };
 

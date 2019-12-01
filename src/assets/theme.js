@@ -3,6 +3,21 @@ const lightGray = '#F0F0F0';
 const red = '#B8001E';
 
 const theme = {
+  BottomSection: `
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 50px;
+    grid-template-rows: auto;
+    grid-template-areas: 
+      "left mid right"
+  `,
+  Column: `
+    display: flex;
+    flex-direction: column;
+  `,
   fonts: {
     header1: 'Montserrat ExtraBold',
   },
