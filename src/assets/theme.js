@@ -14,6 +14,17 @@ const theme = {
     grid-template-areas: 
       "left mid right"
   `,
+  BottomSectionTwoColumns: `
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 200px;
+    grid-template-rows: auto;
+    grid-template-areas: 
+      "left right"
+  `,
   Column: `
     display: flex;
     flex-direction: column;

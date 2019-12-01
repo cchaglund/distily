@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import { withTheme } from 'emotion-theming';
 import ProjectsList from '../../components/ProjectsList';
