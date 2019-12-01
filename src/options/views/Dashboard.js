@@ -1,19 +1,22 @@
 /* eslint-disable no-undef */
 
 import React, { useState, useEffect } from 'react';
-import styled from '@emotion/styled';
+// import styled from '@emotion/styled';
 import { withTheme } from 'emotion-theming';
 import TextInput from '../../components/TextInput';
 import Layout from '../../components/Layout';
-import ProjectsList from '../../components/ProjectsList';
-import UrlsList from '../../components/UrlsList';
-import Button from '../../components/Button';
+import Summary from './Summary';
+// import ProjectsList from '../../components/ProjectsList';
+// import UrlsList from '../../components/UrlsList';
+// import Button from '../../components/Button';
+import * as Fuse from 'fuse.js';
 import {
   withRouter,
 } from 'react-router-dom';
 
 const Dashboard = (props) => {
   const [ error, setError ] = useState();
+  const [ searchResults, setSearchResults ] = useState();
 
   useEffect(() => {
     browser.runtime.sendMessage({
@@ -36,30 +39,30 @@ const Dashboard = (props) => {
     });
   }, []);
   
-  const openProject = projIndex => {
-    // indexedDB starts at 1, so to get the project by index I take id - 1
-    let project = props.projects[projIndex - 1];
+  // const openProject = projIndex => {
+  //   // indexedDB starts at 1, so to get the project by index I take id - 1
+  //   let project = props.projects[projIndex - 1];
 
-    props.history.push({
-      pathname: '/project',
-      state: {
-        params: {
-          data: project
-        }
-      }
-    });
-  };
+  //   props.history.push({
+  //     pathname: '/project',
+  //     state: {
+  //       params: {
+  //         data: project
+  //       }
+  //     }
+  //   });
+  // };
 
-  const resumeProject = (projId, openType, tabCount) => {
-    browser.runtime.sendMessage({
-      type: 'resumeProject',
-      data: {
-        projectId: projId,
-        openType: openType,
-        tabCount: tabCount
-      }
-    });
-  };
+  // const resumeProject = (projId, openType, tabCount) => {
+  //   browser.runtime.sendMessage({
+  //     type: 'resumeProject',
+  //     data: {
+  //       projectId: projId,
+  //       openType: openType,
+  //       tabCount: tabCount
+  //     }
+  //   });
+  // };
 
   const createHandler = (title) => {
     const titleExists = props.projects.filter( project => {
@@ -78,21 +81,35 @@ const Dashboard = (props) => {
   };
 
   const search = (term) => {
-    console.log('searching for ', term);
+    const options = {
+      shouldSort: true,
+      threshold: 0.6,
+      location: 0,
+      distance: 100,
+      maxPatternLength: 32,
+      minMatchCharLength: 1,
+      keys: [
+        'title'
+      ]
+    };
+
+    const fuse = new Fuse(props.projects, options);
+    const result = fuse.search(term);
+    setSearchResults(result);
   };
 
-  const showMore = () => {
-    console.log('showing more');
-  };  
+  // const showMore = () => {
+  //   console.log('showing more');
+  // };  
 
-  const BottomSection = styled.div`
-    ${props.theme.BottomSection}
-  `;
+  // const BottomSection = styled.div`
+  //   ${props.theme.BottomSection}
+  // `;
 
-  const Column = styled.div`
-    ${ props.theme.Column}
-    grid-area: ${ props => props.area};
-  `;
+  // const Column = styled.div`
+  //   ${ props.theme.Column}
+  //   grid-area: ${ props => props.area};
+  // `;
 
   return (
     <div>
@@ -111,7 +128,10 @@ const Dashboard = (props) => {
             clicked={ (term) => search(term) } />
         }}
       >
-        <BottomSection>
+        <Summary 
+          projects={props.projects ? props.projects : null}
+          urls={props.urls ? props.urls : null}/>
+        {/* <BottomSection>
           <Column area={ 'left' }>
             <h4>Jump back in</h4>
             <h6>Recent projects</h6>
@@ -151,7 +171,7 @@ const Dashboard = (props) => {
               size={'regular'}
               clicked={() => showMore()} />
           </Column>
-        </BottomSection>
+        </BottomSection> */}
       </Layout>
     </div>
   );
