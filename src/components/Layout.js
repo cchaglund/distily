@@ -1,6 +1,5 @@
 /** @jsx jsx */
 
-import { useState, useEffect} from 'react';
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import {
@@ -9,22 +8,6 @@ import {
 } from 'react-router-dom';
 
 const Layout = (props) => {
-  // const [ colAreas, setColAreas ] = useState();
-  // const [ colFractions, setColFractions ] = useState();
-
-  useEffect(() => {
-    // const colTemplateAreas = props.columnsData.map((col, index) => {
-    //   return 'a' + index.toString();
-    // });
-
-    // const colTemplateColums = props.columnsData.map(() => {
-    //   return '1fr';
-    // });
-
-    // setColFractions(colTemplateColums.join(' '));
-    // setColAreas(colTemplateAreas.join(' '));
-  }, []);
-
   const LayoutContainer = styled.div`
     width: 90vw;
     height: 100%;
@@ -42,35 +25,6 @@ const Layout = (props) => {
     grid-template-areas: 
       "left right"
   `;
-
-  // const BottomSection = styled.div`
-  //   margin-top: 2rem;
-  //   margin-bottom: 2rem;
-  //   width: 100%;
-  //   display: grid;
-  //   grid-template-columns: ${ colFractions };
-  //   grid-column-gap: 50px;
-  //   grid-template-rows: auto;
-  //   grid-template-areas: 
-  //     "${ colAreas }"
-  // `;
-  
-  // const Column = styled.div`
-  //   display: flex;
-  //   flex-direction: column;
-  // `;
-
-  // const renderedColumns = props.columnsData.map((col, index) => {
-  //   return (
-  //     <div 
-  //       key={index}
-  //       css={ css`grid-area: a${index.toString()}`}>
-  //       <Column>
-  //         { col }
-  //       </Column>
-  //     </div>
-  //   );
-  // });
 
   const LinkWrapper = styled.div`
     padding: 0.5rem 0.8rem;
@@ -112,7 +66,6 @@ const Layout = (props) => {
         </TopSection>
         <div>
           {props.children}
-          {/* { renderedColumns } */}
         </div>
       </LayoutContainer>
     </div>
