@@ -5,8 +5,9 @@ import { withRouter } from 'react-router-dom';
 import Layout from '../../components/Layout';
 import TextInput from '../../components/TextInput';
 import Button from '../../components/Button';
-import UrlsList from '../../components/UrlsList';
 import Overview from './Overview';
+import History from './History';
+import Charts from './Charts';
 import styled from '@emotion/styled';
 
 // import BarChart from './Charts/BarChart/chart.js';
@@ -18,7 +19,8 @@ const Project = (props) => {
   const [ createdDate, setCreatedDate ] = useState();
   const [ lastOpenedDate, setLastOpenedDate ] = useState();
   const [ timesOpened, setTimesOpened ] = useState();
-  const [ child, setChild ] = useState('project');
+  const [ panelType, setPanelType ] = useState('overview');
+  const [ panel, setPanel ] = useState();
 
   useEffect(() => {
     const project = props.location.state.params.data;
@@ -48,21 +50,11 @@ const Project = (props) => {
     setTimesOpened(project.timesOpened);
   }, []);
 
-  const resumeProject = (openType, tabCount) => {
-    browser.runtime.sendMessage({
-      type: 'resumeProject',
-      data: {
-        projectId: project.id,
-        openType: openType,
-        tabCount: tabCount
-      }
-    });
-  };
-
   const Div = styled.div`
+    margin-top: 0.5rem;
     display: flex;
     > * {
-      margin: 0.5rem 0.7rem 0.5rem 0;
+      margin-right: 0.7rem;
     }
   `;
 
@@ -85,16 +77,19 @@ const Project = (props) => {
           type={'nav'}
           size={'regular'}
           text={'Overview'}
+          active={ panelType === 'overview' ? true : false }
           clicked={() => changeView('overview')} />
         <Button
           type={'nav'}
           size={'regular'}
           text={'History'} 
+          active={ panelType === 'history' ? true : false }
           clicked={() => changeView('history')}/>
         <Button
           type={'nav'}
           size={'regular'}
           text={'Charts'} 
+          active={ panelType === 'charts' ? true : false }
           clicked={() => changeView('charts')}/>
       </Div>
     </div>
@@ -107,9 +102,28 @@ const Project = (props) => {
       size={'regular'}/>
   );
 
-  const changeView = (text) => {
-    setChild(text);
+  const changeView = (panelType) => {
+    switch(panelType) {
+      case 'overview':
+        setPanelType('overview');
+        setPanel(<Overview urls={urls ? urls : null } project={project ? project : null} />);
+        break;
+      case 'history':
+        setPanelType('history');
+        setPanel(<History urls={urls ? urls : null } project={project ? project : null} />);
+        break;
+      case 'charts':
+        setPanelType('charts');
+        setPanel(<Charts urls={urls ? urls : null } project={project ? project : null} />);
+        break;
+    }
   };
+
+
+
+  // const overview = <Overview urls={urls ? urls : null } project={project ? project : null} />;
+  // const history = <History urls={urls ? urls : null } project={project ? project : null} />;
+  // const charts = <Charts urls={urls ? urls : null } project={project ? project : null} />;
 
   {/*
   <BarChart 
@@ -125,7 +139,7 @@ const Project = (props) => {
         right: rightComponent
       }}
     >
-      <Overview urls={urls ? urls : null } project={project ? project : null} />
+      { panel ? panel : <Overview urls={urls ? urls : null } project={project ? project : null} />}
     </Layout>
   );
 };

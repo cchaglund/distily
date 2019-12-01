@@ -7,7 +7,7 @@ import Ctrl from '../background/controller';
 
 const Controller = new Ctrl(browser);
 
-const Button = ({size, text, type, clicked, data}) => {
+const Button = ({size, text, type, clicked, data, active}) => {
   const Color = require('color');
 
   let color;
@@ -33,15 +33,15 @@ const Button = ({size, text, type, clicked, data}) => {
   const hoverColor = Color(color).darken(0.05).hsl().string();
 
   const ButtonContainer = styled.div`
-    background-color: ${color};
+    background-color: ${ active ? 'white' : color};
     width: ${ size === 'wide' ? 'auto' : 'max-content'};
     padding: ${ size === 'wide' ? '0.2rem 1rem' : '0.4rem 1rem'};
     margin-top: 0.3rem;
     margin-bottom: 0.3rem;
-    border: 1px solid ${color};
+    border: 1px solid ${active ? 'white' : color};
     cursor: pointer;
     &:hover {
-      background-color: ${hoverColor};
+      background-color: ${active ? 'white' : hoverColor};
     }
   `;
 
