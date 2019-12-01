@@ -59,7 +59,7 @@ const Overview = (props) => {
   return (
     <BottomSection>
       <Column area={ 'left' }>
-        <h5>Recent URLs</h5>
+        <h4>Recent URLs</h4>
         <h6>Bulk open</h6>
         <Div>
           <Button
@@ -84,7 +84,7 @@ const Overview = (props) => {
           clicked={() => showMore()} />
       </Column>
       <Column area={ 'mid' }>
-        <h5>Top URLS</h5>
+        <h4>Top URLS</h4>
         <h6>Bulk open</h6>
         <Div>
           <Button
@@ -110,7 +110,7 @@ const Overview = (props) => {
           clicked={() => showMore()} />
       </Column>
       <Column area={ 'right' }>
-        <h5>By domain</h5>
+        <h4>By domain</h4>
         { urls ? <UrlsList 
           key='3'
           urls={urls}

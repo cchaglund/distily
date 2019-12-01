@@ -113,7 +113,7 @@ const Dashboard = (props) => {
       >
         <BottomSection>
           <Column area={ 'left' }>
-            <h5>Jump back in</h5>
+            <h4>Jump back in</h4>
             <h6>Recent projects</h6>
             { props.projects ? <ProjectsList 
               projects={props.projects}
@@ -126,7 +126,7 @@ const Dashboard = (props) => {
               clicked={() => showMore()} />
           </Column>
           <Column area={ 'mid' }>
-            <h5>Top URLS</h5>
+            <h4>Top URLS</h4>
             <h6>All time</h6>
             { props.urls ? <UrlsList 
               urls={props.urls}
@@ -139,7 +139,7 @@ const Dashboard = (props) => {
               clicked={() => showMore()} />
           </Column>
           <Column area={ 'right' }>
-            <h5>Inspect</h5>
+            <h4>Inspect</h4>
             <h6>Recent projects</h6>
             { props.projects ? <ProjectsList 
               projects={props.projects}

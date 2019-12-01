@@ -84,8 +84,8 @@ const UrlsList = ({urls, clicked, type}) => {
   };
   
   const UrlsListContainer = styled.div`
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
   `;
 
   return (
