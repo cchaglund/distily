@@ -25,6 +25,17 @@ const theme = {
     grid-template-areas: 
       "left right"
   `,
+  BottomSectionFull: `
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-column-gap: 200px;
+    grid-template-rows: auto;
+    grid-template-areas: 
+      "full"
+  `,
   Column: `
     display: flex;
     flex-direction: column;

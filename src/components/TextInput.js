@@ -5,7 +5,7 @@ import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import Button from './Button';
 
-const TextInput = ({type, text, size, clicked, error}) => {
+const TextInput = ({type, text, size, clicked, error, placeholder}) => {
   const [ input, setInput ] = useState('');
 
   const style = css`
@@ -41,7 +41,7 @@ const TextInput = ({type, text, size, clicked, error}) => {
           value={ input } 
           onChange={ updateTitle }
           type='text' 
-          placeholder='Project title' />
+          placeholder={ placeholder ? placeholder : 'Project title' } />
         <Button 
           type={type}
           text={text}

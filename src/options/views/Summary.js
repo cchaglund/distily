@@ -78,7 +78,7 @@ const Summary = (props) => {
           clicked={() => showMore()} />
       </Column>
       <Column area={ 'right' }>
-        <h4>Inspect</h4>
+        <h4>Manage</h4>
         <h6>Recent projects</h6>
         { props.projects ? <ProjectsList 
           projects={props.projects}

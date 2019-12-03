@@ -118,7 +118,7 @@ const Popup = () => {
           error={ error ? error : null}/>
       </CreateContainer>
       <ProjectsContainer>
-        <h6>Open project</h6>
+        <h6>Jump back in</h6>
         { projects ? <ProjectsList 
           projects={projects}
           clicked={(projID) => resumeProject(projID)} /> : null }

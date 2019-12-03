@@ -1,6 +1,11 @@
 {
   "version": "1.0",
   "manifest_version": 2,
+  "applications": {
+    "gecko": {
+        "id": "christofer.haglund@outlook.com"
+    }
+  },
   "name": "React Boilerplate Extension",
   "description": "Modern React boilerplate for Firefox and Chrome extensions.",
   "content_scripts": [

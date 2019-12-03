@@ -1,8 +1,10 @@
 import projectsObject from './projects';
 import urlsObject from './urls';
+import settingsObject from './settings.js';
 
 const projectsDB = new projectsObject();
 const urlsDB = new urlsObject();
+const settingsDB = new settingsObject();
 
 const DB = {
   projects: {
@@ -19,6 +21,10 @@ const DB = {
     getAll: () => urlsDB.getAllURLs(),
     getAllByProject: (projectID) => urlsDB.getAllProjectURLs(projectID),
     delete: (id) => urlsDB.deleteURL(id)
+  },
+  settings: {
+    add: (setting) => settingsDB.addSetting(setting),
+    getAll: () => settingsDB.getAllSettings(),
   }
 };
 

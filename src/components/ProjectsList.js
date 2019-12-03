@@ -63,7 +63,7 @@ const ProjectsList = ({projects, clicked, clickAction}) => {
   
   const ProjectsListContainer = styled.div`
     margin-top: 0.3rem;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.5rem;
   `;
 
   return (

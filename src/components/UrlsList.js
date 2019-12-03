@@ -74,7 +74,7 @@ const UrlsList = ({urls, clicked, type}) => {
       return (
         <div 
           key={host}
-          css={ css`margin-top: 1.2rem` }>
+          css={ css`margin-bottom: 1.2rem` }>
           {urls}
         </div>
       );
@@ -85,7 +85,7 @@ const UrlsList = ({urls, clicked, type}) => {
   
   const UrlsListContainer = styled.div`
     margin-top: 0.3rem;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.5rem;
   `;
 
   return (

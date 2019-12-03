@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
+import DB from './index.js';
 
-const DB = {
+const database = {
   init: () => {
     let db;
     let dbReq = indexedDB.open('distily', 1);
@@ -17,10 +18,20 @@ const DB = {
         keyPath: 'id',
         autoIncrement: true
       }).createIndex('hash', 'hash');
+
+      db.createObjectStore('settings', {
+        keyPath: 'id',
+        autoIncrement: true
+      }).createIndex('title', 'title');
     };
 
     dbReq.onsuccess = event => {
+      console.log('succeeded in initing db');
       db = event.target.result;
+      DB.settings.add({
+        title: 'Blacklisted urls',
+        entry: ['gmail.com', 'outlook.com', 'outlook.live.com', 'google.com/search'],
+      });
     };
 
     dbReq.onerror = event => {
@@ -31,10 +42,14 @@ const DB = {
     dbReq.onblocked = e => console.log('was blocked');
     dbReq.onversionchange = e => console.log('version change');
     dbReq.onclose = e => console.log('close');
+
+    return dbReq;
   },
 
   connect: (data) => {
     let dbReq = indexedDB.open('distily', 1);
+
+    console.log('trying to connect to db with this data:', data);
 
     dbReq.onsuccess = event => {
       let db = event.target.result;
@@ -72,7 +87,7 @@ const DB = {
   },
 };
 
-export default DB;
+export default database;
 
 // const init = () => {
 //   'use strict';

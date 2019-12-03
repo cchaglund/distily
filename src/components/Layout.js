@@ -28,6 +28,7 @@ const Layout = (props) => {
 
   const LinkWrapper = styled.div`
     padding: 0.5rem 0.8rem;
+    ${ props => props.extraStyle }
   `;
 
   const StyledLink = styled(Link)`
@@ -48,11 +49,19 @@ const Layout = (props) => {
             <h5>Dashboard</h5>
           </StyledLink>
         </LinkWrapper>
-        { props.location.pathname === '/project' ? <LinkWrapper 
-          to="/project">
-          <h5>Project > {props.projectTitle ? props.projectTitle : null}</h5>
-        </LinkWrapper> 
+        { props.location.pathname === '/project' ? 
+          <LinkWrapper 
+            to="/project">
+            <h5>Project > {props.projectTitle ? 
+              props.projectTitle 
+              : null}</h5>
+          </LinkWrapper>
           : null}
+        <LinkWrapper extraStyle={'margin-left: auto;'}>
+          <StyledLink to="/settings">
+            <h5>Settings</h5>
+          </StyledLink>
+        </LinkWrapper>
       </StyledNav>
 
       <LayoutContainer>

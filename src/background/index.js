@@ -32,11 +32,16 @@ browser.runtime.onMessage.addListener( message => {
     case 'getCurrentProject':
       Controller.getCurrentProject();
       break;
+
     case 'getAllUrls':
       Controller.getAllURLS();
       break;
     case 'getAllProjectUrls':
       Controller.getAllProjectURLS(message.data);
+      break;
+
+    case 'getAllSettings':
+      Controller.getAllSettings();
       break;
   }
 });

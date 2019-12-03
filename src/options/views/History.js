@@ -60,18 +60,13 @@ const History = (props) => {
   return (
     <BottomSection>
       <Column area={ 'left' }>
-        <h5>Recent URLs</h5>
+        <h4>Previous session tabs</h4>
         <h6>Bulk open</h6>
         <Div>
           <Button
             type={'action'}
             size={'regular'}
-            text={'Recent 5'}
-            clicked={() => resumeProject('recent', 5)} />
-          <Button
-            type={'action'}
-            size={'regular'}
-            text={'Recent 10'} 
+            text={'Resume session'}
             clicked={() => resumeProject('recent', 10)} />
         </Div>
         { urls ? <UrlsList
@@ -85,20 +80,21 @@ const History = (props) => {
           clicked={() => showMore()} />
       </Column>
       <Column area={ 'mid' }>
-        <h5>Top URLS</h5>
-        <h6>Bulk open</h6>
+        <h4>History</h4>
+        <h6>Sort</h6>
         <Div>
           <Button
             type={'action'}
             size={'regular'}
-            text={'Top 5'} 
+            text={'By data'} 
             clicked={() => resumeProject('top', 5)} />
           <Button
             type={'action'}
             size={'regular'}
-            text={'Top 10'} 
+            text={'By activity'} 
             clicked={() => resumeProject('top', 10)} />
         </Div>
+        <h6>(click again to reverse order)</h6>
         { urls ? <UrlsList 
           key='2'
           urls={urls}
@@ -111,7 +107,7 @@ const History = (props) => {
           clicked={() => showMore()} />
       </Column>
       <Column area={ 'right' }>
-        <h5>By domain</h5>
+        <h4>By domain</h4>
         { urls ? <UrlsList 
           key='3'
           urls={urls}

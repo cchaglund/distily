@@ -11,6 +11,7 @@ import {
 import './Options.css';
 import Dashboard from './views/Dashboard';
 import Project from './views/Project';
+import Settings from './views/Settings';
 import ThemeProvider from '../assets/provider';
 import './Options.css';
 
@@ -56,6 +57,9 @@ const Options = () => {
           </Route>
           <Route path="/project">
             <Project />
+          </Route>
+          <Route path="/settings">
+            <Settings />
           </Route>
           <Route path="/">
             <Dashboard 

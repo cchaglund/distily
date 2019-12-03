@@ -66,6 +66,20 @@ class Controller  {
     });
   }
 
+  getAllSettings () {
+    return new Promise( resolve => {
+      DB.settings.getAll()
+        .then( res => {
+          const sending = this.browser.runtime.sendMessage({
+            type: 'allSettings',
+            data: res
+          });
+          sending.then(() => console.log('sent'), (e) => console.log('error: ', e));
+          resolve(res);
+        });
+    });
+  }
+
   getAllProjectURLS(projectID) {
     return new Promise( resolve => {
       DB.urls.getAllByProject(projectID)
@@ -353,6 +367,7 @@ class Controller  {
       return;
     }
 
+    // this seems unecessary to add url.host to url.host...?
     url = {
       hash: hash.sha256().update(evt.url).digest('hex'),
       host: url.host,

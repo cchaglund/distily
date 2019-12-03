@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { withTheme } from 'emotion-theming';
 import ProjectsList from '../../components/ProjectsList';
-import UrlsList from '../../components/UrlsList';
 import Button from '../../components/Button';
 import * as Fuse from 'fuse.js';
 import {
@@ -75,8 +74,12 @@ const Search = ({list, term, theme, close}) => {
         onClick={() => close()}/>
       <BottomSection>
         <Column area={ 'right' }>
-          <h4>Results</h4>
-          <h6>(Click outside results to exit)</h6>
+          <Button
+            type={'nav'}
+            size={'regular'}
+            text={'Exit search'} 
+            clicked={() => close()} />
+          <h5>Results</h5>
           { searchResults ? 
             <ProjectsList 
               projects={searchResults}
