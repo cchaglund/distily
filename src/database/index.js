@@ -25,6 +25,7 @@ const DB = {
   settings: {
     add: (setting) => settingsDB.addSetting(setting),
     getAll: () => settingsDB.getAllSettings(),
+    update: (id, data) => urlsDB.updateURL(id, data),
   }
 };
 

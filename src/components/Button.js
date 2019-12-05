@@ -28,12 +28,20 @@ const Button = ({size, text, type, clicked, data, active}) => {
     case 'project':
       color = '#FDEBD6';
       break;
+    case 'blacklisted':
+      color = '#485050';
+      break;
   }
 
-  const hoverColor = Color(color).darken(0.05).hsl().string();
+  let hoverColor = Color(color).darken(0.05).hsl().string();
+
+  if ( type === 'blacklisted' ) {
+    hoverColor = Color(color).lighten(0.2).hsl().string();
+  }
 
   const ButtonContainer = styled.div`
     background-color: ${ active ? 'white' : color};
+    ${ type === 'blacklisted' ? 'color: white;' : null }
     width: ${ size === 'wide' ? 'auto' : 'max-content'};
     padding: ${ size === 'wide' ? '0.2rem 1rem' : '0.4rem 1rem'};
     margin-top: 0.3rem;

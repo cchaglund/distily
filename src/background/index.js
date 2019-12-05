@@ -7,8 +7,8 @@ console.log('Background.js file loaded');
 const Controller = new Contr( browser );
 
 browser.runtime.onInstalled.addListener( () => {
-  Controller.initState();
   DB.init();
+  Controller.initState();
 });
 
 browser.runtime.onMessage.addListener( message => {
@@ -42,6 +42,9 @@ browser.runtime.onMessage.addListener( message => {
 
     case 'getAllSettings':
       Controller.getAllSettings();
+      break;
+    case 'addToBlacklist':
+      Controller.addToBlacklist(message.data);
       break;
   }
 });

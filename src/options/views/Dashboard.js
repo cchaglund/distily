@@ -5,7 +5,7 @@ import { withTheme } from 'emotion-theming';
 import TextInput from '../../components/TextInput';
 import Layout from '../../components/Layout';
 import Summary from './Summary';
-import Search from './Search';
+import SearchResults from './SearchResults';
 import {
   withRouter,
 } from 'react-router-dom';
@@ -37,9 +37,9 @@ const Dashboard = (props) => {
   }, []);
 
   const createHandler = (title) => {
-    const titleExists = props.projects.filter( project => {
+    const titleExists = props.projects ? props.projects.filter( project => {
       return project.title === title;
-    });
+    }) : null;
 
     if (titleExists.length !== 0) {
       setError(`Project '${title}' already exists`);
@@ -80,7 +80,7 @@ const Dashboard = (props) => {
         }}
       >
         { searching ? 
-          <Search 
+          <SearchResults 
             list={ props.projects ? props.projects : null }
             term={ searchTerm } 
             close={() => closeSearch()}/> 

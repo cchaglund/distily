@@ -80,6 +80,18 @@ class Controller  {
     });
   }
 
+  addToBlacklist (domain) {
+    console.log('inside controller, adding to blacklist', domain);
+    this.getAllSettings()
+      .then( settings => {
+        settings['blacklist'][domain] ? console.log('domain already exists') : console.log('will add domain');
+      });
+    // DB.settings.update()
+    //   .then( res => {
+
+    //   });
+  }
+
   getAllProjectURLS(projectID) {
     return new Promise( resolve => {
       DB.urls.getAllByProject(projectID)

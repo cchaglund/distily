@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import DB from './index.js';
+import settingsConfig from '../database/settingsConfig';
 
 const database = {
   init: () => {
@@ -23,14 +24,33 @@ const database = {
         keyPath: 'id',
         autoIncrement: true
       }).createIndex('title', 'title');
+
+      db.onsuccess = e => {
+        console.log('dbs all set up??');
+      };
     };
 
     dbReq.onsuccess = event => {
+      console.log(event);
       console.log('succeeded in initing db');
-      db = event.target.result;
+      // db = event.target.result;
       DB.settings.add({
-        title: 'Blacklisted urls',
-        entry: ['gmail.com', 'outlook.com', 'outlook.live.com', 'google.com/search'],
+        blacklist: {
+          title: 'Blacklisted urls',
+          entries: {
+            'gmail.com': null,
+            'outlook.com': null,
+            'google.com/search': null
+          }
+        },
+        resuming: {
+          title: 'Choose how to resume by default',
+          entries: {
+            'top': true,
+            'recent': false,
+            'fresh': false,
+          }
+        }
       });
     };
 

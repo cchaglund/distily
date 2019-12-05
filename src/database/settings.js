@@ -14,9 +14,7 @@ class SettingsDB {
   }
 
   addSetting (setting) {
-    console.log('am I in settings.js?');
-    console.log('setting:', setting);
-
+    console.log('HEY');
     let promise = new Promise( resolve => {
 
       const data = {
