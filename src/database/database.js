@@ -30,25 +30,6 @@ const database = {
     dbReq.onsuccess = event => {
       console.log(event);
       console.log('succeeded in initing db');
-      // db = event.target.result;
-      // DB.settings.add({
-      //   blacklist: {
-      //     title: 'Blacklisted urls',
-      //     entries: {
-      //       'gmail.com': null,
-      //       'outlook.com': null,
-      //       'google.com/search': null
-      //     }
-      //   },
-      //   resuming: {
-      //     title: 'Choose how to resume by default',
-      //     entries: {
-      //       'top': true,
-      //       'recent': false,
-      //       'fresh': false,
-      //     }
-      //   }
-      // });
     };
 
     dbReq.onerror = event => {
@@ -103,39 +84,3 @@ const database = {
 };
 
 export default database;
-
-// const init = () => {
-//   'use strict';
-
-//   // check for support
-//   if (!('indexedDB' in window)) {
-//     console.log('This browser doesn\'t support IndexedDB');
-//     return;
-//   }
-
-//   console.log('about to open DB');
-
-//   idb.open('distily', 1, (upgradeDb) => {
-//     console.log('inside?');
-//     if ( !upgradeDb.objectStoreNames.contains('projects') ) {
-//       const projects = upgradeDb.createObjectStore('projects', {
-//         keyPath: 'id',
-//         autoIncrement: true
-//       });
-
-//       projects.createIndex('lastOpened', 'lastOpened');
-//       projects.createIndex('timesOpened', 'timesOpened');
-//       projects.createIndex('timesOpened', 'timesOpened');
-//     }
-
-//     if ( !upgradeDb.objectStoreNames.contains('urls') ) {
-//       upgradeDb.createObjectStore('urls', {
-//         keyPath: 'id',
-//         autoIncrement: true
-//       });
-//     }
-
-//     console.log('tables initiated?');
-//   });
-// };
-

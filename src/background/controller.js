@@ -247,17 +247,6 @@ class Controller  {
     this.browser.tabs.create({
       url: url.href
     });
-    // this.getAllProjects()
-    //   .then(res => {
-    //     this.browser.windows.getCurrent()
-    //       .then(windowInfo => {
-    //         res.forEach( project => {
-    //           if (project.activeWindow === windowInfo.id) {
-    //             // do something
-    //           }
-    //         });
-    //       });
-    //   });
   }
 
   closeWindowHandler ( windowId ) {
@@ -373,39 +362,53 @@ class Controller  {
       return;
     }
 
-    // this seems unecessary to add url.host to url.host...?
-    url = {
-      hash: hash.sha256().update(evt.url).digest('hex'),
-      host: url.host,
-      href: url.href
-    };
+    this.getAllBlacklistTerms()
+      .then(items => {
+        console.log('items', items);
+        items.forEach( item =>{
+          console.log('item', item);
+          console.log('url.href', url.href);
+          console.log('item.term', item.term);
+          console.log('includes?', url.href.includes(item.term));
+          if (url.href.includes(item.term) ) {
+            return;
+          }
 
-    const windowID = evt.windowId;
-    const tabID = evt.tabId;
+          // this seems unecessary to add url.host to url.host...?
+          url = {
+            hash: hash.sha256().update(evt.url).digest('hex'),
+            host: url.host,
+            href: url.href
+          };
 
-    this.getAllProjects()
-      .then(projects => {
-        const activeProjects = projects.filter( project => {
-          return project.active === true;
-        });
+          const windowID = evt.windowId;
+          const tabID = evt.tabId;
 
-        activeProjects.forEach( project => {
-          if (project.activeWindow === windowID) {
-            this.checkURLexists(url.hash, project.id)
-              .then(res => {
-                if (res.exists === true) {
-                  this.updateURL(res.URL);
-                } else {
-                  this.browser.tabs.get(tabID)
-                    .then( tab => {
-                      url.title = tab.title;
-                      url.project = project.id;
-                      this.createNewURL(url);
-                      // this.updateProject(project.id, { totalUrls: project.totalUrls + 1 });
+          this.getAllProjects()
+            .then(projects => {
+              const activeProjects = projects.filter( project => {
+                return project.active === true;
+              });
+
+              activeProjects.forEach( project => {
+                if (project.activeWindow === windowID) {
+                  this.checkURLexists(url.hash, project.id)
+                    .then(res => {
+                      if (res.exists === true) {
+                        this.updateURL(res.URL);
+                      } else {
+                        this.browser.tabs.get(tabID)
+                          .then( tab => {
+                            url.title = tab.title;
+                            url.project = project.id;
+                            this.createNewURL(url);
+                            // this.updateProject(project.id, { totalUrls: project.totalUrls + 1 });
+                          });
+                      }
                     });
                 }
               });
-          }
+            });
         });
       });
   }
