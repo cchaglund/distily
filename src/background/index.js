@@ -40,11 +40,11 @@ browser.runtime.onMessage.addListener( message => {
       Controller.getAllProjectURLS(message.data);
       break;
 
-    case 'getAllSettings':
-      Controller.getAllSettings();
+    case 'getAllBlacklistTerms':
+      Controller.getAllBlacklistTerms();
       break;
     case 'addToBlacklist':
-      Controller.addToBlacklist(message.data);
+      Controller.createBlacklistItem(message.data);
       break;
   }
 });

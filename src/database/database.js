@@ -1,7 +1,4 @@
 /* eslint-disable no-unused-vars */
-import DB from './index.js';
-import settingsConfig from '../database/settingsConfig';
-
 const database = {
   init: () => {
     let db;
@@ -20,10 +17,10 @@ const database = {
         autoIncrement: true
       }).createIndex('hash', 'hash');
 
-      db.createObjectStore('settings', {
+      db.createObjectStore('blacklist', {
         keyPath: 'id',
         autoIncrement: true
-      }).createIndex('title', 'title');
+      }).createIndex('term', 'term');
 
       db.onsuccess = e => {
         console.log('dbs all set up??');
@@ -34,24 +31,24 @@ const database = {
       console.log(event);
       console.log('succeeded in initing db');
       // db = event.target.result;
-      DB.settings.add({
-        blacklist: {
-          title: 'Blacklisted urls',
-          entries: {
-            'gmail.com': null,
-            'outlook.com': null,
-            'google.com/search': null
-          }
-        },
-        resuming: {
-          title: 'Choose how to resume by default',
-          entries: {
-            'top': true,
-            'recent': false,
-            'fresh': false,
-          }
-        }
-      });
+      // DB.settings.add({
+      //   blacklist: {
+      //     title: 'Blacklisted urls',
+      //     entries: {
+      //       'gmail.com': null,
+      //       'outlook.com': null,
+      //       'google.com/search': null
+      //     }
+      //   },
+      //   resuming: {
+      //     title: 'Choose how to resume by default',
+      //     entries: {
+      //       'top': true,
+      //       'recent': false,
+      //       'fresh': false,
+      //     }
+      //   }
+      // });
     };
 
     dbReq.onerror = event => {
@@ -68,8 +65,6 @@ const database = {
 
   connect: (data) => {
     let dbReq = indexedDB.open('distily', 1);
-
-    console.log('trying to connect to db with this data:', data);
 
     dbReq.onsuccess = event => {
       let db = event.target.result;

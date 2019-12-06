@@ -1,10 +1,10 @@
 import projectsObject from './projects';
 import urlsObject from './urls';
-import settingsObject from './settings.js';
+import blacklistObject from './blacklist';
 
 const projectsDB = new projectsObject();
 const urlsDB = new urlsObject();
-const settingsDB = new settingsObject();
+const blacklistDB = new blacklistObject();
 
 const DB = {
   projects: {
@@ -22,10 +22,10 @@ const DB = {
     getAllByProject: (projectID) => urlsDB.getAllProjectURLs(projectID),
     delete: (id) => urlsDB.deleteURL(id)
   },
-  settings: {
-    add: (setting) => settingsDB.addSetting(setting),
-    getAll: () => settingsDB.getAllSettings(),
-    update: (id, data) => urlsDB.updateURL(id, data),
+  blacklist: {
+    add: (term) => blacklistDB.addBlacklistTerm(term),
+    getAll: () => blacklistDB.getAllBlacklistTerms(),
+    delete: (id) => blacklistDB.deleteBlacklistTerm(id)
   }
 };
 

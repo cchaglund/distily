@@ -66,12 +66,12 @@ class Controller  {
     });
   }
 
-  getAllSettings () {
+  getAllBlacklistTerms () {
     return new Promise( resolve => {
-      DB.settings.getAll()
+      DB.blacklist.getAll()
         .then( res => {
           const sending = this.browser.runtime.sendMessage({
-            type: 'allSettings',
+            type: 'allBlacklistTerms',
             data: res
           });
           sending.then(() => console.log('sent'), (e) => console.log('error: ', e));
@@ -80,16 +80,10 @@ class Controller  {
     });
   }
 
-  addToBlacklist (domain) {
-    console.log('inside controller, adding to blacklist', domain);
-    this.getAllSettings()
-      .then( settings => {
-        settings['blacklist'][domain] ? console.log('domain already exists') : console.log('will add domain');
-      });
-    // DB.settings.update()
-    //   .then( res => {
-
-    //   });
+  createBlacklistItem (term) {
+    DB.blacklist.add({
+      term: term
+    });
   }
 
   getAllProjectURLS(projectID) {

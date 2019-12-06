@@ -1,34 +1,33 @@
 /* eslint-disable no-undef */
 import DB from './database';
 
-class SettingsDB {
-  broadcastUpdatedSettings () {
-    this.getAllProjects()
+class BlacklistDB {
+  broadcastUpdatedBlacklist () {
+    this.getAllBlacklistTerms()
       .then( res => {
         const sending = browser.runtime.sendMessage({
-          type: 'allProjects',
+          type: 'allBlacklistTerms',
           data: res
         });
         sending.then(() => console.log('sent'), (e) => console.log('error: ', e));
       });
   }
 
-  addSetting (setting) {
-    console.log('HEY');
+  addBlacklistTerm (setting) {
     let promise = new Promise( resolve => {
 
       const data = {
-        store: 'settings',
+        store: 'blacklist',
         method: 'add',
         mode: 'readwrite',
         payload: setting,
         callback: {
           success: (e) => {
-            // this.broadcastUpdatedSettings();
+            this.broadcastUpdatedBlacklist();
             console.log('supposedly succeeded in adding setting');
             resolve(e.target.result);
           },
-          complete: (e) => console.log('Setting add tx complete', e),
+          complete: (e) => console.log('BlacklistTerm add tx complete', e),
           error: (e) => console.log('Error adding setting', e),
         }
       };
@@ -39,10 +38,10 @@ class SettingsDB {
     return promise;
   }
 
-  getSetting (id) {
+  getBlacklistTerm (id) {
     let promise = new Promise( resolve => {
       const data = {
-        store: 'settings',
+        store: 'blacklist',
         method: 'get',
         mode: 'readonly',
         payload: id,
@@ -61,10 +60,10 @@ class SettingsDB {
     return promise;
   }
 
-  getAllSettings () {
+  getAllBlacklistTerms () {
     let promise = new Promise( resolve => {
       const data = {
-        store: 'settings',
+        store: 'blacklist',
         method: 'getAll',
         mode: 'readonly',
         payload: null,
@@ -72,8 +71,8 @@ class SettingsDB {
           success: (res) => {
             resolve(res.target.result);
           },
-          complete: (e) => console.log('Completed retrieval of all settings', e),
-          error: (e) => console.log('Error getting all settings', e),
+          complete: (e) => console.log('Completed retrieval of all blacklist', e),
+          error: (e) => console.log('Error getting all blacklist', e),
         }
       };
 
@@ -83,9 +82,9 @@ class SettingsDB {
     return promise;
   }
 
-  updateSetting (id, newData) {
+  updateBlacklistTerm (id, newData) {
     let promise = new Promise( resolve => {
-      this.getSetting(id)
+      this.getBlacklistTerm(id)
         .then( res => {
           let setting = {
             ...res.target.result,
@@ -93,16 +92,16 @@ class SettingsDB {
           };
 
           const data = {
-            store: 'settings',
+            store: 'blacklist',
             method: 'put',
             mode: 'readwrite',
             payload: setting,
             callback: {
               success: (e) => {
-                this.broadcastUpdatedSettings();
+                this.broadcastUpdatedBlacklist();
                 resolve(e);
               },
-              complete: (e) => console.log('Setting update tx complete', e),
+              complete: (e) => console.log('BlacklistTerm update tx complete', e),
               error: (e) => console.log('Error updating setting', e),
             }
           };
@@ -116,8 +115,8 @@ class SettingsDB {
 }
 
 
-//   openSettings () {
-//     const db = openDB('settings', 1);
+//   openBlacklist () {
+//     const db = openDB('blacklist', 1);
 //     return db;
 //   }
 
@@ -236,5 +235,5 @@ class SettingsDB {
 //   }
 // }
 
-export default SettingsDB;
+export default BlacklistDB;
 

@@ -10,31 +10,27 @@ import {
 } from 'react-router-dom';
 
 const Settings = () => {
-  const [ settings, setSettings ] = useState();
+  const [ blacklist, setBlacklist ] = useState();
 
   useEffect(() => {
     browser.runtime.sendMessage({
-      type: 'getAllSettings'
+      type: 'getAllBlacklistTerms'
     });
 
     browser.runtime.onMessage.addListener( message => {
       switch (message.type) {
-        case 'allSettings': {
-          let data = message.data[0]; 
-          console.log(delete data.id);
-          setSettings(data);
+        case 'allBlacklistTerms': {
+          setBlacklist(message.data);
           break;
         }
       }
     });
   }, []);
 
-  const addToBlacklist = (domain) => {
-    console.log('trying to add!', domain);
-
+  const addToBlacklist = (term) => {
     browser.runtime.sendMessage({
       type: 'addToBlacklist',
-      data: domain
+      data: term
     });
     // settings.forEach( setting => {
     //   if (setting.id === 1) {
@@ -43,36 +39,35 @@ const Settings = () => {
     // });
   };
 
-  const settingsDisplay = () => {
-    return (
-      settings ? Object.keys(settings).map(settingName => {
-        const setting = settings[settingName];
+  // const settingsDisplay = () => {
+  //   return (
+  //     blacklist ? blacklist.map(entry => {
+  //       console.log('settingDisplay:', entry);
+  //       // return <div key={ settingName }>
+  //       //   <h5>{ setting ? setting.title : 'Loading...' }</h5>
+  //       //   <h6>{ setting.entries ? 
+  //       //     <ul>
+  //       //       { 
+  //       //         Object.keys(setting.entries).map( (entry, index) => {
+  //       //           return <li key={index}>
+  //       //             {entry}
+  //       //           </li>;
+  //       //         }) 
+  //       //       }
+  //       //     </ul> 
+  //       //     : 'Loading...' }
+  //       //   </h6>
+  //       // </div>;
+  //     }) : null
+  //   );
+  // };
 
-        return <div key={ setting }>
-          <h5>{ setting ? setting.title : 'Loading...' }</h5>
-          <h6>{ setting.entries ? 
-            <ul>
-              { 
-                Object.keys(setting.entries).map( (entry, index) => {
-                  return <li key={index}>
-                    {entry}
-                  </li>;
-                }) 
-              }
-            </ul> 
-            : 'Loading...' }
-          </h6>
-        </div>;
-      }) : null
-    );
-  };
-
-  const blacklist = settings ? 
-    Object.keys(settings.blacklist.entries).map( (entry, index) => {
+  const blacklistList = blacklist ? 
+    blacklist.map( (item, index) => {
       return <Button
         key={index}
         type={'blacklisted'}
-        text={entry}
+        text={item.term}
         size={'wide'}
         // clicked={() => clicked(input)} 
       />;
@@ -82,20 +77,18 @@ const Settings = () => {
   return (
     <Layout
       topComponents={{
-        left: <div>
-          { settingsDisplay() }
-        </div>,
+        left: null,
         right: <div>
           <h4>Blacklist</h4>
-          <h6>Domains here won't be tracked</h6>
           <TextInput
             text={'Add to blacklist'}
             type={'action'}
             size={'regular'}
             placeholder={'e.g. gmail.com'}
             clicked={ (term) => addToBlacklist(term) } />
+          <h6>Domains here won't be tracked</h6>
           {/* <h5>{ setting ? setting.blacklist.title : 'Loading...'}</h5> */}
-          { blacklist }
+          { blacklistList }
         </div>
       }}
     >
