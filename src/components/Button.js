@@ -7,7 +7,7 @@ import Ctrl from '../background/controller';
 
 const Controller = new Ctrl(browser);
 
-const Button = ({size, text, type, clicked, data, active}) => {
+const Button = ({size, text, type, clicked, data, active, proportion}) => {
   const Color = require('color');
 
   let color;
@@ -23,10 +23,10 @@ const Button = ({size, text, type, clicked, data, active}) => {
       color = '#FDFFD1';
       break;
     case 'url':
-      color = '#F2F9FF';
+      color = proportion ? '#A0CFF7' : '#F2F9FF';
       break;
     case 'project':
-      color = '#FDEBD6';
+      color = proportion ? '#fcca92' : '#FDEBD6';
       break;
     case 'blacklisted':
       color = '#485050';
@@ -39,6 +39,10 @@ const Button = ({size, text, type, clicked, data, active}) => {
     hoverColor = Color(color).lighten(0.2).hsl().string();
   }
 
+  if ( proportion ) {
+    color = Color(color).fade(1-proportion).string();
+  }
+
   const ButtonContainer = styled.div`
     background-color: ${ active ? 'white' : color};
     ${ type === 'blacklisted' ? 'color: white;' : null }
@@ -46,8 +50,8 @@ const Button = ({size, text, type, clicked, data, active}) => {
     padding: ${ size === 'wide' ? '0.2rem 1rem' : '0.4rem 1rem'};
     margin-top: 0.3rem;
     margin-bottom: 0.3rem;
-    border: 1px solid ${active ? 'white' : color};
     cursor: pointer;
+    border-radius: 0.1rem;
     &:hover {
       background-color: ${active ? 'white' : hoverColor};
     }

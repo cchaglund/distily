@@ -20,19 +20,17 @@ const UrlsList = ({urls, clicked, type}) => {
         break;
       case 'host':
         renderedList = sortByHost();
+        break;
+      default:
+        renderedList = makeButtons(urls);
+        break;
     }
 
     setUrlsList(renderedList);
   }, []);
 
-  const sortUrls = (property) => {
-    let sortedUrls = [...urls ];
-
-    sortedUrls.sort( (urlA, urlB) => {
-      return (urlA[property] < urlB[property]) ? 1 : -1;
-    });
-
-    sortedUrls = sortedUrls.map( url => {
+  const makeButtons = (data) => {
+    return data.map( url => {
       return (
         <Button
           key={url.id}
@@ -40,9 +38,39 @@ const UrlsList = ({urls, clicked, type}) => {
           text={url.title} 
           type={'url'}
           size={'wide'} 
-          data={url}/>
+          data={url}
+          proportion={url.proportion}/>
       );
     });
+  };
+
+  const sortUrls = (property) => {
+    let sortedUrls = [...urls ];
+    let maxVisits = 0;
+
+    // get the highest visits value
+    if (property === 'visits') {
+      sortedUrls.forEach( url => {
+        const urlVisits = parseInt(url.visits);
+
+        if (urlVisits > maxVisits ) {
+          maxVisits = urlVisits;
+        }
+      });
+
+      sortedUrls = sortedUrls.map( url => {
+        let propor = parseInt(url.visits)/maxVisits;
+        let percent = Math.round(propor * 100) / 100;
+        url.proportion = percent;
+        return url;
+      });
+    }
+
+    sortedUrls.sort( (urlA, urlB) => {
+      return (urlA[property] < urlB[property]) ? 1 : -1;
+    });
+
+    sortedUrls = makeButtons(sortedUrls);
 
     return sortedUrls;
   };
@@ -58,17 +86,8 @@ const UrlsList = ({urls, clicked, type}) => {
     });
 
     let ready = Object.keys(hosts).map( host => {
-      let urls = hosts[host].map( url => {
-        return (
-          <Button
-            key={url.id}
-            clicked={ () => clicked(url)}
-            text={url.title} 
-            type={'url'}
-            size={'wide'} 
-            data={url}/>
-        );
-      });
+      let urls = makeButtons(hosts[host]);
+
       host = host.includes('www.') ? host.replace('www.', '') : host;
       
       return (
