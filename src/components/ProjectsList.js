@@ -6,7 +6,7 @@ import styled from '@emotion/styled';
 import Button from './Button';
 
 const ProjectsList = ({projects, clicked, clickAction, type}) => {
-  const [projectsList, setProjectsList ] = useState();
+  const [ projectsList, setProjectsList ] = useState();
   const [ openOptions, setOpenOptions] = useState();
 
   useEffect(() => {
@@ -108,7 +108,7 @@ const ProjectsList = ({projects, clicked, clickAction, type}) => {
             <Button
               clicked={ () => clickHandler(project.id)}
               text={project.title} 
-              type={'project'}
+              type={ type === 'neutral' ? 'neutral' : 'project'}
               size={'wide'} 
               proportion={project.proportion ? project.proportion : null}/>
             { openOptions && openOptions.id === project.id ? openOptions.data : null }

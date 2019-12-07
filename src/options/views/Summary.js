@@ -84,6 +84,7 @@ const Summary = (props) => {
         { props.projects ? <ProjectsList
           projects={props.projects}
           clickAction={'open'}
+          type={'neutral'}
           clicked={(projIndex) => openProject(projIndex)} /> : null }
         <Button 
           type={'nav'}

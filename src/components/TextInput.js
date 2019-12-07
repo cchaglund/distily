@@ -1,12 +1,15 @@
 /** @jsx jsx */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import Button from './Button';
 
 const TextInput = ({type, text, size, clicked, error, placeholder}) => {
   const [ input, setInput ] = useState('');
+
+  useEffect( ()=> {
+  }, []);
 
   const style = css`
     display: flex;
@@ -21,6 +24,7 @@ const TextInput = ({type, text, size, clicked, error, placeholder}) => {
     border: none;
     border-bottom: 1px solid #707070;
     margin-right: 0.4rem;
+    max-width: 15rem;
   `;
 
   const Error = styled.p`
@@ -33,6 +37,12 @@ const TextInput = ({type, text, size, clicked, error, placeholder}) => {
     setInput(e.target.value);
   };
 
+  const handleEnterPress = (e) => {
+    if (e.key === 'Enter' ) {
+      clicked(input);
+    }    
+  };
+
   return (
     <div>
       <div css={style}>
@@ -41,7 +51,8 @@ const TextInput = ({type, text, size, clicked, error, placeholder}) => {
           value={ input } 
           onChange={ updateTitle }
           type='text' 
-          placeholder={ placeholder ? placeholder : 'Project title' } />
+          placeholder={ placeholder ? placeholder : 'Project title' } 
+          onKeyDown={(e) => handleEnterPress(e)}/>
         <Button 
           type={type}
           text={text}

@@ -1,6 +1,8 @@
 /* eslint-disable no-undef */
+/** @jsx jsx */
 
-import React from 'react';
+import { css, jsx } from '@emotion/core';
+// import React from 'react';
 import styled from '@emotion/styled';
 import Url from './Url';
 import Ctrl from '../background/controller';
@@ -42,6 +44,10 @@ const Button = ({size, text, type, clicked, data, active, proportion}) => {
       color = '#485050';
       hoverColor = Color(color).lighten(0.2).hsl().string();
       break;
+    case 'neutral':
+      color = '#e5edeb';
+      hoverColor = Color(color).darken(0.05).hsl().string();
+      break;
   }
 
   if ( proportion ) {
@@ -62,6 +68,18 @@ const Button = ({size, text, type, clicked, data, active, proportion}) => {
     }
   `;
 
+  const buttonStyle = css`
+    text-align: start;
+    width: 100%;
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+  `;
+
   const ButtonText = styled.h6`
     margin: 0;
   `;
@@ -72,19 +90,18 @@ const Button = ({size, text, type, clicked, data, active, proportion}) => {
     font-weight: bold;
   `;
 
-  const BtnText = type === 'url' || type === 'project' ? TitleText : ButtonText;
+  const BtnText = type === 'search' || type === 'action'  || type === 'nav' ? ButtonText : TitleText;
 
   const openUrl = data => {
     Controller.openUrl(data);
   };
 
   return (
-    <ButtonContainer
-      onClick={() => {
-        type === 'url' ? openUrl(data) : clicked();
-      }}>
-      { type === 'url' ? <Url data={data}/>
-        : <BtnText>{ text }</BtnText> }
+    <ButtonContainer onClick={() => type === 'url' ? openUrl(data) : clicked() }>
+      <div
+        css={ buttonStyle }>
+        { type === 'url' ? <Url data={data}/> : <BtnText>{ text }</BtnText> }
+      </div>
     </ButtonContainer>
   );
 };
