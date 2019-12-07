@@ -364,11 +364,15 @@ class Controller  {
 
     this.getAllBlacklistTerms()
       .then(items => {
-        items.forEach( item =>{
+        let blacklistHits = items.map( item =>{
           if (url.href.includes(item.term) ) {
-            return;
+            return item.term;
           }
         });
+
+        if (blacklistHits.length !== 0) {
+          return;
+        }
 
         // this seems unecessary to add url.host to url.host...?
         url = {

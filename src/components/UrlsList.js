@@ -45,7 +45,8 @@ const UrlsList = ({urls, clicked, type}) => {
   };
 
   const sortUrls = (property) => {
-    let sortedUrls = [...urls ];
+    // Deep clone
+    let sortedUrls = JSON.parse(JSON.stringify(urls));
     let maxVisits = 0;
 
     // get the highest visits value

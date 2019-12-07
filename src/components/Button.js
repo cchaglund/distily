@@ -10,33 +10,38 @@ const Controller = new Ctrl(browser);
 const Button = ({size, text, type, clicked, data, active, proportion}) => {
   const Color = require('color');
 
+  if (type === 'project') {
+    console.log('proportion', proportion);
+  }
+  
   let color;
+  let hoverColor;
 
   switch (type) {
     case 'nav':
       color = '#F6EFFF';
+      hoverColor = Color(color).darken(0.05).hsl().string();
       break;
     case 'action':
       color = '#D1FFDB';
+      hoverColor = Color(color).darken(0.05).hsl().string();
       break;
     case 'search':
       color = '#FDFFD1';
+      hoverColor = Color(color).darken(0.05).hsl().string();
       break;
     case 'url':
       color = proportion ? '#A0CFF7' : '#F2F9FF';
+      hoverColor = Color('#A0CFF7').darken(0.05).hsl().string();
       break;
     case 'project':
       color = proportion ? '#fcca92' : '#FDEBD6';
+      hoverColor = Color('#fcca92').darken(0.05).hsl().string();
       break;
     case 'blacklisted':
       color = '#485050';
+      hoverColor = Color(color).lighten(0.2).hsl().string();
       break;
-  }
-
-  let hoverColor = Color(color).darken(0.05).hsl().string();
-
-  if ( type === 'blacklisted' ) {
-    hoverColor = Color(color).lighten(0.2).hsl().string();
   }
 
   if ( proportion ) {

@@ -57,6 +57,7 @@ const Summary = (props) => {
         { props.projects ? <ProjectsList 
           projects={props.projects}
           clickAction={'resume'}
+          type={'top'}
           clicked={(projIndex, openType, tabCount) => resumeProject(projIndex, openType, tabCount)} /> : null }
         <Button 
           type={'nav'}
@@ -80,7 +81,7 @@ const Summary = (props) => {
       <Column area={ 'right' }>
         <h4>Manage</h4>
         <h6>Recent projects</h6>
-        { props.projects ? <ProjectsList 
+        { props.projects ? <ProjectsList
           projects={props.projects}
           clickAction={'open'}
           clicked={(projIndex) => openProject(projIndex)} /> : null }
