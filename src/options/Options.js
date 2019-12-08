@@ -9,8 +9,8 @@ import {
 } from 'react-router-dom';
 
 import './Options.css';
-import Dashboard from './views/Dashboard';
-import Project from './views/Project';
+import Dashboard from './views/Dashboard/Dashboard';
+import Project from './views/Project/Project';
 import Settings from './views/Settings';
 import ThemeProvider from '../assets/provider';
 import './Options.css';

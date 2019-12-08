@@ -11,10 +11,6 @@ const Controller = new Ctrl(browser);
 
 const Button = ({size, text, type, clicked, data, active, proportion}) => {
   const Color = require('color');
-
-  if (type === 'project') {
-    console.log('proportion', proportion);
-  }
   
   let color;
   let hoverColor;

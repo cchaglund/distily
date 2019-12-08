@@ -3,19 +3,19 @@
 import React, { useState, useEffect} from 'react';
 import { withRouter } from 'react-router-dom';
 import { withTheme } from 'emotion-theming';
-import Button from '../../components/Button';
-import UrlsList from '../../components/UrlsList';
+import Button from '../../../components/Button';
+import UrlsList from '../../../components/UrlsList';
 import styled from '@emotion/styled';
 
 // import BarChart from './Charts/BarChart/chart.js';
 // import BubbleChart from './Charts/BubbleChart/chart.js';
 
-const History = (props) => {
+const Charts = (props) => {
   const [ urls, setUrls ] = useState();
   const [ project, setProject ] = useState();
 
   useEffect(() => {
-    console.log('hist');
+    console.log('charts');
     if (props.project && props.urls) {
       const project = props.project;
 
@@ -60,13 +60,18 @@ const History = (props) => {
   return (
     <BottomSection>
       <Column area={ 'left' }>
-        <h4>Previous session tabs</h4>
+        <h5>Recent URLs</h5>
         <h6>Bulk open</h6>
         <Div>
           <Button
             type={'action'}
             size={'regular'}
-            text={'Resume session'}
+            text={'Recent 5'}
+            clicked={() => resumeProject('recent', 5)} />
+          <Button
+            type={'action'}
+            size={'regular'}
+            text={'Recent 10'} 
             clicked={() => resumeProject('recent', 10)} />
         </Div>
         { urls ? <UrlsList
@@ -80,21 +85,20 @@ const History = (props) => {
           clicked={() => showMore()} />
       </Column>
       <Column area={ 'mid' }>
-        <h4>History</h4>
-        <h6>Sort</h6>
+        <h5>Top URLS</h5>
+        <h6>Bulk open</h6>
         <Div>
           <Button
             type={'action'}
             size={'regular'}
-            text={'By data'} 
+            text={'Top 5'} 
             clicked={() => resumeProject('top', 5)} />
           <Button
             type={'action'}
             size={'regular'}
-            text={'By activity'} 
+            text={'Top 10'} 
             clicked={() => resumeProject('top', 10)} />
         </Div>
-        <h6>(click again to reverse order)</h6>
         { urls ? <UrlsList 
           key='2'
           urls={urls}
@@ -107,7 +111,7 @@ const History = (props) => {
           clicked={() => showMore()} />
       </Column>
       <Column area={ 'right' }>
-        <h4>By domain</h4>
+        <h5>By domain</h5>
         { urls ? <UrlsList 
           key='3'
           urls={urls}
@@ -123,4 +127,4 @@ const History = (props) => {
   );
 };
 
-export default withTheme(withRouter(History));
+export default withTheme(withRouter(Charts));

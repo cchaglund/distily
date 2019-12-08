@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { withTheme } from 'emotion-theming';
-import ProjectsList from '../../components/ProjectsList';
-import Button from '../../components/Button';
+import ProjectsList from '../../../components/ProjectsList';
+import Button from '../../../components/Button';
 import * as Fuse from 'fuse.js';
 import {
   withRouter,

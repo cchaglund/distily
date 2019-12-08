@@ -3,9 +3,9 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { withTheme } from 'emotion-theming';
-import ProjectsList from '../../components/ProjectsList';
-import UrlsList from '../../components/UrlsList';
-import Button from '../../components/Button';
+import ProjectsList from '../../../components/ProjectsList';
+import UrlsList from '../../../components/UrlsList';
+import Button from '../../../components/Button';
 import {
   withRouter,
 } from 'react-router-dom';

@@ -3,8 +3,8 @@
 import React, { useState, useEffect} from 'react';
 import { withRouter } from 'react-router-dom';
 import { withTheme } from 'emotion-theming';
-import Button from '../../components/Button';
-import UrlsList from '../../components/UrlsList';
+import Button from '../../../components/Button';
+import UrlsList from '../../../components/UrlsList';
 import styled from '@emotion/styled';
 
 // import BarChart from './Charts/BarChart/chart.js';

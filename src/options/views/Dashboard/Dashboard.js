@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { withTheme } from 'emotion-theming';
-import TextInput from '../../components/TextInput';
-import Layout from '../../components/Layout';
+import TextInput from '../../../components/TextInput';
+import Layout from '../../../components/Layout';
 import Summary from './Summary';
 import SearchResults from './SearchResults';
 import {

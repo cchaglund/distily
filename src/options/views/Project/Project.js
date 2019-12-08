@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect} from 'react';
 import { withRouter } from 'react-router-dom';
-import Layout from '../../components/Layout';
-import TextInput from '../../components/TextInput';
-import Button from '../../components/Button';
+import Layout from '../../../components/Layout';
+import TextInput from '../../../components/TextInput';
+import Button from '../../../components/Button';
 import Overview from './Overview';
 import History from './History';
 import Charts from './Charts';
