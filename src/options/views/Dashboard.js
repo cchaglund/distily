@@ -20,7 +20,7 @@ const Dashboard = (props) => {
       type: 'getCurrentProject'
     });
 
-    browser.runtime.onMessage.addListener( message => {
+    const handleMessages = message => {
       switch (message.type) {
         case 'currentProject':
           props.history.push({
@@ -33,7 +33,14 @@ const Dashboard = (props) => {
           });
           break;
       }
-    });
+    };
+
+    browser.runtime.onMessage.addListener( handleMessages );
+
+    return () => {
+      console.log('removing listener');
+      browser.runtime.onMessage.removeListener( handleMessages );
+    };
   }, []);
 
   const createHandler = (title) => {

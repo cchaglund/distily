@@ -37,7 +37,7 @@ const Popup = () => {
       type: 'getCurrentProject'
     });
 
-    browser.runtime.onMessage.addListener( message => {
+    const handleMessages = message => {
       switch (message.type) {
         case 'allProjects':
           setProjects(message.data);
@@ -46,7 +46,14 @@ const Popup = () => {
           setCurrentProject(message.data);
           break;
       }
-    });
+    };
+
+    browser.runtime.onMessage.addListener( handleMessages );
+
+    return () => {
+      console.log('removing listener');
+      browser.runtime.onMessage.removeListener( handleMessages );
+    };
   }, []);
 
   const createHandler = (title) => {

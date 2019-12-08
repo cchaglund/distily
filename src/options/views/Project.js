@@ -31,7 +31,7 @@ const Project = (props) => {
       data: project.id
     });
 
-    browser.runtime.onMessage.addListener( message => {
+    const handleMessages = message => {
       switch (message.type) {
         case 'projectUrls':
           setUrls(message.data);
@@ -43,11 +43,18 @@ const Project = (props) => {
           setUrls(projUrls);
         }
       }
-    });
+    };
+
+    browser.runtime.onMessage.addListener( handleMessages );
 
     setCreatedDate(new Date(project.created).toLocaleDateString());
     setLastOpenedDate(new Date(project.lastOpened).toLocaleDateString());
     setTimesOpened(project.timesOpened);
+
+    return () => {
+      console.log('removing listener');
+      browser.runtime.onMessage.removeListener( handleMessages );
+    };
   }, []);
 
   const Div = styled.div`

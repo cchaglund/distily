@@ -17,14 +17,21 @@ const Settings = () => {
       type: 'getAllBlacklistTerms'
     });
 
-    browser.runtime.onMessage.addListener( message => {
+    const handleMessages = message => {
       switch (message.type) {
         case 'allBlacklistTerms': {
           setBlacklist(message.data);
           break;
         }
       }
-    });
+    };
+
+    browser.runtime.onMessage.addListener( handleMessages );
+
+    return () => {
+      console.log('removing listener');
+      browser.runtime.onMessage.removeListener( handleMessages );
+    };
   }, []);
 
   const addToBlacklist = (term) => {
