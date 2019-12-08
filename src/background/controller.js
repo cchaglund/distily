@@ -162,48 +162,56 @@ class Controller  {
   }
 
   resumeProject (data) {
-    this.browser.windows.create()
-      .then( windowInfo => {
-        if (data.openType) {
-          this.getAllProjectURLS(data.projectId)
-            .then( res => {
-              const sortUrls = (property, tabCount) => {
-                let sortedUrls = [...res ];
-
-                sortedUrls.sort( (urlA, urlB) => {
-                  return (urlA[property] < urlB[property]) ? 1 : -1;
-                });
-
-                for (let i = 0; i < tabCount; i++) {
-                  this.browser.tabs.create({
-                    windowId: windowInfo.id,
-                    url: sortedUrls[i].href
-                  });
-                }
-              };
-
-              switch (data.openType) {
-                case 'recent':
-                  sortUrls('lastOpened', data.tabCount);
-                  break;
-                case 'top':
-                  sortUrls('visits', data.tabCount) ;
-                  break;
-              }
+    const create = urls => {
+      this.browser.windows.create(urls)
+        .then( windowInfo => {
+          this.getProject(data.projectId)
+            .then(project => {
+              this.updateProject(data.projectId, {
+                active: true,
+                activeWindow: windowInfo.id,
+                lastOpened: Date.now(),
+                timesOpened: project.timesOpened + 1
+              });
             });
-        }
-        
-        this.getProject(data.projectId)
-          .then(project => {
-            this.updateProject(data.projectId, {
-              active: true,
-              activeWindow: windowInfo.id,
-              lastOpened: Date.now(),
-              timesOpened: project.timesOpened + 1
+            
+        });
+    };
+
+    // no openType indicates it should open without any tabs
+    if ( data.openType ) {
+      this.getAllProjectURLS(data.projectId)
+        .then( res => {
+          let urls = [];
+
+          const sortUrls = (property, tabCount) => {
+            let sortedUrls = [...res ];
+
+            sortedUrls.sort( (urlA, urlB) => {
+              return (urlA[property] < urlB[property]) ? 1 : -1;
             });
-          });
-          
-      });
+
+            tabCount = tabCount > sortedUrls.length ? sortedUrls.length : tabCount;
+
+            for (let i = 0; i < tabCount; i++) {
+              urls.push(sortedUrls[i].href);
+            }
+          };
+
+          switch (data.openType) {
+            case 'recent':
+              sortUrls('lastOpened', data.tabCount);
+              break;
+            case 'top':
+              sortUrls('visits', data.tabCount) ;
+              break;
+          }
+
+          create({ url: urls });
+        });
+    } else {
+      create();
+    }
   }
 
   createNewURL (urlObject) {
