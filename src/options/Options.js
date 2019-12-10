@@ -21,33 +21,39 @@ const Options = () => {
   const [ currentProject, setCurrentProject ] = useState();
 
   useEffect( () => {
-    browser.runtime.sendMessage({
-      type: 'getAllProjects'
-    });
+    // browser.runtime.sendMessage({
+    //   type: 'getAllProjects'
+    // });
 
     browser.runtime.sendMessage({
       type: 'getCurrentProject'
     });
 
-    browser.runtime.sendMessage({
-      type: 'getAllUrls'
-    });
+    // browser.runtime.sendMessage({
+    //   type: 'getAllUrls'
+    // });
 
     const handleMessages = message => {
       switch (message.type) {
-        case 'allProjects':
-          setProjects(message.data);
-          break;
         case 'currentProject': {
-          let thisWindowID = browser.windows.WINDOW_ID_CURRENT;
-          if (message.windowID === thisWindowID) {
-            setCurrentProject(message.data);
-          }
+          // makes sure project which user wants to open matches the window they're in
+          browser.windows.getCurrent()
+            .then( window => {
+              if (message.windowID === window.id) {
+                console.log('heeey');
+                setCurrentProject(message.data);
+                // props.history.push({
+                //   pathname: '/project',
+                //   state: {
+                //     params: {
+                //       data: message.data
+                //     }
+                //   }
+                // });
+              }
+            });
           break;
         }
-        case 'allUrls':
-          setUrls(message.data);
-          break;
       }
     };
 
@@ -69,6 +75,9 @@ const Options = () => {
           <Route path="/settings">
             <Settings />
           </Route>
+          <Route path="/dashboard">
+            <Dashboard />
+          </Route>
           <Route path="/project">
             <Project />
           </Route>
@@ -78,9 +87,7 @@ const Options = () => {
                 <Project 
                   currentProject={ currentProject }/>
                 : 
-                <Dashboard 
-                  projects={projects ? projects : null}
-                  urls={urls ? urls : null }/>
+                <Dashboard/>
             }
           </Route>
         </Switch>

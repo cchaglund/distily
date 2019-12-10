@@ -10,15 +10,43 @@ import {
   withRouter,
 } from 'react-router-dom';
 
-const Dashboard = ({ projects, history, urls, currentProject}) => {
+const Dashboard = () => {
+  const [ projects, setProjects ] = useState();
+  const [ urls, setUrls ] = useState();
   const [ error, setError ] = useState();
   const [ searching, setSearching ] = useState(false);
   const [ searchTerm, setSearchTerm ] = useState();
 
   useEffect(() => {
+    // browser.runtime.sendMessage({
+    //   type: 'getCurrentProject'
+    // });
+
     browser.runtime.sendMessage({
-      type: 'getCurrentProject'
+      type: 'getAllProjects'
     });
+
+    browser.runtime.sendMessage({
+      type: 'getAllUrls'
+    });
+
+    const handleMessages = message => {
+      switch (message.type) {
+        case 'allProjects':
+          setProjects(message.data);
+          break;
+        case 'allUrls':
+          setUrls(message.data);
+          break;
+      }
+    };
+
+    browser.runtime.onMessage.addListener( handleMessages );
+
+    return () => {
+      console.log('removing listener');
+      browser.runtime.onMessage.removeListener( handleMessages );
+    };
 
     // currentProject ?
     //   history.push({

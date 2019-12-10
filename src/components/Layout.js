@@ -45,7 +45,7 @@ const Layout = (props) => {
     <div>
       <StyledNav>
         <LinkWrapper>
-          <StyledLink to="/">
+          <StyledLink to="/dashboard">
             <h5>Dashboard</h5>
           </StyledLink>
         </LinkWrapper>
