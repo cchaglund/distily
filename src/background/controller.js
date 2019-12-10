@@ -372,13 +372,15 @@ class Controller  {
 
     this.getAllBlacklistTerms()
       .then(items => {
-        let blacklistHits = items.map( item =>{
+        let blacklistHit = null;
+
+        items.forEach( item =>{
           if (url.href.includes(item.term) ) {
-            return item.term;
+            blacklistHit = item.term;
           }
         });
 
-        if (blacklistHits.length !== 0) {
+        if (blacklistHit) {
           return;
         }
 
