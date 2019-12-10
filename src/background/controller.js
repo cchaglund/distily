@@ -43,7 +43,8 @@ class Controller  {
               if (project.activeWindow === windowInfo.id) {
                 const sending = this.browser.runtime.sendMessage({
                   type: 'currentProject',
-                  data: project
+                  data: project,
+                  windowID: windowInfo.id
                 });
                 sending.then(() => console.log('sent'), (e) => console.log('error: ', e));
               }

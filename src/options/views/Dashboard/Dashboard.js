@@ -10,7 +10,7 @@ import {
   withRouter,
 } from 'react-router-dom';
 
-const Dashboard = (props) => {
+const Dashboard = ({ projects, history, urls, currentProject}) => {
   const [ error, setError ] = useState();
   const [ searching, setSearching ] = useState(false);
   const [ searchTerm, setSearchTerm ] = useState();
@@ -20,31 +20,19 @@ const Dashboard = (props) => {
       type: 'getCurrentProject'
     });
 
-    const handleMessages = message => {
-      switch (message.type) {
-        case 'currentProject':
-          props.history.push({
-            pathname: '/project',
-            state: {
-              params: {
-                data: message.data
-              }
-            }
-          });
-          break;
-      }
-    };
-
-    browser.runtime.onMessage.addListener( handleMessages );
-
-    return () => {
-      console.log('removing listener');
-      browser.runtime.onMessage.removeListener( handleMessages );
-    };
+    // currentProject ?
+    //   history.push({
+    //     pathname: '/project',
+    //     state: {
+    //       params: {
+    //         data: message.data
+    //       }
+    //     }
+    //   }) : null ;
   }, []);
 
   const createHandler = (title) => {
-    const titleExists = props.projects ? props.projects.filter( project => {
+    const titleExists = projects ? projects.filter( project => {
       return project.title === title;
     }) : null;
 
@@ -88,12 +76,12 @@ const Dashboard = (props) => {
       >
         { searching ? 
           <SearchResults 
-            list={ props.projects ? props.projects : null }
+            list={ projects ? projects : null }
             term={ searchTerm } 
             close={() => closeSearch()}/> 
           : <Summary 
-            projects={props.projects ? props.projects : null}
-            urls={props.urls ? props.urls : null}/> 
+            projects={projects ? projects : null}
+            urls={urls ? urls : null}/> 
         }
       </Layout>
     </div>

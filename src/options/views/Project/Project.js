@@ -23,12 +23,12 @@ const Project = (props) => {
   const [ panel, setPanel ] = useState();
 
   useEffect(() => {
-    const project = props.location.state.params.data;
-    setProject(project);
+    const currProject = props.currentProject || props.location.state.params.data;
+    setProject(currProject);
 
     browser.runtime.sendMessage({
       type: 'getAllProjectUrls',
-      data: project.id
+      data: currProject.id
     });
 
     const handleMessages = message => {
@@ -36,20 +36,21 @@ const Project = (props) => {
         case 'projectUrls':
           setUrls(message.data);
           break;
-        case 'allUrls': {
-          const projUrls = message.data.filter( url => {
-            return url.project === project.id;
-          });
-          setUrls(projUrls);
-        }
+        // TODO: wtf do I need to get all urls then filter to get projecturls?
+        // case 'allUrls': {
+        //   const projUrls = message.data.filter( url => {
+        //     return url.project === project.id;
+        //   });
+        //   setUrls(projUrls);
+        // }
       }
     };
 
     browser.runtime.onMessage.addListener( handleMessages );
 
-    setCreatedDate(new Date(project.created).toLocaleDateString());
-    setLastOpenedDate(new Date(project.lastOpened).toLocaleDateString());
-    setTimesOpened(project.timesOpened);
+    setCreatedDate(new Date(currProject.created).toLocaleDateString());
+    setLastOpenedDate(new Date(currProject.lastOpened).toLocaleDateString());
+    setTimesOpened(currProject.timesOpened);
 
     return () => {
       console.log('removing listener');

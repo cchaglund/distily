@@ -38,9 +38,13 @@ const Options = () => {
         case 'allProjects':
           setProjects(message.data);
           break;
-        case 'currentProject':
-          setCurrentProject(message.data);
+        case 'currentProject': {
+          let thisWindowID = browser.windows.WINDOW_ID_CURRENT;
+          if (message.windowID === thisWindowID) {
+            setCurrentProject(message.data);
+          }
           break;
+        }
         case 'allUrls':
           setUrls(message.data);
           break;
@@ -62,17 +66,22 @@ const Options = () => {
           <Route path="/about">
             about
           </Route>
-          <Route path="/project">
-            <Project />
-          </Route>
           <Route path="/settings">
             <Settings />
           </Route>
+          <Route path="/project">
+            <Project />
+          </Route>
           <Route path="/">
-            <Dashboard 
-              currentProject={ currentProject ? currentProject.id : null }
-              projects={projects ? projects : null}
-              urls={urls ? urls : null }/>
+            {
+              currentProject ? 
+                <Project 
+                  currentProject={ currentProject }/>
+                : 
+                <Dashboard 
+                  projects={projects ? projects : null}
+                  urls={urls ? urls : null }/>
+            }
           </Route>
         </Switch>
       </ThemeProvider>
