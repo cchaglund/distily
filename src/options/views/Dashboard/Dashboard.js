@@ -5,7 +5,7 @@ import { withTheme } from 'emotion-theming';
 import TextInput from '../../../components/TextInput';
 import Layout from '../../../components/Layout';
 import Summary from './Summary';
-import SearchResults from './SearchResults';
+import SearchResults from '../SearchResults';
 import {
   withRouter,
 } from 'react-router-dom';

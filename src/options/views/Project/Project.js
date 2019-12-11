@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import Layout from '../../../components/Layout';
 import TextInput from '../../../components/TextInput';
 import Button from '../../../components/Button';
+import SearchResults from '../SearchResults';
 import Overview from './Overview';
 import History from './History';
 import Charts from './Charts';
@@ -21,6 +22,8 @@ const Project = (props) => {
   const [ timesOpened, setTimesOpened ] = useState();
   const [ panelType, setPanelType ] = useState('overview');
   const [ panel, setPanel ] = useState();
+  const [ searching, setSearching ] = useState(false);
+  const [ searchTerm, setSearchTerm ] = useState();
 
   useEffect(() => {
     const currProject = props.currentProject || props.location.state.params.data;
@@ -71,6 +74,16 @@ const Project = (props) => {
     font-size: 0.7rem;
   `;
 
+  const handleSearch = (term) => {
+    setSearching(true);
+    setSearchTerm(term);
+  };
+
+  const closeSearch = () => {
+    setSearching(false);
+    setSearchTerm(null);
+  };
+
   const leftComponent = (
     <div>
       <h3>{ project ? project.title : null }</h3>
@@ -107,7 +120,8 @@ const Project = (props) => {
     <TextInput
       text={'Search for URL'}
       type={'search'}
-      size={'regular'}/>
+      size={'regular'}
+      clicked={ (term) => handleSearch(term) }/>
   );
 
   const changeView = (panelType) => {
@@ -147,7 +161,15 @@ const Project = (props) => {
         right: rightComponent
       }}
     >
-      { panel ? panel : <Overview urls={urls ? urls : null } project={project ? project : null} />}
+      { searching ? 
+        <SearchResults 
+          list={ urls ? urls : null }
+          term={ searchTerm } 
+          resultsType={'url'}
+          close={() => closeSearch()}/> 
+        : panel ? panel : <Overview urls={urls ? urls : null } project={project ? project : null} />
+      }
+      {/* { panel ? panel : <Overview urls={urls ? urls : null } project={project ? project : null} />} */}
     </Layout>
   );
 };

@@ -3,14 +3,15 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { withTheme } from 'emotion-theming';
-import ProjectsList from '../../../components/ProjectsList';
-import Button from '../../../components/Button';
+import ProjectsList from '../../components/ProjectsList';
+import UrlsList from '../../components/UrlsList';
+import Button from '../../components/Button';
 import * as Fuse from 'fuse.js';
 import {
   withRouter,
 } from 'react-router-dom';
 
-const Search = ({list, term, theme, close}) => {
+const Search = ({list, term, theme, close, resultsType}) => {
   const [ searchResults, setSearchResults ] = useState();
 
   useEffect(() => {
@@ -81,10 +82,14 @@ const Search = ({list, term, theme, close}) => {
             clicked={() => close()} />
           <h5>Results</h5>
           { searchResults ? 
-            <ProjectsList 
-              projects={searchResults}
-              clickAction={'resume'}
-              clicked={(projIndex, openType, tabCount) => resumeProject(projIndex, openType, tabCount)} /> 
+            resultsType === 'url' ?
+              <UrlsList 
+                urls={searchResults}
+                type={'recent'}/> :
+              <ProjectsList 
+                projects={searchResults}
+                clickAction={'resume'}
+                clicked={(projIndex, openType, tabCount) => resumeProject(projIndex, openType, tabCount)} /> 
             : null }
         </Column>
       </BottomSection>
