@@ -181,35 +181,42 @@ class Controller  {
 
     // no openType indicates it should open without any tabs
     if ( data.openType ) {
-      this.getAllProjectURLS(data.projectId)
-        .then( res => {
-          let urls = [];
+      if (data.openType === 'switchWindow') {
+        this.getProject(data.projectId)
+          .then(project => {
+            this.browser.windows.update(project.activeWindow, {focused: true});
+          });
+      } else {
+        this.getAllProjectURLS(data.projectId)
+          .then( res => {
+            let urls = [];
 
-          const sortUrls = (property, tabCount) => {
-            let sortedUrls = [...res ];
+            const sortUrls = (property, tabCount) => {
+              let sortedUrls = [...res ];
 
-            sortedUrls.sort( (urlA, urlB) => {
-              return (urlA[property] < urlB[property]) ? 1 : -1;
-            });
+              sortedUrls.sort( (urlA, urlB) => {
+                return (urlA[property] < urlB[property]) ? 1 : -1;
+              });
 
-            tabCount = tabCount > sortedUrls.length ? sortedUrls.length : tabCount;
+              tabCount = tabCount > sortedUrls.length ? sortedUrls.length : tabCount;
 
-            for (let i = 0; i < tabCount; i++) {
-              urls.push(sortedUrls[i].href);
+              for (let i = 0; i < tabCount; i++) {
+                urls.push(sortedUrls[i].href);
+              }
+            };
+
+            switch (data.openType) {
+              case 'recent':
+                sortUrls('lastOpened', data.tabCount);
+                break;
+              case 'top':
+                sortUrls('visits', data.tabCount) ;
+                break;
             }
-          };
 
-          switch (data.openType) {
-            case 'recent':
-              sortUrls('lastOpened', data.tabCount);
-              break;
-            case 'top':
-              sortUrls('visits', data.tabCount) ;
-              break;
-          }
-
-          create({ url: urls });
-        });
+            create({ url: urls });
+          });
+      }
     } else {
       create();
     }

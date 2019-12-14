@@ -33,7 +33,9 @@ const ProjectsList = ({projects, clicked, clickAction, type}) => {
       margin-left: 1rem;
     `;
 
-    const options = (
+    console.log(projId);
+
+    let options = (
       <Div>
         <Button
           clicked={ () => clicked(projId)}
@@ -57,6 +59,16 @@ const ProjectsList = ({projects, clicked, clickAction, type}) => {
           size={'wide'} />
       </Div>
     );
+
+    options = projects[projId -1].active ?
+      <Div>
+        <Button
+          clicked={ () => clicked(projId, 'switchWindow')}
+          text={'Switch to project window'} 
+          type={'action'}
+          size={'wide'} />
+      </Div>
+      : options;
 
     setOpenOptions({
       id: projId,
