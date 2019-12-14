@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-// import Newtab from './Newtab';
-import Options from '../options/Options';
+import Newtab from './Newtab';
 
-ReactDOM.render(<Options />, document.getElementById('root'));
+ReactDOM.render(<Newtab />, document.getElementById('root'));
 

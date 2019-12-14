@@ -72,8 +72,8 @@ const Popup = () => {
     });
   };
 
-  const openOptions = () => {
-    browser.runtime.openOptionsPage();
+  const openNewtab = () => {
+    browser.tabs.create({});
     window.close();
   };
 
@@ -133,7 +133,7 @@ const Popup = () => {
       <Button
         type={'nav'}
         size={'regular'}
-        clicked={() => openOptions()}
+        clicked={() => openNewtab()}
         text={'Dashboard'} />
     </PopupContainer>
   );

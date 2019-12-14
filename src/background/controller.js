@@ -247,7 +247,7 @@ class Controller  {
           .then(res => {
             res.state.projectToOpen = result;
             this.setStorage(res);
-            this.browser.runtime.openOptionsPage();
+            this.browser.tabs.create();
           });
       });
   }
