@@ -3,6 +3,28 @@ const lightGray = '#F0F0F0';
 const red = '#B8001E';
 
 const theme = {
+  SmallButton: `
+    padding: 0.4rem 1rem;
+    text-align: start;
+    width: 100%;
+    background: none;
+    color: inherit;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+  `,
+  WideButton: `
+    padding: 0.2rem 1rem;
+    text-align: start;
+    width: 100%;
+    background: none;
+    color: inherit;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+  `,
   BottomSection: `
     margin-top: 2rem;
     margin-bottom: 2rem;

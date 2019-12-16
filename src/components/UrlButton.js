@@ -4,8 +4,9 @@
 import { css, jsx } from '@emotion/core';
 import { useState, useEffect} from 'react';
 import styled from '@emotion/styled';
+import { withTheme } from 'emotion-theming';
 
-const UrlButton = ({ data, proportion }) => {
+const UrlButton = ({ data, proportion, theme }) => {
   const [ title, setTitle ] = useState();
   const [ host, setHost ] = useState();
 
@@ -39,18 +40,6 @@ const UrlButton = ({ data, proportion }) => {
     &:hover {
       background-color: ${ hoverColor };
     }
-  `;
-
-  const buttonStyle = css`
-    padding: 0.2rem 1rem;
-    text-align: start;
-    width: 100%;
-    background: none;
-    color: inherit;
-    border: none;
-    font: inherit;
-    cursor: pointer;
-    outline: inherit;
   `;
 
   const Div = styled.div`
@@ -88,7 +77,7 @@ const UrlButton = ({ data, proportion }) => {
   return (
     <UrlButtonContainer>
       <div
-        css={ buttonStyle }
+        css={ css`${ theme.WideButton }` }
         onClick={ () => openUrl(data) }>
         <Div>
           <Title>{title}</Title>
@@ -103,4 +92,4 @@ const UrlButton = ({ data, proportion }) => {
   );
 };
 
-export default UrlButton;
+export default withTheme(UrlButton);

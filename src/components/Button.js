@@ -3,8 +3,9 @@
 
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
+import { withTheme } from 'emotion-theming';
 
-const Button = ({ text, type, clicked, active }) => {
+const Button = ({ text, type, clicked, active, theme }) => {
   const Color = require('color');
   
   let color;
@@ -37,18 +38,6 @@ const Button = ({ text, type, clicked, active }) => {
     }
   `;
 
-  const buttonStyle = css`
-    padding: 0.4rem 1rem;
-    text-align: start;
-    width: 100%;
-    background: none;
-    color: inherit;
-    border: none;
-    font: inherit;
-    cursor: pointer;
-    outline: inherit;
-  `;
-
   const Text = styled.h6`
     margin: 0;
   `;
@@ -56,7 +45,7 @@ const Button = ({ text, type, clicked, active }) => {
   return (
     <ButtonContainer>
       <div
-        css={ buttonStyle }
+        css={ css`${ theme.SmallButton }` }
         onClick={() => clicked() }>
         <Text>{ text }</Text>
       </div>
@@ -64,4 +53,4 @@ const Button = ({ text, type, clicked, active }) => {
   );
 };
 
-export default Button;
+export default withTheme(Button);
