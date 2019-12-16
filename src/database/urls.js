@@ -151,6 +151,28 @@ class URLsDB {
     
     return promise;
   }
+
+  deleteURL (id) {
+    let promise = new Promise( resolve => {
+      const data = {
+        store: 'urls',
+        method: 'delete',
+        mode: 'readwrite',
+        payload: id,
+        callback: {
+          success: (url) => {
+            resolve(url);
+          },
+          complete: (e) => console.log('Get URL tx complete', e),
+          error: (e) => console.log('Error getting URL', e),
+        }
+      };
+
+      DB.connect(data);
+    });
+
+    return promise;
+  }
 }
 
 export default URLsDB;

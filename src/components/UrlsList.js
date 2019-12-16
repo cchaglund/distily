@@ -5,7 +5,7 @@ import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import UrlButton from './UrlButton';
 
-const UrlsList = ({urls, clicked, type}) => {
+const UrlsList = ({urls, clicked, type, deletable }) => {
   const [urlsList, setUrlsList ] = useState();
 
   useEffect(() => {
@@ -38,6 +38,7 @@ const UrlsList = ({urls, clicked, type}) => {
           text={url.title}
           data={url}
           type={ type }
+          deletable={ deletable ? true : false }
           proportion={url.proportion}/>
       );
     });
