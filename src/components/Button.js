@@ -5,9 +5,6 @@ import { css, jsx } from '@emotion/core';
 // import React from 'react';
 import styled from '@emotion/styled';
 import Url from './Url';
-import Ctrl from '../background/controller';
-
-const Controller = new Ctrl(browser);
 
 const Button = ({size, text, type, clicked, data, active, proportion}) => {
   const Color = require('color');
