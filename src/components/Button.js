@@ -2,11 +2,9 @@
 /** @jsx jsx */
 
 import { css, jsx } from '@emotion/core';
-// import React from 'react';
 import styled from '@emotion/styled';
-import Url from './Url';
 
-const Button = ({size, text, type, clicked, data, active, proportion}) => {
+const Button = ({size, text, type, clicked, active, proportion}) => {
   const Color = require('color');
   
   let color;
@@ -24,10 +22,6 @@ const Button = ({size, text, type, clicked, data, active, proportion}) => {
     case 'search':
       color = '#FDFFD1';
       hoverColor = Color(color).darken(0.05).hsl().string();
-      break;
-    case 'url':
-      color = proportion ? '#A0CFF7' : '#F2F9FF';
-      hoverColor = Color('#A0CFF7').darken(0.05).hsl().string();
       break;
     case 'project':
       color = proportion ? '#fcca92' : '#FDEBD6';
@@ -83,37 +77,15 @@ const Button = ({size, text, type, clicked, data, active, proportion}) => {
     font-weight: bold;
   `;
 
-  const Delete = styled.div`
-    padding: 0 1rem;
-    &:hover {
-      background-color: #d29095;
-    }
-  `;
-
   const BtnText = type === 'search' || type === 'action'  || type === 'nav' ? ButtonText : TitleText;
-
-  const openUrl = data => {
-    Controller.openUrl(data);
-  };
-
-  const deleteItem = () => {
-    console.log('trying to del', data);
-  };
 
   return (
     <ButtonContainer>
       <div
         css={ buttonStyle }
-        onClick={() => type === 'url' ? openUrl(data) : clicked() }>
-        { type === 'url' ? <Url data={data}/> : <BtnText>{ text }</BtnText> }
+        onClick={() => clicked() }>
+        <BtnText>{ text }</BtnText>
       </div>
-      {
-        type === 'url' || type === 'project' ?
-          <Delete
-            onClick={() => deleteItem()}>
-              x
-          </Delete> : null
-      }
     </ButtonContainer>
   );
 };
