@@ -51,10 +51,10 @@ const Button = ({size, text, type, clicked, data, active, proportion}) => {
   }
 
   const ButtonContainer = styled.div`
+    display: flex;
     background-color: ${ active ? 'white' : color};
     ${ type === 'blacklisted' ? 'color: white;' : null }
     width: ${ size === 'wide' ? 'auto' : 'max-content'};
-    padding: ${ size === 'wide' ? '0.2rem 1rem' : '0.4rem 1rem'};
     margin-top: 0.3rem;
     margin-bottom: 0.3rem;
     cursor: pointer;
@@ -65,12 +65,12 @@ const Button = ({size, text, type, clicked, data, active, proportion}) => {
   `;
 
   const buttonStyle = css`
+    padding: ${ size === 'wide' ? '0.2rem 1rem' : '0.4rem 1rem'};
     text-align: start;
     width: 100%;
     background: none;
     color: inherit;
     border: none;
-    padding: 0;
     font: inherit;
     cursor: pointer;
     outline: inherit;
@@ -86,18 +86,37 @@ const Button = ({size, text, type, clicked, data, active, proportion}) => {
     font-weight: bold;
   `;
 
+  const Delete = styled.div`
+    padding: 0 1rem;
+    &:hover {
+      background-color: #d29095;
+    }
+  `;
+
   const BtnText = type === 'search' || type === 'action'  || type === 'nav' ? ButtonText : TitleText;
 
   const openUrl = data => {
     Controller.openUrl(data);
   };
 
+  const deleteItem = () => {
+    console.log('trying to del', data);
+  };
+
   return (
-    <ButtonContainer onClick={() => type === 'url' ? openUrl(data) : clicked() }>
+    <ButtonContainer>
       <div
-        css={ buttonStyle }>
+        css={ buttonStyle }
+        onClick={() => type === 'url' ? openUrl(data) : clicked() }>
         { type === 'url' ? <Url data={data}/> : <BtnText>{ text }</BtnText> }
       </div>
+      {
+        type === 'url' || type === 'project' ?
+          <Delete
+            onClick={() => deleteItem()}>
+              x
+          </Delete> : null
+      }
     </ButtonContainer>
   );
 };
