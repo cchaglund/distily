@@ -6,7 +6,7 @@ import { useState, useEffect} from 'react';
 import styled from '@emotion/styled';
 import { withTheme } from 'emotion-theming';
 
-const UrlButton = ({ data, proportion, theme }) => {
+const UrlButton = ({ data, proportion, theme, type }) => {
   const [ title, setTitle ] = useState();
   const [ host, setHost ] = useState();
 
@@ -47,12 +47,12 @@ const UrlButton = ({ data, proportion, theme }) => {
     justify-content: space-between;
   `;
 
-  const Title = styled.span`
+  const PrimaryText = styled.span`
     font-weight: bold;
     font-size: 0.7rem;
   `;
 
-  const Host = styled.span`
+  const SecondaryText = styled.span`
     font-size: 0.7rem;
   `;
 
@@ -80,8 +80,8 @@ const UrlButton = ({ data, proportion, theme }) => {
         css={ css`${ theme.WideButton }` }
         onClick={ () => openUrl(data) }>
         <Div>
-          <Title>{title}</Title>
-          <Host>{host}</Host>
+          <PrimaryText>{ type === 'host' ? host : title }</PrimaryText>
+          <SecondaryText>{ type === 'host' ? title : host }</SecondaryText>
         </Div>
       </div>
       <Delete

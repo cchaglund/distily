@@ -37,6 +37,7 @@ const UrlsList = ({urls, clicked, type}) => {
           clicked={ () => clicked(url)}
           text={url.title}
           data={url}
+          type={ type }
           proportion={url.proportion}/>
       );
     });
