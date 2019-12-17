@@ -3,15 +3,12 @@
 
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
+import { withTheme } from 'emotion-theming';
 
-const BlacklistButton = ({ text, clicked }) => {
-  const Color = require('color');
-  let color = '#485050';
-  let hoverColor = Color(color).lighten(0.2).hsl().string();
-
+const BlacklistButton = ({ text, clicked, theme }) => {
   const BlacklistButtonContainer = styled.div`
     display: flex;
-    background-color: ${ color };
+    background-color: ${ theme.colors.black.color };
     color: white;
     width: auto;
     margin-top: 0.3rem;
@@ -19,7 +16,7 @@ const BlacklistButton = ({ text, clicked }) => {
     cursor: pointer;
     border-radius: 0.1rem;
     &:hover {
-      background-color: ${ hoverColor };
+      background-color: ${ theme.colors.black.hover };
     }
   `;
 
@@ -52,4 +49,4 @@ const BlacklistButton = ({ text, clicked }) => {
   );
 };
 
-export default BlacklistButton;
+export default withTheme(BlacklistButton);

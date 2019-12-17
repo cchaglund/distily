@@ -1,6 +1,4 @@
-const orange = '#e06436';
-const lightGray = '#F0F0F0';
-const red = '#B8001E';
+const Color = require('color');
 
 const theme = {
   SmallButton: `
@@ -66,21 +64,30 @@ const theme = {
     header1: 'Montserrat ExtraBold',
   },
   colors: {
-    blue: '#71cefa',
-    green: '#77d873',
-    yellow: '#f2de65',
-    orange: '#e06436',
-    lightOrange: '#F29C35',
-    red: '#B8001E',
-    purple: '#CC0099',
-    black: '#000000',
-    darkGray: '#D2D2D2',
-    lightGray: lightGray,
-    lighterText: '#292929',
-    darkerText: '#171717',
-    primaryColor: orange,
-    secondaryColor: lightGray,
-    errorColor: red,
+    purple: {
+      color: '#F6EFFF',
+      hover: Color('#F6EFFF').darken(0.05).hsl().string()
+    },
+    green: {
+      color: '#D1FFDB',
+      hover: Color('#D1FFDB').darken(0.05).hsl().string()
+    },
+    yellow: {
+      color: '#FDFFD1',
+      hover: Color('#FDFFD1').darken(0.05).hsl().string()
+    },
+    blue: {
+      color: '#F2F9FF',
+      hover: Color('#A0CFF7').darken(0.05).hsl().string()
+    },
+    red: {
+      color: '#edb1b6',
+      hover: Color('#A0CFF7').darken(0.05).hsl().string()
+    },
+    black: {
+      color: '#485050',
+      hover: Color('#485050').lighten(0.2).hsl().string()
+    }
   },
   breakpoints: {
     mobile: 'max-width: 768px',

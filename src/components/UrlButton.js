@@ -27,9 +27,9 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
   }, []);
 
   const Color = require('color');
-  let color = proportion ? '#A0CFF7' : '#F2F9FF';
+  let color = proportion ? '#A0CFF7' : theme.colors.blue.color;
   color = proportion ? Color(color).fade(1-proportion).string() : color;
-  let hoverColor = Color('#A0CFF7').darken(0.05).hsl().string();
+  let hoverColor = theme.colors.blue.hover;
 
   const Wrapper = styled.div`
     display: flex;
@@ -82,7 +82,7 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
   `;
 
   const Cancel = styled.div`
-    background-color: lightgreen;
+    background-color: ${ theme.colors.green.color };
     width: 100%;
     text-align: center;
     padding: 0.2rem 0.5rem;
@@ -90,13 +90,13 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
   `;
 
   const Confirm = styled.div`
-    background-color: #edb1b6;
+    background-color: ${ theme.colors.red.color };
     width: 100%;
     text-align: center;
     padding: 0.2rem 0.5rem;
     font-size: inherit;
     &:hover {
-      background-color: #ed9ea5;
+      background-color: ${ theme.colors.red.hover };
     }
   `;
 

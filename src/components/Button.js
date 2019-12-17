@@ -5,36 +5,31 @@ import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { withTheme } from 'emotion-theming';
 
-const Button = ({ text, type, clicked, active, theme }) => {
-  const Color = require('color');
-  
-  let color;
-  let hoverColor;
+const Button = ({ text, type, clicked, active, theme }) => {  
+  let colorName;
 
   switch (type) {
     case 'nav':
-      color = '#F6EFFF';
+      colorName = 'purple';
       break;
     case 'action':
-      color = '#D1FFDB';
+      colorName = 'green';
       break;
     case 'search':
-      color = '#FDFFD1';
+      colorName = 'yellow';
       break;
   }
 
-  hoverColor = Color(color).darken(0.05).hsl().string();
-
   const ButtonContainer = styled.div`
     display: flex;
-    background-color: ${ active ? 'white' : color};
+    background-color: ${ active ? 'white' : theme.colors[colorName].color };
     width: max-content;
     margin-top: 0.3rem;
     margin-bottom: 0.3rem;
     cursor: pointer;
     border-radius: 0.1rem;
     &:hover {
-      background-color: ${active ? 'white' : hoverColor};
+      background-color: ${active ? 'white' : theme.colors[colorName].hover };
     }
   `;
 
