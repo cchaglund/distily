@@ -1,13 +1,46 @@
 /** @jsx jsx */
+/* eslint-disable no-undef */
 
 import { css, jsx } from '@emotion/core';
+import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import {
   Link,
   withRouter,
 } from 'react-router-dom';
+import theme from '../assets/theme';
 
 const Layout = (props) => {
+  const [ currentProject, setCurrentProject ] = useState();
+
+  useEffect( () => {
+    browser.runtime.sendMessage({
+      type: 'getCurrentProject'
+    });
+
+    const handleMessages = message => {
+      switch (message.type) {
+        case 'currentProject': {
+          // makes sure project which user wants to open matches the window they're in
+          browser.windows.getCurrent()
+            .then( window => {
+              if (message.windowID === window.id) {
+                setCurrentProject(message.data.title);
+              }
+            });
+          break;
+        }
+      }
+    };
+
+    browser.runtime.onMessage.addListener( handleMessages );
+
+    return () => {
+      console.log('removing listener');
+      browser.runtime.onMessage.removeListener( handleMessages );
+    };
+  }, []);
+
   const LayoutContainer = styled.div`
     width: 90vw;
     height: 100%;
@@ -28,7 +61,19 @@ const Layout = (props) => {
 
   const LinkWrapper = styled.div`
     padding: 0.5rem 0.8rem;
-    ${ props => props.extraStyle }
+  `;
+
+  const CurrentProject = styled.div`
+    margin-left: auto;
+    text-align: center;
+    min-width: 4rem;
+    padding: 0.5rem 0.8rem;
+    border-radius: 0 0 0 0.1rem;
+    background-color: ${theme.colors.orange.color};
+    color: white;
+    & > h4 {
+      font-weight: bold;
+    }
   `;
 
   const StyledLink = styled(Link)`
@@ -37,7 +82,7 @@ const Layout = (props) => {
   `;
 
   const StyledNav = styled.nav`
-    padding: 0 1rem;
+    padding: ${ currentProject ? '0 0 0 1rem' : '0 1rem' };
     display: flex;
   `;
 
@@ -49,19 +94,16 @@ const Layout = (props) => {
             <h5>Dashboard</h5>
           </StyledLink>
         </LinkWrapper>
-        { props.location.pathname === '/project' ? 
-          <LinkWrapper 
-            to="/project">
-            <h5>Project > {props.projectTitle ? 
-              props.projectTitle 
-              : null}</h5>
-          </LinkWrapper>
-          : null}
-        <LinkWrapper extraStyle={'margin-left: auto;'}>
+        <LinkWrapper>
           <StyledLink to="/settings">
             <h5>Settings</h5>
           </StyledLink>
         </LinkWrapper>
+        { currentProject ? 
+          <CurrentProject>
+            <h5>{ currentProject }</h5>
+          </CurrentProject> : null
+        }
       </StyledNav>
 
       <LayoutContainer>
