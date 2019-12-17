@@ -76,6 +76,10 @@ const theme = {
       color: '#FDFFD1',
       hover: Color('#FDFFD1').darken(0.05).hsl().string()
     },
+    orange: {
+      color: '#FF9277',
+      hover: Color('#FF9277').darken(0.05).hsl().string()
+    },
     blue: {
       color: '#F2F9FF',
       hover: Color('#A0CFF7').darken(0.05).hsl().string()

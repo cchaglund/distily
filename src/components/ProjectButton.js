@@ -5,7 +5,7 @@ import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { withTheme } from 'emotion-theming';
 
-const ProjectButton = ({ text, clicked, proportion, type, theme }) => {
+const ProjectButton = ({ text, clicked, activeClicked, activeButton, activeText, proportion, type, theme }) => {
   const Color = require('color');
   let color = proportion ? Color('#fcca92').fade(1-proportion).string() : '#FDEBD6';
 
@@ -17,14 +17,15 @@ const ProjectButton = ({ text, clicked, proportion, type, theme }) => {
 
   const ProjectButtonContainer = styled.div`
     display: flex;
-    background-color: ${ color };
+    justify-content: space-between;
+    background-color: ${ activeButton ? theme.colors.green.color : color };
     width: auto;
     margin-top: 0.3rem;
     margin-bottom: 0.3rem;
     cursor: pointer;
     border-radius: 0.1rem;
     &:hover {
-      background-color: ${ hoverColor };
+      background-color: ${ activeButton ? theme.colors.green.hover : hoverColor };
     }
   `;
 
@@ -34,13 +35,20 @@ const ProjectButton = ({ text, clicked, proportion, type, theme }) => {
     font-weight: bold;
   `;
 
+  const ActiveText = styled.h6`
+    margin: 0; 
+    width: 100%; 
+    text-align: right; 
+    padding: 0.2rem 1rem; 
+    line-height: 180%
+  `;
+
   return (
-    <ProjectButtonContainer>
-      <div
-        css={ css`${ theme.WideButton }` }
-        onClick={() => clicked() }>
+    <ProjectButtonContainer onClick={() => activeButton ? activeClicked() : clicked() }>
+      <div css={ css`${ theme.WideButton }` }>
         <Text>{ text }</Text>
       </div>
+      { activeButton ? <ActiveText>{ activeText }</ActiveText> : null }
     </ProjectButtonContainer>
   );
 };
