@@ -99,6 +99,7 @@ const History = (props) => {
           key='2'
           urls={urls}
           type={'top'}
+          deletable
           clicked={(id) => console.log('trying to open url', id)} /> : null }
         <Button 
           type={'nav'}

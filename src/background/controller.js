@@ -136,6 +136,15 @@ class Controller  {
     });
   }
 
+  deleteUrl (id) {
+    return new Promise( resolve => {
+      DB.urls.delete(id)
+        .then( res => {
+          resolve(res);
+        });
+    });
+  }
+
   createNewProject (projectTitle) {
     return new Promise( resolve => {
       this.uniqueProjectTitleCheck(projectTitle)

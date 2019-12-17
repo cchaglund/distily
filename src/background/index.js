@@ -33,6 +33,12 @@ browser.runtime.onMessage.addListener( message => {
       Controller.getCurrentProject();
       break;
 
+    case 'openUrl':
+      Controller.openUrl(message.data);
+      break;
+    case 'deleteUrl':
+      Controller.deleteUrl(message.data);
+      break;
     case 'getAllUrls':
       Controller.getAllURLS();
       break;
