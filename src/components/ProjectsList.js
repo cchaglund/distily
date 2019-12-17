@@ -9,6 +9,7 @@ import ProjectButton from './ProjectButton';
 const ProjectsList = ({ projects, clicked, clickAction, type }) => {
   const [ projectsList, setProjectsList ] = useState();
   const [ openOptions, setOpenOptions] = useState();
+  const [ activeButton, setActiveButton] = useState();
 
   useEffect(() => {
     switch (type) {
@@ -25,6 +26,8 @@ const ProjectsList = ({ projects, clicked, clickAction, type }) => {
   }, []);
 
   const clickHandler = (projId) => {
+    setActiveButton(projId);
+
     if (clickAction === 'open') {
       clicked(projId);
       return;
@@ -34,42 +37,27 @@ const ProjectsList = ({ projects, clicked, clickAction, type }) => {
       margin-left: 1rem;
     `;
 
-    console.log(projId);
-
     let options = (
       <Div>
-        <Button
-          clicked={ () => clicked(projId)}
-          text={'Open fresh'} 
-          type={'action'}
-          size={'wide'} />
         <Button
           clicked={ () => console.log('trying to open previous session')}
           text={'Open previous session'} 
           type={'action'}
-          size={'wide'} />
+          wide />
         <Button
           clicked={ () => clicked(projId, 'recent', 5)}
           text={'Open with recent urls'} 
           type={'action'}
-          size={'wide'} />
+          wide />
         <Button
           clicked={ () => clicked(projId, 'top', 5)}
           text={'Open top urls'} 
           type={'action'}
-          size={'wide'} />
+          wide />
       </Div>
     );
 
-    options = projects[projId -1].active ?
-      <Div>
-        <Button
-          clicked={ () => clicked(projId, 'switchWindow')}
-          text={'Switch to project window'} 
-          type={'action'}
-          size={'wide'} />
-      </Div>
-      : options;
+    options = projects[projId - 1].active ? null : options;
 
     setOpenOptions({
       id: projId,
@@ -102,7 +90,7 @@ const ProjectsList = ({ projects, clicked, clickAction, type }) => {
     }
 
     sortedProjects.sort( (projectA, projectB) => {
-      return (projectA[property] < projectB[property]) ? 1 : -1;
+      return (projectA[property] < projectB[property]) ? 1 : - 1;
     });
 
     setProjectsList(sortedProjects);
@@ -117,9 +105,16 @@ const ProjectsList = ({ projects, clicked, clickAction, type }) => {
     <ProjectsListContainer>
       { projectsList ? projectsList.map( project => {
         return (
-          <div key={project.id}>
+          <div key={ project.id }>
             <ProjectButton
               clicked={ () => clickHandler(project.id) }
+              activeClicked={ () => {
+                activeButton === project.id ? 
+                  clicked( project.id, projects[project.id - 1].active ? 'switchWindow' : null ) 
+                  : null; }
+              }
+              activeButton={ activeButton === project.id ? true : false }
+              activeText={ projects[project.id - 1].active ? 'Switch to project window' : 'Open fresh' }
               text={ project.title } 
               type={ type }
               proportion={ project.proportion ? project.proportion : null }/>

@@ -5,7 +5,7 @@ import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { withTheme } from 'emotion-theming';
 
-const Button = ({ text, type, clicked, active, theme }) => {  
+const Button = ({ text, type, clicked, active, theme, wide }) => {  
   let colorName;
 
   switch (type) {
@@ -23,7 +23,7 @@ const Button = ({ text, type, clicked, active, theme }) => {
   const ButtonContainer = styled.div`
     display: flex;
     background-color: ${ active ? 'white' : theme.colors[colorName].color };
-    width: max-content;
+    width: ${ wide ? 'auto' : 'max-content' };
     margin-top: 0.3rem;
     margin-bottom: 0.3rem;
     cursor: pointer;
