@@ -4,6 +4,7 @@ import React, { useState, useEffect} from 'react';
 import { withRouter } from 'react-router-dom';
 import { withTheme } from 'emotion-theming';
 import Button from '../../../components/Button';
+import Notes from './Notes';
 import UrlsList from '../../../components/UrlsList';
 import styled from '@emotion/styled';
 
@@ -42,7 +43,7 @@ const Overview = (props) => {
   `;
 
   const BottomSection = styled.div`
-    ${props.theme.BottomSection}
+    ${props.theme.BottomSectionFourColumns}
   `;
 
   const Column = styled.div`
@@ -59,6 +60,11 @@ const Overview = (props) => {
   return (
     <BottomSection>
       <Column area={ 'left' }>
+        <Notes 
+          projectID={ project ? project.id : null }
+          notes={ project ? project.notes : null }/>
+      </Column>
+      <Column area={ 'mid-left'}>
         <h4>Recent URLs</h4>
         <h6>Bulk open</h6>
         <Div>
@@ -83,7 +89,7 @@ const Overview = (props) => {
           size={'regular'}
           clicked={() => showMore()} />
       </Column>
-      <Column area={ 'mid' }>
+      <Column area={ 'mid-right' }>
         <h4>Top URLS</h4>
         <h6>Bulk open</h6>
         <Div>

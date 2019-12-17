@@ -25,6 +25,7 @@ class ProjectsDB {
         totalVisits: null,
         totalFocuses: null,
         timesOpened: 1,
+        notes: '',
         lastOpened: Date.now(),
         created: Date.now()
       };
@@ -95,6 +96,7 @@ class ProjectsDB {
   }
 
   updateProject (id, newData) {
+    console.log(newData);
     let promise = new Promise( resolve => {
       this.getProject(id)
         .then( res => {

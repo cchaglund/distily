@@ -52,6 +52,13 @@ browser.runtime.onMessage.addListener( message => {
     case 'addToBlacklist':
       Controller.createBlacklistItem(message.data);
       break;
+
+    case 'getNotes':
+      Controller.getNotes(message.data);
+      break;  
+    case 'saveNotes':
+      Controller.saveNotes(message.data);
+      break;
   }
 });
 

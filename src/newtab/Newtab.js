@@ -16,22 +16,12 @@ import ThemeProvider from '../assets/provider';
 import './Newtab.css';
 
 const Newtab = () => {
-  const [ projects, setProjects ] = useState();
-  const [ urls, setUrls ] = useState();
   const [ currentProject, setCurrentProject ] = useState();
 
   useEffect( () => {
-    // browser.runtime.sendMessage({
-    //   type: 'getAllProjects'
-    // });
-
     browser.runtime.sendMessage({
       type: 'getCurrentProject'
     });
-
-    // browser.runtime.sendMessage({
-    //   type: 'getAllUrls'
-    // });
 
     const handleMessages = message => {
       switch (message.type) {
@@ -40,16 +30,7 @@ const Newtab = () => {
           browser.windows.getCurrent()
             .then( window => {
               if (message.windowID === window.id) {
-                console.log('heeey');
                 setCurrentProject(message.data);
-                // props.history.push({
-                //   pathname: '/project',
-                //   state: {
-                //     params: {
-                //       data: message.data
-                //     }
-                //   }
-                // });
               }
             });
           break;
