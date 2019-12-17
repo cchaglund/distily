@@ -3,9 +3,9 @@
 import { useState, useEffect } from 'react';
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
-import Button from './Button';
+import UrlButton from './UrlButton';
 
-const UrlsList = ({urls, clicked, type}) => {
+const UrlsList = ({urls, clicked, type, deletable }) => {
   const [urlsList, setUrlsList ] = useState();
 
   useEffect(() => {
@@ -32,13 +32,13 @@ const UrlsList = ({urls, clicked, type}) => {
   const makeButtons = (data) => {
     return data.map( url => {
       return (
-        <Button
+        <UrlButton
           key={url.id}
           clicked={ () => clicked(url)}
-          text={url.title} 
-          type={'url'}
-          size={'wide'} 
+          text={url.title}
           data={url}
+          type={ type }
+          deletable={ deletable ? true : false }
           proportion={url.proportion}/>
       );
     });
