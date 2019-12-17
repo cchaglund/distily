@@ -26,7 +26,6 @@ const theme = {
   BottomSection: `
     margin-top: 2rem;
     margin-bottom: 2rem;
-    width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-column-gap: 50px;
@@ -37,7 +36,6 @@ const theme = {
   BottomSectionTwoColumns: `
     margin-top: 2rem;
     margin-bottom: 2rem;
-    width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-column-gap: 200px;
@@ -45,10 +43,19 @@ const theme = {
     grid-template-areas: 
       "left right"
   `,
+  BottomSectionFourColumns: `
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-column-gap: 50px;
+    grid-template-rows: 1fr;
+    grid-template-areas: 
+      "left mid-left mid-right right"
+  `,
   BottomSectionFull: `
     margin-top: 2rem;
     margin-bottom: 2rem;
-    width: 100%;
     display: grid;
     grid-template-columns: 1fr;
     grid-column-gap: 200px;

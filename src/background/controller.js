@@ -124,6 +124,11 @@ class Controller  {
     });
   }
 
+  saveNotes(data) {
+    console.log('save notes?', data);
+    this.updateProject(data.projID, { notes: data.notes });
+  }
+
   updateURL (url) {
     url.visits = url.visits + 1;
     url.focuses = url.focuses + 1;

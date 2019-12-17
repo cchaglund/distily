@@ -1,7 +1,4 @@
-/** @jsx jsx */
-
-import { useState, useEffect } from 'react';
-import { css, jsx } from '@emotion/core';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import Button from './Button';
 import ProjectButton from './ProjectButton';
