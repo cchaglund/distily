@@ -150,6 +150,27 @@ class Controller  {
     });
   }
 
+  importProject (data) {
+    const cleanTitle = data.project.title.split('-').join(' ');
+    this.createNewProject(cleanTitle)
+      .then(projectId => {
+        if ( ! projectId ) {
+          console.log('project name already taken!');
+          return;
+        }
+
+        data.urls.forEach( url => {
+          this.createNewURL({
+            hash: url.hash,
+            host: url.host,
+            href: url.href,
+            title: url.title,
+            project: projectId
+          });
+        });
+      });
+  }
+
   createNewProject (projectTitle) {
     return new Promise( resolve => {
       this.uniqueProjectTitleCheck(projectTitle)

@@ -1,4 +1,4 @@
-const saveData = (function () {
+const exportProject = (function () {
   var a = document.createElement('a');
   document.body.appendChild(a);
   a.style = 'display: none';
@@ -6,11 +6,12 @@ const saveData = (function () {
     var json = JSON.stringify(data),
       blob = new Blob([json], {type: 'octet/stream'}),
       url = window.URL.createObjectURL(blob);
+    console.log(json);
     a.href = url;
-    a.download = fileName;
+    a.download = 'distily_' + fileName.split(' ').join('-') + '.json';
     a.click();
     window.URL.revokeObjectURL(url);
   };
 }());
 
-export default saveData;
+export default exportProject;

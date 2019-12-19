@@ -8,6 +8,7 @@ import Layout from '../../components/Layout';
 import Button from '../../components/Button';
 import BlacklistButton from '../../components/BlacklistButton';
 import styled from '@emotion/styled';
+import importProject from '../../helpers/importProject';
 import {
   withRouter,
 } from 'react-router-dom';
@@ -82,8 +83,7 @@ const Settings = () => {
     setFileName(fileInput.current.files[0].name);
     reader.readAsText(fileInput.current.files[0]);
     reader.onload = (event) => {
-      const jsonObj = JSON.parse(event.target.result);
-      console.log(jsonObj);
+      importProject(event.target.result);
     };
     
   };

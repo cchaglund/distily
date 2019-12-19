@@ -32,6 +32,9 @@ browser.runtime.onMessage.addListener( message => {
     case 'getCurrentProject':
       Controller.getCurrentProject();
       break;
+    case 'importProject':
+      Controller.importProject(message.data);
+      break;
 
     case 'openUrl':
       Controller.openUrl(message.data);

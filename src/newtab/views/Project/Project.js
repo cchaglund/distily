@@ -10,7 +10,7 @@ import Overview from './Overview';
 import History from './History';
 import Charts from './Charts';
 import styled from '@emotion/styled';
-import save from './save';
+import exportProject from './exportProject';
 
 // import BarChart from './Charts/BarChart/chart.js';
 // import BubbleChart from './Charts/BubbleChart/chart.js';
@@ -97,7 +97,7 @@ const Project = (props) => {
     <div>
       <Header>
         <h3>{ project ? project.title : null }</h3>
-        <Export onClick={ () => save(project, 'test.json')}>Export</Export>
+        <Export onClick={ () => exportProject({ project: project, urls: urls }, project.title)}>Export</Export>
       </Header>
       <Div>
         <Span>URLs visited: { urls ? urls.length : '-' }</Span>
