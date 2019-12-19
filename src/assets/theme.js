@@ -94,7 +94,7 @@ const theme = {
     },
     red: {
       color: '#edb1b6',
-      hover: Color('#A0CFF7').darken(0.05).hsl().string()
+      hover: Color('#edb1b6').darken(0.05).hsl().string()
     },
     black: {
       color: '#485050',

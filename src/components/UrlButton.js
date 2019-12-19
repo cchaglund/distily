@@ -5,6 +5,7 @@ import { css, jsx } from '@emotion/core';
 import { useState, useEffect} from 'react';
 import styled from '@emotion/styled';
 import { withTheme } from 'emotion-theming';
+import { MdClose } from 'react-icons/md';
 
 const UrlButton = ({ data, proportion, theme, type, deletable }) => {
   const [ title, setTitle ] = useState();
@@ -63,10 +64,12 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
   `;
 
   const Delete = styled.div`
+    display: flex;
+    align-items: center;
     padding: 0.2rem 0.5rem;
     background-color: #edb1b6;
     border-radius: 0 0.1rem 0.1rem 0;
-    font-size: 0.7rem;
+    font-size: 1rem;
     &:hover {
       background-color: #ed9ea5;
     }
@@ -80,14 +83,23 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
   `;
 
   const Cancel = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: ${ theme.colors.green.color };
     width: 100%;
     text-align: center;
     padding: 0.2rem 0.5rem;
     font-size: inherit;
+    &:hover {
+      background-color: ${ theme.colors.green.hover };
+    }
   `;
 
   const Confirm = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: ${ theme.colors.red.color };
     width: 100%;
     text-align: center;
@@ -128,7 +140,7 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
       deleteUI = (
         <Delete
           onClick={ () => beginDelete() }>
-            delete
+          <MdClose />
         </Delete>
       );
     }
@@ -138,8 +150,7 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
         <Deleting>
           <Confirm
             onClick={ () => deleteItem() }>
-            Delete
-          </Confirm>
+            Delete</Confirm>
           <Cancel
             onClick={ () => cancelDeletion() }>
             Cancel</Cancel>
@@ -159,7 +170,7 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
               css={ css`${ theme.WideButton } width:100%` }
               onClick={ () => openUrl(data) }>
               <PrimaryText>{ type === 'host' ? host : title }</PrimaryText>
-              { deleting ? null : <SecondaryText>{ type === 'host' ? title : host }</SecondaryText> }
+              <SecondaryText>{ type === 'host' ? title : host }</SecondaryText>
             </div>
             { deleteOption() }
           </UrlButtonContainer>
