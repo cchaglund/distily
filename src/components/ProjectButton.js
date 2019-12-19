@@ -37,8 +37,9 @@ const ProjectButton = ({ text, clicked, activeClicked, activeButton, activeText,
   `;
 
   const ActiveText = styled.h6`
+    display: flex;
+    align-items: center;
     margin: 0;
-    text-align: right; 
     padding: 0.2rem 1rem; 
     line-height: 180%
   `;

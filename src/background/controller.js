@@ -197,6 +197,52 @@ class Controller  {
     });
   }
 
+  createProjectFromWindow (data) {
+    this.uniqueProjectTitleCheck(data.projectTitle)
+      .then(res => {
+        if (res === false) {
+          return;
+        }
+        const newProject = {
+          title: data.projectTitle,
+          activeWindow: data.windowID
+        };
+
+        DB.projects.add(newProject)
+          .then(projID => {
+            this.getAllBlacklistTerms()
+              .then(items => {
+                data.tabs.forEach( tab => {
+                  let url = new URL(tab.url);
+                  if ( ! ( url.protocol === 'about:' || url.protocol === 'moz-extension:' ) ) {
+                    if (items.length !== 0) {
+                      items.forEach( item =>{
+                        if (! url.href.includes(item.term) ) {
+                          this.createNewURL({
+                            hash: hash.sha256().update(url.href).digest('hex'),
+                            host: url.host,
+                            href: url.href,
+                            title: tab.title,
+                            project: projID
+                          });
+                        }
+                      });
+                    } else {
+                      this.createNewURL({
+                        hash: hash.sha256().update(url.href).digest('hex'),
+                        host: url.host,
+                        href: url.href,
+                        title: tab.title,
+                        project: projID
+                      });
+                    }
+                  }
+                });
+              });
+          });
+      });
+  }
+
   resumeProject (data) {
     const create = urls => {
       this.browser.windows.create(urls)
@@ -405,7 +451,7 @@ class Controller  {
   handleURL (evt) {
     let url = new URL(evt.url);
     // Filter out any sub-frame related navigation event
-    if (evt.frameId !== 0) {
+    if (evt.frameId !== 0 || ! evt.frameId ) {
       return;
     }
 

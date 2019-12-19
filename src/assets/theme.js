@@ -15,7 +15,7 @@ const theme = {
     border-radius: 0.1rem;
   `,
   WideButton: `
-    padding: 0.7rem 1rem;
+    padding: 0.4rem 1rem;
     text-align: start;
     background: none;
     color: inherit;

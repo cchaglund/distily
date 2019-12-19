@@ -19,6 +19,9 @@ browser.runtime.onMessage.addListener( message => {
     case 'createProject':
       Controller.createNewProject(message.data);
       break;
+    case 'createProjectFromWindow':
+      Controller.createProjectFromWindow(message.data);
+      break;
     case 'openProject':
       Controller.openProject(message.data);
       break;

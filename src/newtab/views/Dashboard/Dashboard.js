@@ -16,11 +16,12 @@ const Dashboard = () => {
   const [ error, setError ] = useState();
   const [ searching, setSearching ] = useState(false);
   const [ searchTerm, setSearchTerm ] = useState();
+  const [ currentProject, setCurrentProject ] = useState();
 
   useEffect(() => {
-    // browser.runtime.sendMessage({
-    //   type: 'getCurrentProject'
-    // });
+    browser.runtime.sendMessage({
+      type: 'getCurrentProject'
+    });
 
     browser.runtime.sendMessage({
       type: 'getAllProjects'
@@ -37,6 +38,9 @@ const Dashboard = () => {
           break;
         case 'allUrls':
           setUrls(message.data);
+          break;
+        case 'currentProject':
+          setCurrentProject(message.data);
           break;
       }
     };
@@ -60,6 +64,7 @@ const Dashboard = () => {
   }, []);
 
   const createHandler = (title) => {
+    // TODO: use controller's uniqueProjectTitleCheck instead
     const titleExists = projects ? projects.filter( project => {
       return project.title === title;
     }) : null;
@@ -69,10 +74,33 @@ const Dashboard = () => {
       return;
     }
 
-    browser.runtime.sendMessage({
-      type: 'createProject',
-      data: title
-    });
+    browser.windows.getCurrent({ populate: true})
+      .then( window => {
+        if (currentProject && currentProject.activeWindow === window.id) {
+          // open new project in new window
+          browser.runtime.sendMessage({
+            type: 'createProject',
+            data: title
+          });
+        } else {
+          const tabs = window.tabs.map( tab => {
+            return {
+              url: tab.url,
+              title: tab.title,
+              id: tab.id
+            };
+          });
+          // make current window into the project
+          browser.runtime.sendMessage({
+            type: 'createProjectFromWindow',
+            data: {
+              windowID: window.id,
+              projectTitle: title,
+              tabs: tabs
+            }
+          });
+        }
+      });
   };
 
   const handleSearch = (term) => {
