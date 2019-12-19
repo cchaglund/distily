@@ -9,17 +9,20 @@ const ProjectsList = ({ projects, clicked, clickAction, type }) => {
   const [ activeButton, setActiveButton] = useState();
 
   useEffect(() => {
+    let sorted = projects;
+
     switch (type) {
       case 'recent':
-        sortProjects('lastOpened');
+        // first sort projects by activity to give proportional color, then by date
+        sorted = sortProjects('timesOpened', projects);
+        sorted = sortProjects('lastOpened', sorted);
         break;
       case 'top':
-        sortProjects('timesOpened') ;
-        break;
-      default:
-        setProjectsList(projects);
+        sorted = sortProjects('timesOpened', projects);
         break;
     }
+
+    setProjectsList(sorted);
   }, []);
 
   const clickHandler = (projId) => {
@@ -62,9 +65,9 @@ const ProjectsList = ({ projects, clicked, clickAction, type }) => {
     });
   };
 
-  const sortProjects = (property) => {
+  const sortProjects = (property, projectsList) => {
     // Deep clone
-    let sortedProjects = JSON.parse(JSON.stringify(projects));
+    let sortedProjects = JSON.parse(JSON.stringify(projectsList));
 
     let maxVisits = 0;
 
@@ -90,7 +93,7 @@ const ProjectsList = ({ projects, clicked, clickAction, type }) => {
       return (projectA[property] < projectB[property]) ? 1 : - 1;
     });
 
-    setProjectsList(sortedProjects);
+    return sortedProjects;
   };
   
   const ProjectsListContainer = styled.div`
