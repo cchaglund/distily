@@ -59,7 +59,7 @@ const Summary = (props) => {
           type={'top'}
           clicked={(projIndex, openType, tabCount) => resumeProject(projIndex, openType, tabCount)} /> : null }
         <Button 
-          type={'nav'}
+          btnClass={'nav'}
           text={'Show more'}
           size={'regular'}
           clicked={() => showMore()} />
@@ -71,7 +71,7 @@ const Summary = (props) => {
           type={'top'}
           clicked={(projIndex) => openProject(projIndex)} /> : null }
         <Button 
-          type={'nav'}
+          btnClass={'nav'}
           text={'Show more'}
           size={'regular'}
           clicked={() => showMore()} />
@@ -84,7 +84,7 @@ const Summary = (props) => {
           type={'neutral'}
           clicked={(projIndex) => openProject(projIndex)} /> : null }
         <Button 
-          type={'nav'}
+          btnClass={'nav'}
           text={'Show more'}
           size={'regular'}
           clicked={() => showMore()} />

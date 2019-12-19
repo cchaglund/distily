@@ -64,7 +64,7 @@ const History = (props) => {
         <h6>Bulk open</h6>
         <Div>
           <Button
-            type={'action'}
+            btnClass={'action'}
             size={'regular'}
             text={'Resume session'}
             clicked={() => resumeProject('recent', 10)} />
@@ -74,7 +74,7 @@ const History = (props) => {
           urls={urls}
           type={'recent'} /> : null }
         <Button 
-          type={'nav'}
+          btnClass={'nav'}
           text={'Show more'}
           size={'regular'}
           clicked={() => showMore()} />
@@ -84,12 +84,12 @@ const History = (props) => {
         <h6>Sort</h6>
         <Div>
           <Button
-            type={'action'}
+            btnClass={'action'}
             size={'regular'}
             text={'By data'} 
             clicked={() => resumeProject('top', 5)} />
           <Button
-            type={'action'}
+            btnClass={'action'}
             size={'regular'}
             text={'By activity'} 
             clicked={() => resumeProject('top', 10)} />
@@ -102,7 +102,7 @@ const History = (props) => {
           deletable
           clicked={(id) => console.log('trying to open url', id)} /> : null }
         <Button 
-          type={'nav'}
+          btnClass={'nav'}
           text={'Show more'}
           size={'regular'}
           clicked={() => showMore()} />
@@ -115,7 +115,7 @@ const History = (props) => {
           type={'host'}
           clicked={(id) => console.log('trying to open url', id)} /> : null }
         <Button 
-          type={'nav'}
+          btnClass={'nav'}
           text={'Show more'}
           size={'regular'}
           clicked={() => showMore()} />

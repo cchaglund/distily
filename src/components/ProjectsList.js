@@ -39,17 +39,17 @@ const ProjectsList = ({ projects, clicked, clickAction, type }) => {
         <Button
           clicked={ () => console.log('trying to open previous session')}
           text={'Open previous session'} 
-          type={'action'}
+          btnClass={'action'}
           wide />
         <Button
           clicked={ () => clicked(projId, 'recent', 5)}
           text={'Open with recent urls'} 
-          type={'action'}
+          btnClass={'action'}
           wide />
         <Button
           clicked={ () => clicked(projId, 'top', 5)}
           text={'Open top urls'} 
-          type={'action'}
+          btnClass={'action'}
           wide />
       </Div>
     );

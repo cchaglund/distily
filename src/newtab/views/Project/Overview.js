@@ -68,12 +68,12 @@ const Overview = (props) => {
         <h4>Recent URLs</h4>
         <Div>
           <Button
-            type={'action'}
+            btnClass={'action'}
             size={'regular'}
             text={'Open recent 5'}
             clicked={() => resumeProject('recent', 5)} />
           <Button
-            type={'action'}
+            btnClass={'action'}
             size={'regular'}
             text={'Recent 10'} 
             clicked={() => resumeProject('recent', 10)} />
@@ -87,12 +87,12 @@ const Overview = (props) => {
         <h4>Top URLS</h4>
         <Div>
           <Button
-            type={'action'}
+            btnClass={'action'}
             size={'regular'}
             text={'Open top 5'} 
             clicked={() => resumeProject('top', 5)} />
           <Button
-            type={'action'}
+            btnClass={'action'}
             size={'regular'}
             text={'Top 10'} 
             clicked={() => resumeProject('top', 10)} />

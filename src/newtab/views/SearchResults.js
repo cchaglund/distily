@@ -76,7 +76,7 @@ const Search = ({list, term, theme, close, resultsType}) => {
       <BottomSection>
         <Column area={ 'right' }>
           <Button
-            type={'nav'}
+            btnClass={'nav'}
             size={'regular'}
             text={'Exit search'} 
             clicked={() => close()} />

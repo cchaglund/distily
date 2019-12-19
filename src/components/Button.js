@@ -5,10 +5,10 @@ import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { withTheme } from 'emotion-theming';
 
-const Button = ({ text, type, clicked, active, theme, wide }) => {  
+const Button = ({ text, btnClass, clicked, active, theme, wide }) => {  
   let colorName;
 
-  switch (type) {
+  switch (btnClass) {
     case 'nav':
       colorName = 'purple';
       break;

@@ -54,7 +54,7 @@ const TextInput = ({type, text, size, clicked, error, placeholder}) => {
           placeholder={ placeholder ? placeholder : 'Project title' } 
           onKeyDown={(e) => handleEnterPress(e)}/>
         <Button 
-          type={type}
+          btnClass={type}
           text={text}
           size={size}
           clicked={() => clicked(input)} />
