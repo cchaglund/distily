@@ -151,8 +151,8 @@ class Controller  {
   }
 
   importProject (data) {
-    const cleanTitle = data.project.title.split('-').join(' ');
-    this.createNewProject(cleanTitle)
+    const newTitle = data.project.title.split('-').join(' ') + ' (imported)';
+    this.createNewProject(newTitle)
       .then(projectId => {
         if ( ! projectId ) {
           console.log('project name already taken!');

@@ -6,7 +6,6 @@ const importProject = (projectJson) => {
     type: 'importProject',
     data: jsonObj
   });
-  console.log(jsonObj);
 };
 
 export default importProject;

@@ -10,7 +10,7 @@ import Overview from './Overview';
 import History from './History';
 import Charts from './Charts';
 import styled from '@emotion/styled';
-import exportProject from './exportProject';
+import exportProject from '../../../helpers/exportProject';
 
 // import BarChart from './Charts/BarChart/chart.js';
 // import BubbleChart from './Charts/BubbleChart/chart.js';
