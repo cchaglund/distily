@@ -19,11 +19,12 @@ const ProjectButton = ({ text, clicked, activeClicked, activeButton, activeText,
     display: flex;
     justify-content: space-between;
     background-color: ${ activeButton ? theme.colors.green.color : color };
-    width: auto;
+    width: 100%;
     margin-top: 0.3rem;
     margin-bottom: 0.3rem;
     cursor: pointer;
     border-radius: 0.1rem;
+    box-shadow: lightgray 0 1px;
     &:hover {
       background-color: ${ activeButton ? theme.colors.green.hover : hoverColor };
     }
@@ -36,8 +37,7 @@ const ProjectButton = ({ text, clicked, activeClicked, activeButton, activeText,
   `;
 
   const ActiveText = styled.h6`
-    margin: 0; 
-    width: 100%; 
+    margin: 0;
     text-align: right; 
     padding: 0.2rem 1rem; 
     line-height: 180%

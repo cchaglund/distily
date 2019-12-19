@@ -51,12 +51,8 @@ const Layout = (props) => {
     margin-top: 2rem;
     margin-bottom: 2rem;
     width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-column-gap: 180px;
-    grid-template-rows: auto;
-    grid-template-areas: 
-      "left right"
+    display: flex;
+    justify-content: space-between;
   `;
 
   const LinkWrapper = styled.div`
@@ -108,10 +104,10 @@ const Layout = (props) => {
 
       <LayoutContainer>
         <TopSection>
-          <div css={ css`grid-area: left`}>
+          <div>
             { props.topComponents.left }
           </div>
-          <div css={ css`grid-area: right`}>
+          <div>
             { props.topComponents.right }
           </div>
         </TopSection>

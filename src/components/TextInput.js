@@ -24,7 +24,7 @@ const TextInput = ({type, text, size, clicked, error, placeholder}) => {
     border: none;
     border-bottom: 1px solid #707070;
     margin-right: 0.4rem;
-    max-width: 15rem;
+    width: 15rem;
   `;
 
   const Error = styled.p`

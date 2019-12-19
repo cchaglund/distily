@@ -3,7 +3,7 @@ const Color = require('color');
 const theme = {
   SmallButton: `
     padding: 0.4rem 1rem;
-    text-align: start;
+    text-align: end;
     width: 100%;
     background: none;
     color: inherit;
@@ -11,11 +11,12 @@ const theme = {
     font: inherit;
     cursor: pointer;
     outline: inherit;
+    box-shadow: lightgray 0 1px;
+    border-radius: 0.1rem;
   `,
   WideButton: `
-    padding: 0.2rem 1rem;
+    padding: 0.7rem 1rem;
     text-align: start;
-    width: 100%;
     background: none;
     color: inherit;
     border: none;

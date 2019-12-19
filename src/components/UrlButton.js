@@ -16,13 +16,13 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
     setTitle(data.title);
     setHost(data.host);
 
-    if (data.title.length > 50) {
-      setTitle(data.title.substring(0,49) + '...');
-    }
+    // if (data.title.length > 50) {
+    //   setTitle(data.title.substring(0,49) + '...');
+    // }
 
-    if (data.host.includes('www.')) {
-      setHost(data.host.replace('www.', ''));
-    }
+    // if (data.host.includes('www.')) {
+    //   setHost(data.host.replace('www.', ''));
+    // }
 
   }, []);
 
@@ -33,7 +33,7 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
 
   const Wrapper = styled.div`
     display: flex;
-    width: auto;
+    width: 100%;
     margin-top: 0.3rem;
     margin-bottom: 0.3rem;
     cursor: pointer;
@@ -45,23 +45,21 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
     width: 100%;
     cursor: pointer;
     border-radius: 0.1rem;
+    box-shadow: lightgray 0 1px;
     &:hover {
       background-color: ${ hoverColor };
     }
   `;
 
-  const Div = styled.div`
-    display: flex;
-    justify-content: space-between;
-  `;
-
-  const PrimaryText = styled.span`
+  const PrimaryText = styled.div`
     font-weight: bold;
     font-size: 0.7rem;
+    padding-right: 0.3rem;
   `;
 
-  const SecondaryText = styled.span`
+  const SecondaryText = styled.div`
     font-size: 0.7rem;
+    padding-top: 0.4rem;
   `;
 
   const Delete = styled.div`
@@ -158,12 +156,10 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
         <Wrapper>
           <UrlButtonContainer>
             <div
-              css={ css`${ theme.WideButton }` }
+              css={ css`${ theme.WideButton } width:100%` }
               onClick={ () => openUrl(data) }>
-              <Div>
-                <PrimaryText>{ type === 'host' ? host : title }</PrimaryText>
-                { deleting ? null : <SecondaryText>{ type === 'host' ? title : host }</SecondaryText> }
-              </Div>
+              <PrimaryText>{ type === 'host' ? host : title }</PrimaryText>
+              { deleting ? null : <SecondaryText>{ type === 'host' ? title : host }</SecondaryText> }
             </div>
             { deleteOption() }
           </UrlButtonContainer>

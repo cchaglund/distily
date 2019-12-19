@@ -66,12 +66,11 @@ const Overview = (props) => {
       </Column>
       <Column area={ 'mid-left'}>
         <h4>Recent URLs</h4>
-        <h6>Bulk open</h6>
         <Div>
           <Button
             type={'action'}
             size={'regular'}
-            text={'Recent 5'}
+            text={'Open recent 5'}
             clicked={() => resumeProject('recent', 5)} />
           <Button
             type={'action'}
@@ -83,20 +82,14 @@ const Overview = (props) => {
           key='1'
           urls={urls}
           type={'recent'} /> : null }
-        <Button 
-          type={'nav'}
-          text={'Show more'}
-          size={'regular'}
-          clicked={() => showMore()} />
       </Column>
       <Column area={ 'mid-right' }>
         <h4>Top URLS</h4>
-        <h6>Bulk open</h6>
         <Div>
           <Button
             type={'action'}
             size={'regular'}
-            text={'Top 5'} 
+            text={'Open top 5'} 
             clicked={() => resumeProject('top', 5)} />
           <Button
             type={'action'}
@@ -109,11 +102,6 @@ const Overview = (props) => {
           urls={urls}
           type={'top'}
           clicked={(id) => console.log('trying to open url', id)} /> : null }
-        <Button 
-          type={'nav'}
-          text={'Show more'}
-          size={'regular'}
-          clicked={() => showMore()} />
       </Column>
       <Column area={ 'right' }>
         <h4>By domain</h4>
@@ -122,11 +110,6 @@ const Overview = (props) => {
           urls={urls}
           type={'host'}
           clicked={(id) => console.log('trying to open url', id)} /> : null }
-        <Button 
-          type={'nav'}
-          text={'Show more'}
-          size={'regular'}
-          clicked={() => showMore()} />
       </Column>
     </BottomSection>
   );

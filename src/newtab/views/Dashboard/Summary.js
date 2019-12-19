@@ -53,7 +53,6 @@ const Summary = (props) => {
     <BottomSection>
       <Column area={ 'left' }>
         <h4>Jump back in</h4>
-        <h6>Recent projects</h6>
         { props.projects ? <ProjectsList 
           projects={props.projects}
           clickAction={'resume'}
@@ -67,7 +66,6 @@ const Summary = (props) => {
       </Column>
       <Column area={ 'mid' }>
         <h4>Top URLS</h4>
-        <h6>All time</h6>
         { props.urls ? <UrlsList 
           urls={props.urls}
           type={'top'}
@@ -80,7 +78,6 @@ const Summary = (props) => {
       </Column>
       <Column area={ 'right' }>
         <h4>Manage</h4>
-        <h6>Recent projects</h6>
         { props.projects ? <ProjectsList
           projects={props.projects}
           clickAction={'open'}
