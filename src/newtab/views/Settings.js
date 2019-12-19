@@ -1,16 +1,22 @@
 /* eslint-disable no-undef */
+/** @jsx jsx */
 
-import React, { useEffect, useState } from 'react';
-import { withTheme } from 'emotion-theming';
+import { useEffect, useState, createRef } from 'react';
+import { css, jsx } from '@emotion/core';
 import TextInput from '../../components/TextInput';
 import Layout from '../../components/Layout';
+import Button from '../../components/Button';
 import BlacklistButton from '../../components/BlacklistButton';
+import styled from '@emotion/styled';
 import {
   withRouter,
 } from 'react-router-dom';
 
 const Settings = () => {
   const [ blacklist, setBlacklist ] = useState();
+  const [ fileName, setFileName ] = useState();
+
+  let fileInput = createRef();
 
   useEffect(() => {
     browser.runtime.sendMessage({
@@ -34,6 +40,25 @@ const Settings = () => {
     };
   }, []);
 
+  const UploadLabel = styled.label`
+    cursor: pointer;
+    & input {
+      background-color: blue;
+    }
+  `;
+
+  const Input = styled.input`
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+  `;
+
+  const SuccessMessage = styled.p`
+    font-weight: bold;
+    font-size: 0.7rem;
+    padding: 0 0.3rem;
+  `;
+
   const addToBlacklist = (term) => {
     browser.runtime.sendMessage({
       type: 'addToBlacklist',
@@ -51,10 +76,42 @@ const Settings = () => {
     })
     : null;
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    var reader = new FileReader();
+    setFileName(fileInput.current.files[0].name);
+    reader.readAsText(fileInput.current.files[0]);
+    reader.onload = (event) => {
+      const jsonObj = JSON.parse(event.target.result);
+      console.log(jsonObj);
+    };
+    
+  };
+
   return (
     <Layout
       topComponents={{
-        left: null,
+        left: <div>
+          <h4>Import Project</h4>
+          <form onSubmit={handleSubmit}>
+            <UploadLabel htmlFor='uploadProject' >
+              <Input 
+                type="file" 
+                ref={fileInput} 
+                id='uploadProject' 
+                onChange={ handleSubmit }/>
+              <div css={ css`display: flex; align-items: center;`}>
+                <Button
+                  btnClass={'action'}
+                  text={ fileName ? 'Upload new project' : 'Upload project' }
+                  clicked={ () => null }/>
+                <SuccessMessage>
+                  { fileName ? `${ fileName } was successfully uploaded!` : null }
+                </SuccessMessage>
+              </div>
+            </UploadLabel>
+          </form>
+        </div>,
         right: <div>
           <h4>Blacklist</h4>
           <TextInput
@@ -72,4 +129,4 @@ const Settings = () => {
   );
 };
 
-export default withTheme(withRouter(Settings));
+export default withRouter(Settings);

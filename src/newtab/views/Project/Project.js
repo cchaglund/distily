@@ -10,6 +10,7 @@ import Overview from './Overview';
 import History from './History';
 import Charts from './Charts';
 import styled from '@emotion/styled';
+import save from './save';
 
 // import BarChart from './Charts/BarChart/chart.js';
 // import BubbleChart from './Charts/BubbleChart/chart.js';
@@ -39,13 +40,6 @@ const Project = (props) => {
         case 'projectUrls':
           setUrls(message.data);
           break;
-        // TODO: wtf do I need to get all urls then filter to get projecturls?
-        // case 'allUrls': {
-        //   const projUrls = message.data.filter( url => {
-        //     return url.project === project.id;
-        //   });
-        //   setUrls(projUrls);
-        // }
       }
     };
 
@@ -74,6 +68,21 @@ const Project = (props) => {
     font-size: 0.7rem;
   `;
 
+  const Header = styled.div`
+    display: flex;
+  `;
+
+  const Export = styled.h6`
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    color: lightgray;
+    cursor: pointer;
+    &:hover {
+      color: black;
+    }
+  `;
+
   const handleSearch = (term) => {
     setSearching(true);
     setSearchTerm(term);
@@ -86,7 +95,10 @@ const Project = (props) => {
 
   const leftComponent = (
     <div>
-      <h3>{ project ? project.title : null }</h3>
+      <Header>
+        <h3>{ project ? project.title : null }</h3>
+        <Export onClick={ () => save(project, 'test.json')}>Export</Export>
+      </Header>
       <Div>
         <Span>URLs visited: { urls ? urls.length : '-' }</Span>
         <Span>Times opened: { timesOpened }</Span>
@@ -95,20 +107,17 @@ const Project = (props) => {
       </Div>
       <Div>
         <Button
-          type={'nav'}
-          size={'regular'}
+          btnClass={'nav'}
           text={'Overview'}
           active={ panelType === 'overview' ? true : false }
           clicked={() => changeView('overview')} />
         <Button
-          type={'nav'}
-          size={'regular'}
+          btnClass={'nav'}
           text={'History'} 
           active={ panelType === 'history' ? true : false }
           clicked={() => changeView('history')}/>
         <Button
-          type={'nav'}
-          size={'regular'}
+          btnClass={'nav'}
           text={'Charts'} 
           active={ panelType === 'charts' ? true : false }
           clicked={() => changeView('charts')}/>
@@ -141,12 +150,6 @@ const Project = (props) => {
     }
   };
 
-
-
-  // const overview = <Overview urls={urls ? urls : null } project={project ? project : null} />;
-  // const history = <History urls={urls ? urls : null } project={project ? project : null} />;
-  // const charts = <Charts urls={urls ? urls : null } project={project ? project : null} />;
-
   {/*
   <BarChart 
     urls={adjustedData}/>
@@ -169,7 +172,6 @@ const Project = (props) => {
           close={() => closeSearch()}/> 
         : panel ? panel : <Overview urls={urls ? urls : null } project={project ? project : null} />
       }
-      {/* { panel ? panel : <Overview urls={urls ? urls : null } project={project ? project : null} />} */}
     </Layout>
   );
 };
