@@ -15,7 +15,6 @@ const History = (props) => {
   const [ project, setProject ] = useState();
 
   useEffect(() => {
-    console.log('hist');
     if (props.project && props.urls) {
       const project = props.project;
 

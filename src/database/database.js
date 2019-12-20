@@ -1,47 +1,49 @@
 /* eslint-disable no-unused-vars */
 const database = {
   init: () => {
-    let db;
-    let dbReq = indexedDB.open('distily', 1);
+    return new Promise(resolve => {
+      let db;
+      let dbReq = indexedDB.open('distily', 1);
 
-    dbReq.onupgradeneeded = event => {
-      db = event.target.result;
+      dbReq.onupgradeneeded = event => {
+        db = event.target.result;
 
-      db.createObjectStore('projects', {
-        keyPath: 'id',
-        autoIncrement: true
-      }).createIndex('title', 'title');
+        db.createObjectStore('projects', {
+          keyPath: 'id',
+          autoIncrement: true
+        }).createIndex('title', 'title');
 
-      db.createObjectStore('urls', {
-        keyPath: 'id',
-        autoIncrement: true
-      }).createIndex('hash', 'hash');
+        db.createObjectStore('urls', {
+          keyPath: 'id',
+          autoIncrement: true
+        }).createIndex('hash', 'hash');
 
-      db.createObjectStore('blacklist', {
-        keyPath: 'id',
-        autoIncrement: true
-      }).createIndex('term', 'term');
+        db.createObjectStore('blacklist', {
+          keyPath: 'id',
+          autoIncrement: true
+        }).createIndex('term', 'term');
 
-      db.onsuccess = e => {
-        console.log('dbs all set up??');
+        db.onsuccess = e => {
+          console.log('dbs all set up??');
+        };
       };
-    };
 
-    dbReq.onsuccess = event => {
-      console.log(event);
-      console.log('succeeded in initing db');
-    };
+      dbReq.onsuccess = event => {
+        resolve();
+        console.log('succeeded in initing db');
+      };
 
-    dbReq.onerror = event => {
-      alert('error opening database ' + event.target.errorCode);
-    };
+      dbReq.onerror = event => {
+        alert('error opening database ' + event.target.errorCode);
+      };
 
-    dbReq.onabort = e => console.log('was aborted');
-    dbReq.onblocked = e => console.log('was blocked');
-    dbReq.onversionchange = e => console.log('version change');
-    dbReq.onclose = e => console.log('close');
+      dbReq.onabort = e => console.log('was aborted');
+      dbReq.onblocked = e => console.log('was blocked');
+      dbReq.onversionchange = e => console.log('version change');
+      dbReq.onclose = e => console.log('close');
 
-    return dbReq;
+      return dbReq;
+    });
   },
 
   connect: (data) => {

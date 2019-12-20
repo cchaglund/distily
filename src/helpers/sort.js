@@ -13,12 +13,29 @@ const sort = (data, type) => {
 };
 
 const sortBy = (property, data) => {
-  // Deep clone
-  let sortedData = JSON.parse(JSON.stringify(data));
   let maxVisits = 0;
+  let sortedData = data;
 
   // get the highest visits value
   if (property === 'visits') {
+    let tempUrls = {};
+
+    data.forEach( url => {
+      const hrefString = url.href;
+
+      if (! tempUrls[hrefString]) {
+        tempUrls[hrefString] = {...url};
+      } else {
+        tempUrls[hrefString].visits = tempUrls[hrefString].visits + url.visits;
+      }
+    });
+
+    sortedData = [];
+
+    sortedData = Object.keys(tempUrls).map( item => {
+      return tempUrls[item];
+    });
+    
     sortedData.forEach( item => {
       const itemVisits = parseInt(item.visits);
 

@@ -7,10 +7,15 @@ console.log('Background.js file loaded');
 const Controller = new Contr( browser );
 
 browser.runtime.onInstalled.addListener( () => {
-  DB.init();
+  DB.init()
+    .then( res => {
+      // do i need this one?
+      Controller.updateAllTopUrls();
+    });
   Controller.initState();
 });
 
+// or this one?
 Controller.updateAllTopUrls();
 
 browser.runtime.onMessage.addListener( message => {

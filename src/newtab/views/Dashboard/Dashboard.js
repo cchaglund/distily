@@ -71,7 +71,7 @@ const Dashboard = () => {
       return project.title === title;
     }) : null;
 
-    if (titleExists.length !== 0) {
+    if (titleExists && titleExists.length !== 0) {
       setError(`Project '${title}' already exists`);
       return;
     }

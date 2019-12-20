@@ -145,8 +145,6 @@ class Controller  {
   updateAllTopUrls() {
     this.getAllURLS()
       .then(urls => {
-        console.log('top url broadcast');
-
         this.browser.runtime.sendMessage({
           type: 'topUrls',
           data: sort(urls, 'visits')
@@ -486,13 +484,6 @@ class Controller  {
           return;
         }
 
-        // this seems unecessary to add url.host to url.host...?
-        url = {
-          hash: hash.sha256().update(evt.url).digest('hex'),
-          host: url.host,
-          href: url.href
-        };
-
         const windowID = evt.windowId;
         const tabID = evt.tabId;
 
@@ -504,6 +495,12 @@ class Controller  {
 
             activeProjects.forEach( project => {
               if (project.activeWindow === windowID) {
+                // this seems unecessary to add url.host to url.host...?
+                url = {
+                  hash: hash.sha256().update(evt.url + project.id ).digest('hex'),
+                  host: url.host,
+                  href: url.href
+                };
                 this.checkURLexists(url.hash, project.id)
                   .then(res => {
                     if (res.exists === true) {
