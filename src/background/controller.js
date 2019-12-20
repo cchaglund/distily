@@ -451,7 +451,7 @@ class Controller  {
   handleURL (evt) {
     let url = new URL(evt.url);
     // Filter out any sub-frame related navigation event
-    if (evt.frameId !== 0 || ! evt.frameId ) {
+    if (evt.frameId !== 0 ) {
       return;
     }
 
