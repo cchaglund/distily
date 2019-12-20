@@ -5,7 +5,7 @@ import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import Button from './Button';
 
-const TextInput = ({type, text, size, clicked, error, placeholder}) => {
+const TextInput = ({type, text, size, clicked, error, option, placeholder}) => {
   const [ input, setInput ] = useState('');
 
   useEffect( ()=> {
@@ -57,9 +57,11 @@ const TextInput = ({type, text, size, clicked, error, placeholder}) => {
           btnClass={type}
           text={text}
           size={size}
-          clicked={() => clicked(input)} />
+          clicked={() => clicked(input)} 
+          inactive={ option ? true : false } />
       </div>
-      <Error>{error ? error : null }</Error>
+      { error ? <Error>{ error }</Error> : null }
+      { option ? option : null }
     </div>
   );
 };

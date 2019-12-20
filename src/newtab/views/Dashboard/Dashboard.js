@@ -1,10 +1,13 @@
 /* eslint-disable no-undef */
+/** @jsx jsx */
 
 import React, { useState, useEffect } from 'react';
 import { withTheme } from 'emotion-theming';
+import { css, jsx } from '@emotion/core';
 import TextInput from '../../../components/TextInput';
 import Layout from '../../../components/Layout';
 import Summary from './Summary';
+import Button from '../../../components/Button';
 import SearchResults from '../SearchResults';
 import {
   withRouter,
@@ -14,6 +17,7 @@ const Dashboard = () => {
   const [ projects, setProjects ] = useState();
   const [ urls, setUrls ] = useState();
   const [ error, setError ] = useState();
+  const [ optionData, setOptionData ] = useState();
   const [ searching, setSearching ] = useState(false);
   const [ searchTerm, setSearchTerm ] = useState();
   const [ currentProject, setCurrentProject ] = useState();
@@ -51,16 +55,6 @@ const Dashboard = () => {
       console.log('removing listener');
       browser.runtime.onMessage.removeListener( handleMessages );
     };
-
-    // currentProject ?
-    //   history.push({
-    //     pathname: '/project',
-    //     state: {
-    //       params: {
-    //         data: message.data
-    //       }
-    //     }
-    //   }) : null ;
   }, []);
 
   const createHandler = (title) => {
@@ -83,6 +77,7 @@ const Dashboard = () => {
             data: title
           });
         } else {
+          // window has tabs and is not project, so give user option how to create new proj
           const tabs = window.tabs.map( tab => {
             return {
               url: tab.url,
@@ -90,18 +85,51 @@ const Dashboard = () => {
               id: tab.id
             };
           });
-          // make current window into the project
-          browser.runtime.sendMessage({
-            type: 'createProjectFromWindow',
-            data: {
-              windowID: window.id,
-              projectTitle: title,
-              tabs: tabs
-            }
+          setOptionData({
+            windowID: window.id,
+            projectTitle: title,
+            tabs: tabs
           });
         }
       });
   };
+
+  const Option = (
+    <div>
+      <p css={ css` margin-top: 0; font-size: 0.7rem;` }>
+        This window is not a project but has open tabs.
+      </p>
+      <p css={ css` margin-top: 0; font-size: 0.7rem; font-weight: bold;` }>
+        Create project with current window's tabs, or in a new window?
+      </p>
+      <div css={ css` display: flex; ` }>
+        <div css={ css` padding-right: 0.5rem` }>
+          <Button 
+            btnClass={'action'}
+            text={'With tabs'}
+            size={'regular'}
+            clicked={() => {
+              browser.runtime.sendMessage({
+                type: 'createProjectFromWindow',
+                data: optionData
+              });
+              setOptionData();
+            }} />
+        </div>
+        <Button 
+          btnClass={'action'}
+          text={'New window'}
+          size={'regular'}
+          clicked={() => {
+            browser.runtime.sendMessage({
+              type: 'createProject',
+              data: optionData.projectTitle
+            });
+            setOptionData();
+          }} />
+      </div>
+    </div>
+  );
 
   const handleSearch = (term) => {
     setSearching(true);
@@ -117,12 +145,15 @@ const Dashboard = () => {
     <div>
       <Layout
         topComponents={{
-          left: <TextInput
-            text={'Create new project'}
-            type={'action'}
-            size={'regular'}
-            clicked={ (newTitle) => createHandler(newTitle) } 
-            error={ error ? error : null}/>,
+          left: <div>
+            <TextInput
+              text={'Create new project'}
+              type={'action'}
+              size={'regular'}
+              clicked={ (newTitle) => createHandler(newTitle) } 
+              error={ error ? error : null}
+              option={ optionData ? Option : null } />
+          </div>,
           right: <TextInput
             text={'Search project'}
             type={'search'}

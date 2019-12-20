@@ -109,17 +109,17 @@ const Project = (props) => {
         <Button
           btnClass={'nav'}
           text={'Overview'}
-          active={ panelType === 'overview' ? true : false }
+          inactive={ panelType === 'overview' ? true : false }
           clicked={() => changeView('overview')} />
         <Button
           btnClass={'nav'}
           text={'History'} 
-          active={ panelType === 'history' ? true : false }
+          inactive={ panelType === 'history' ? true : false }
           clicked={() => changeView('history')}/>
         <Button
           btnClass={'nav'}
           text={'Charts'} 
-          active={ panelType === 'charts' ? true : false }
+          inactive={ panelType === 'charts' ? true : false }
           clicked={() => changeView('charts')}/>
       </Div>
     </div>

@@ -28,7 +28,7 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
   }, []);
 
   const Color = require('color');
-  let color = proportion ? '#A0CFF7' : theme.colors.blue.color;
+  let color = proportion ? '#b1d7f8' : theme.colors.blue.color;
   color = proportion ? Color(color).fade(1-proportion).string() : color;
   let hoverColor = theme.colors.blue.hover;
 
