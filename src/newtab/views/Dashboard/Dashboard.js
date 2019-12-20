@@ -16,6 +16,7 @@ import {
 const Dashboard = () => {
   const [ projects, setProjects ] = useState();
   const [ urls, setUrls ] = useState();
+  const [ topUrls, setTopUrls ] = useState();
   const [ error, setError ] = useState();
   const [ optionData, setOptionData ] = useState();
   const [ searching, setSearching ] = useState(false);
@@ -35,6 +36,10 @@ const Dashboard = () => {
       type: 'getAllUrls'
     });
 
+    browser.runtime.sendMessage({
+      type: 'getTopUrls'
+    });
+
     const handleMessages = message => {
       switch (message.type) {
         case 'allProjects':
@@ -42,6 +47,9 @@ const Dashboard = () => {
           break;
         case 'allUrls':
           setUrls(message.data);
+          break;
+        case 'topUrls':
+          setTopUrls(message.data);
           break;
         case 'currentProject':
           setCurrentProject(message.data);
@@ -168,7 +176,8 @@ const Dashboard = () => {
             close={() => closeSearch()}/> 
           : <Summary 
             projects={projects ? projects : null}
-            urls={urls ? urls : null}/> 
+            urls={urls ? urls : null}
+            topUrls={ topUrls ? topUrls : null }/> 
         }
       </Layout>
     </div>

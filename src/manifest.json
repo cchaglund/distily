@@ -34,7 +34,8 @@
     "unlimitedStorage",
     "webNavigation",
     "tabs",
-    "topSites"
+    "topSites",
+    "idle"
   ],
   "icons": {
     "128": "img/icon.png"

@@ -10,16 +10,16 @@ import {
   withRouter,
 } from 'react-router-dom';
 
-const Summary = (props) => {
+const Summary = ({ history, projects, urls, topUrls, theme }) => {
   const showMore = () => {
     console.log('showing more');
   };
 
   const openProject = projIndex => {
     // indexedDB starts at 1, so to get the project by index I take id - 1
-    let project = props.projects[projIndex - 1];
+    let project = projects[projIndex - 1];
 
-    props.history.push({
+    history.push({
       pathname: '/project',
       state: {
         params: {
@@ -41,11 +41,11 @@ const Summary = (props) => {
   };
 
   const BottomSection = styled.div`
-    ${props.theme.BottomSection}
+    ${theme.BottomSection}
   `;
 
   const Column = styled.div`
-    ${ props.theme.Column}
+    ${ theme.Column}
     grid-area: ${ props => props.area};
   `;
 
@@ -53,8 +53,8 @@ const Summary = (props) => {
     <BottomSection>
       <Column area={ 'left' }>
         <h4>Jump back in</h4>
-        { props.projects ? <ProjectsList 
-          projects={props.projects}
+        { projects ? <ProjectsList 
+          projects={projects}
           clickAction={'resume'}
           type={'recent'}
           clicked={(projIndex, openType, tabCount) => resumeProject(projIndex, openType, tabCount)} /> : null }
@@ -66,9 +66,8 @@ const Summary = (props) => {
       </Column>
       <Column area={ 'mid' }>
         <h4>Top URLS</h4>
-        { props.urls ? <UrlsList 
-          urls={props.urls}
-          type={'top'}
+        { topUrls ? <UrlsList 
+          urls={topUrls}
           clicked={(projIndex) => openProject(projIndex)} /> : null }
         <Button 
           btnClass={'nav'}
@@ -78,8 +77,8 @@ const Summary = (props) => {
       </Column>
       <Column area={ 'right' }>
         <h4>Manage</h4>
-        { props.projects ? <ProjectsList
-          projects={props.projects}
+        { projects ? <ProjectsList
+          projects={projects}
           clickAction={'open'}
           type={'neutral'}
           clicked={(projIndex) => openProject(projIndex)} /> : null }

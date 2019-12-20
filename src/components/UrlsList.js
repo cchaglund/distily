@@ -4,22 +4,27 @@ import { useState, useEffect } from 'react';
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import UrlButton from './UrlButton';
+import sort from '../helpers/sort';
 
 const UrlsList = ({urls, clicked, type, deletable }) => {
   const [urlsList, setUrlsList ] = useState();
 
   useEffect(() => {
+    let sorted;
     let renderedList;
 
     switch (type) {
       case 'recent':
-        renderedList = sortUrls('lastOpened');
+        sorted = sort(urls, 'lastOpened');
+        renderedList = makeButtons( sorted );
         break;
       case 'top':
-        renderedList = sortUrls('visits') ;
+        sorted = sort(urls, 'visits');
+        renderedList = makeButtons( sorted );
         break;
       case 'host':
-        renderedList = sortByHost();
+        sorted = sort(urls, 'host');
+        renderedList = makeHostButtons(sorted);
         break;
       default:
         renderedList = makeButtons(urls);
@@ -28,6 +33,24 @@ const UrlsList = ({urls, clicked, type, deletable }) => {
 
     setUrlsList(renderedList);
   }, []);
+
+  const makeHostButtons = (list) => {
+    let ready = Object.keys(list).map( host => {
+      let urls = makeButtons(list[host]);
+
+      host = host.includes('www.') ? host.replace('www.', '') : host;
+      
+      return (
+        <div 
+          key={host}
+          css={ css`margin-bottom: 1.2rem` }>
+          {urls}
+        </div>
+      );
+    });
+
+    return ready;
+  };
 
   const makeButtons = (data) => {
     return data.map( url => {
@@ -42,65 +65,6 @@ const UrlsList = ({urls, clicked, type, deletable }) => {
           proportion={url.proportion}/>
       );
     });
-  };
-
-  const sortUrls = (property) => {
-    // Deep clone
-    let sortedUrls = JSON.parse(JSON.stringify(urls));
-    let maxVisits = 0;
-
-    // get the highest visits value
-    if (property === 'visits') {
-      sortedUrls.forEach( url => {
-        const urlVisits = parseInt(url.visits);
-
-        if (urlVisits > maxVisits ) {
-          maxVisits = urlVisits;
-        }
-      });
-
-      sortedUrls = sortedUrls.map( url => {
-        let propor = parseInt(url.visits)/maxVisits;
-        let percent = Math.round(propor * 100) / 100;
-        url.proportion = percent;
-        return url;
-      });
-    }
-
-    sortedUrls.sort( (urlA, urlB) => {
-      return (urlA[property] < urlB[property]) ? 1 : -1;
-    });
-
-    sortedUrls = makeButtons(sortedUrls);
-
-    return sortedUrls;
-  };
-
-  const sortByHost = () => {
-    let hosts = {};
-
-    urls.forEach( url => {
-      if (!hosts[url.host]) {
-        hosts[url.host] = [];
-      }
-      hosts[url.host].push(url);
-    });
-
-    let ready = Object.keys(hosts).map( host => {
-      let urls = makeButtons(hosts[host]);
-
-      host = host.includes('www.') ? host.replace('www.', '') : host;
-      
-      return (
-        <div 
-          key={host}
-          css={ css`margin-bottom: 1.2rem` }>
-          {urls}
-        </div>
-      );
-    });
-
-    return ready;
   };
   
   const UrlsListContainer = styled.div`

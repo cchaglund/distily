@@ -11,6 +11,8 @@ browser.runtime.onInstalled.addListener( () => {
   Controller.initState();
 });
 
+Controller.updateAllTopUrls();
+
 browser.runtime.onMessage.addListener( message => {
   switch (message.type) {
     case 'openNewWindow':
@@ -48,6 +50,9 @@ browser.runtime.onMessage.addListener( message => {
     case 'getAllUrls':
       Controller.getAllURLS();
       break;
+    case 'getTopUrls':
+      Controller.updateAllTopUrls();
+      break;
     case 'getAllProjectUrls':
       Controller.getAllProjectURLS(message.data);
       break;
@@ -74,6 +79,14 @@ browser.windows.onRemoved.addListener( windowId => {
 
 browser.webNavigation.onCompleted.addListener( evt => {
   Controller.handleURL(evt);
+});
+
+
+browser.idle.setDetectionInterval(
+  30
+);
+browser.idle.onStateChanged.addListener( state => {
+  if (state === 'idle') return Controller.updateAllTopUrls();
 });
 
 // browser.tabs.onActivated.addListener( activeTab => {  

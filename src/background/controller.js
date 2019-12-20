@@ -1,5 +1,6 @@
 import DB from '../database/index';
 import hash from 'hash.js';
+import sort from '../helpers/sort';
 
 class Controller  {
   constructor(browser) {
@@ -139,6 +140,18 @@ class Controller  {
           resolve(res);
         });
     });
+  }
+
+  updateAllTopUrls() {
+    this.getAllURLS()
+      .then(urls => {
+        console.log('top url broadcast');
+
+        this.browser.runtime.sendMessage({
+          type: 'topUrls',
+          data: sort(urls, 'visits')
+        });
+      });
   }
 
   deleteUrl (id) {
