@@ -126,6 +126,28 @@ class ProjectsDB {
     
     return promise;
   }
+
+  deleteProject (id) {
+    let promise = new Promise( resolve => {
+      const data = {
+        store: 'projects',
+        method: 'delete',
+        mode: 'readwrite',
+        payload: id,
+        callback: {
+          success: (project) => {
+            resolve(project);
+          },
+          complete: (e) => console.log('Get URL tx complete', e),
+          error: (e) => console.log('Error getting URL', e),
+        }
+      };
+
+      DB.connect(data);
+    });
+
+    return promise;
+  }
 }
 
 

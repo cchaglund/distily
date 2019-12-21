@@ -4,6 +4,7 @@
 import { css, jsx } from '@emotion/core';
 import { useState, useEffect} from 'react';
 import styled from '@emotion/styled';
+import deleteHelper from '../helpers/delete';
 import { withTheme } from 'emotion-theming';
 import { MdClose } from 'react-icons/md';
 
@@ -122,9 +123,9 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
   };
 
   const deleteItem = () => {
-    browser.runtime.sendMessage({
-      type: 'deleteUrl',
-      data: data.id
+    deleteHelper({
+      type: 'url',
+      id: data.id
     });
     setDeleted(true);
   };

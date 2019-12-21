@@ -7,6 +7,7 @@ import TextInput from '../../../components/TextInput';
 import Button from '../../../components/Button';
 import SearchResults from '../SearchResults';
 import Overview from './Overview';
+import deleteHelper from '../../../helpers/delete';
 import History from './History';
 import Charts from './Charts';
 import Spinner from '../../../components/Spinner';
@@ -16,7 +17,7 @@ import exportProject from '../../../helpers/exportProject';
 // import BarChart from './Charts/BarChart/chart.js';
 // import BubbleChart from './Charts/BubbleChart/chart.js';
 
-const Project = ({ currentProject, location}) => {
+const Project = ({ currentProject, location, history}) => {
   const [ urls, setUrls ] = useState();
   const [ project, setProject ] = useState();
   const [ createdDate, setCreatedDate ] = useState();
@@ -73,10 +74,10 @@ const Project = ({ currentProject, location}) => {
     display: flex;
   `;
 
-  const Export = styled.h6`
+  const ProjectSettings = styled.h6`
     display: flex;
     align-items: center;
-    padding: 0 1rem;
+    padding-left: 1rem;
     color: lightgray;
     cursor: pointer;
     &:hover {
@@ -94,11 +95,33 @@ const Project = ({ currentProject, location}) => {
     setSearchTerm(null);
   };
 
+  const deleteProject = () => {
+    urls.forEach( url => {
+      deleteHelper({
+        type: 'url',
+        id: url.id
+      });  
+    });
+
+    deleteHelper({
+      type: 'project',
+      id: project.id
+    });
+    history.push({ pathname: '/dashboard' });
+  };
+
   const leftComponent = (
     <div>
       <Header>
         <h3>{ project ? project.title : null }</h3>
-        <Export onClick={ () => exportProject({ project: project, urls: urls }, project.title)}>Export</Export>
+        <ProjectSettings 
+          onClick={ () => exportProject({ project: project, urls: urls }, project.title)}>
+          Export
+        </ProjectSettings>
+        <ProjectSettings
+          onClick={ () => deleteProject() }>
+          Delete
+        </ProjectSettings>
       </Header>
       <Div>
         <Span>URLs visited: { urls ? urls.length : '-' }</Span>

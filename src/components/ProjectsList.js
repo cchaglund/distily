@@ -25,11 +25,11 @@ const ProjectsList = ({ projects, clicked, clickAction, type }) => {
     setProjectsList(sorted);
   }, []);
 
-  const clickHandler = (projId) => {
-    setActiveButton(projId);
+  const clickHandler = (project) => {
+    setActiveButton(project.id);
 
     if (clickAction === 'open') {
-      clicked(projId);
+      clicked(project);
       return;
     }
     
@@ -45,22 +45,22 @@ const ProjectsList = ({ projects, clicked, clickAction, type }) => {
           btnClass={'action'}
           wide />
         <Button
-          clicked={ () => clicked(projId, 'recent', 5)}
+          clicked={ () => clicked(project.id, 'recent', 5)}
           text={'Open with recent urls'} 
           btnClass={'action'}
           wide />
         <Button
-          clicked={ () => clicked(projId, 'top', 5)}
+          clicked={ () => clicked(project.id, 'top', 5)}
           text={'Open top urls'} 
           btnClass={'action'}
           wide />
       </Div>
     );
 
-    options = projects[projId - 1].active ? null : options;
+    options = projects.active ? null : options;
 
     setOpenOptions({
-      id: projId,
+      id: project.id,
       data: options
     });
   };
@@ -107,14 +107,14 @@ const ProjectsList = ({ projects, clicked, clickAction, type }) => {
         return (
           <div key={ project.id }>
             <ProjectButton
-              clicked={ () => clickHandler(project.id) }
+              clicked={ () => clickHandler(project) }
               activeClicked={ () => {
                 activeButton === project.id ? 
-                  clicked( project.id, projects[project.id - 1].active ? 'switchWindow' : null ) 
+                  clicked( project.id, project.active ? 'switchWindow' : null ) 
                   : null; }
               }
               activeButton={ activeButton === project.id ? true : false }
-              activeText={ projects[project.id - 1].active ? 'Switch to project window' : 'Open fresh' }
+              activeText={ project.active ? 'Switch to project window' : 'Open fresh' }
               text={ project.title } 
               type={ type }
               proportion={ project.proportion ? project.proportion : null }/>

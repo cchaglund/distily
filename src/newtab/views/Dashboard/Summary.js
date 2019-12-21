@@ -15,10 +15,7 @@ const Summary = ({ history, projects, topUrls, theme }) => {
     console.log('showing more');
   };
 
-  const openProject = projIndex => {
-    // indexedDB starts at 1, so to get the project by index I take id - 1
-    let project = projects[projIndex - 1];
-
+  const openProject = project => {
     history.push({
       pathname: '/project',
       state: {
@@ -67,8 +64,7 @@ const Summary = ({ history, projects, topUrls, theme }) => {
       <Column area={ 'mid' }>
         <h4>Top URLS</h4>
         { topUrls ? <UrlsList 
-          urls={topUrls}
-          clicked={(projIndex) => openProject(projIndex)} /> : null }
+          urls={topUrls} /> : null }
         <Button 
           btnClass={'nav'}
           text={'Show more'}
@@ -81,7 +77,7 @@ const Summary = ({ history, projects, topUrls, theme }) => {
           projects={projects}
           clickAction={'open'}
           type={'neutral'}
-          clicked={(projIndex) => openProject(projIndex)} /> : null }
+          clicked={(project) => openProject(project)} /> : null }
         <Button 
           btnClass={'nav'}
           text={'Show more'}

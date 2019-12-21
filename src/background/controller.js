@@ -152,9 +152,23 @@ class Controller  {
       });
   }
 
-  deleteUrl (id) {
+  delete (data) {
+    let db;
+
+    switch (data.type) {
+      case 'url':
+        db = 'urls';
+        break;
+      case 'project':
+        db = 'projects';
+        break;
+      case 'blacklist':
+        db = 'blacklist';
+        break;
+    }
+
     return new Promise( resolve => {
-      DB.urls.delete(id)
+      DB[db].delete(data.id)
         .then( res => {
           resolve(res);
         });
