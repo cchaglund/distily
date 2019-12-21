@@ -7,12 +7,12 @@ import TextInput from '../../../components/TextInput';
 import Button from '../../../components/Button';
 import SearchResults from '../SearchResults';
 import Overview from './Overview';
-import deleteHelper from '../../../helpers/delete';
 import History from './History';
 import Charts from './Charts';
 import Spinner from '../../../components/Spinner';
 import styled from '@emotion/styled';
 import exportProject from '../../../helpers/exportProject';
+import DeleteModal from '../../../components/DeleteModal';
 
 // import BarChart from './Charts/BarChart/chart.js';
 // import BubbleChart from './Charts/BubbleChart/chart.js';
@@ -27,6 +27,7 @@ const Project = ({ currentProject, location, history}) => {
   const [ panel, setPanel ] = useState();
   const [ searching, setSearching ] = useState(false);
   const [ searchTerm, setSearchTerm ] = useState();
+  const [ deleting, setDeleting ] = useState(false);
 
   useEffect(() => {
     const currProject = currentProject || location.state.params.data;
@@ -95,18 +96,12 @@ const Project = ({ currentProject, location, history}) => {
     setSearchTerm(null);
   };
 
-  const deleteProject = () => {
-    urls.forEach( url => {
-      deleteHelper({
-        type: 'url',
-        id: url.id
-      });  
-    });
+  const cancelDeletion = () => {
+    setDeleting(false);
+  };
 
-    deleteHelper({
-      type: 'project',
-      id: project.id
-    });
+  const deleteConfirmed = () => {
+    setDeleting(false);
     history.push({ pathname: '/dashboard' });
   };
 
@@ -119,7 +114,7 @@ const Project = ({ currentProject, location, history}) => {
           Export
         </ProjectSettings>
         <ProjectSettings
-          onClick={ () => deleteProject() }>
+          onClick={ () => setDeleting( true) }>
           Delete
         </ProjectSettings>
       </Header>
@@ -202,6 +197,14 @@ const Project = ({ currentProject, location, history}) => {
         :
         <Spinner />
       }
+      { deleting ? 
+        <DeleteModal
+          type={ 'project'}
+          id={ project.id }
+          title={ project.title }
+          cancelClick={ () => cancelDeletion() } 
+          confirmClick={ () => deleteConfirmed() } /> 
+        : null }
     </div>
   );
 };

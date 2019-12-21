@@ -16,7 +16,7 @@ browser.runtime.onInstalled.addListener( () => {
 });
 
 // or this one?
-Controller.updateAllTopUrls();
+// Controller.updateAllTopUrls();
 
 browser.runtime.onMessage.addListener( message => {
   switch (message.type) {

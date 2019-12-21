@@ -112,6 +112,28 @@ class BlacklistDB {
     
     return promise;
   }
+
+  deleteBlacklistTerm (id) {
+    let promise = new Promise( resolve => {
+      const data = {
+        store: 'blacklist',
+        method: 'delete',
+        mode: 'readwrite',
+        payload: id,
+        callback: {
+          success: (blacklistTerm) => {
+            resolve(blacklistTerm);
+          },
+          complete: (e) => console.log('Get URL tx complete', e),
+          error: (e) => console.log('Error getting URL', e),
+        }
+      };
+
+      DB.connect(data);
+    });
+
+    return promise;
+  }
 }
 
 export default BlacklistDB;

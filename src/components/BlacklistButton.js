@@ -1,11 +1,17 @@
 /* eslint-disable no-undef */
 /** @jsx jsx */
 
+import { useState } from 'react';
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { withTheme } from 'emotion-theming';
+import { MdClose } from 'react-icons/md';
+import DeleteModal from './DeleteModal';
 
-const BlacklistButton = ({ text, clicked, theme }) => {
+const BlacklistButton = ({ blacklistTerm, clicked, theme }) => {
+  const [ deleting, setDeleting ] = useState(false);
+  const [ deleted, setDeleted ] = useState(false);
+
   const BlacklistButtonContainer = styled.div`
     display: flex;
     background-color: ${ theme.colors.black.color };
@@ -38,14 +44,51 @@ const BlacklistButton = ({ text, clicked, theme }) => {
     font-weight: bold;
   `;
 
+  const DeleteCross = styled.div`
+    display: flex;
+    align-items: center;
+    padding: 0.2rem 0.5rem;
+    background-color: #edb1b6;
+    border-radius: 0 0.1rem 0.1rem 0;
+    font-size: 1rem;
+    color: black;
+    &:hover {
+      background-color: #ed9ea5;
+    }
+  `;
+
+  const cancelDeletion = () => {
+    setDeleting(false);
+  };
+
+  const deleteConfirmed = () => {
+    setDeleting(false);
+    setDeleted(true);
+  };
+
   return (
-    <BlacklistButtonContainer>
-      <div
-        css={ buttonStyle }
-        onClick={() => clicked() }>
-        <Text>{ text }</Text>
-      </div>
-    </BlacklistButtonContainer>
+    <div>
+      { deleted ? null :
+        <BlacklistButtonContainer>
+          <div
+            css={ buttonStyle }
+            onClick={() => clicked() }>
+            <Text>{ blacklistTerm.term }</Text>
+          </div>
+          <DeleteCross onClick={ () => setDeleting(true) }>
+            <MdClose />
+          </DeleteCross>
+          { deleting ? 
+            <DeleteModal
+              type={ 'blacklist'}
+              id={ blacklistTerm.id }
+              title={ blacklistTerm.term }
+              confirmClick={ () => deleteConfirmed() }
+              cancelClick={ () => cancelDeletion() } /> 
+            : null }
+        </BlacklistButtonContainer>
+      }
+    </div>
   );
 };
 

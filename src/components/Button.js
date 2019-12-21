@@ -18,6 +18,9 @@ const Button = ({ text, btnClass, clicked, inactive, theme, wide }) => {
     case 'search':
       colorName = 'yellow';
       break;
+    case 'warning':
+      colorName = 'red';
+      break;
   }
 
   const ButtonContainer = styled.div`

@@ -4,7 +4,7 @@
 import { css, jsx } from '@emotion/core';
 import { useState, useEffect} from 'react';
 import styled from '@emotion/styled';
-import deleteHelper from '../helpers/delete';
+import DeleteModal from '../components/DeleteModal';
 import { withTheme } from 'emotion-theming';
 import { MdClose } from 'react-icons/md';
 
@@ -64,7 +64,7 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
     padding-top: 0.4rem;
   `;
 
-  const Delete = styled.div`
+  const DeleteCross = styled.div`
     display: flex;
     align-items: center;
     padding: 0.2rem 0.5rem;
@@ -76,41 +76,6 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
     }
   `;
 
-  const Deleting = styled.div`
-    display: flex;
-    width: 60%;
-    border-radius: 0 0.1rem 0.1rem 0;
-    font-size: 0.7rem;
-  `;
-
-  const Cancel = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: ${ theme.colors.green.color };
-    width: 100%;
-    text-align: center;
-    padding: 0.2rem 0.5rem;
-    font-size: inherit;
-    &:hover {
-      background-color: ${ theme.colors.green.hover };
-    }
-  `;
-
-  const Confirm = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: ${ theme.colors.red.color };
-    width: 100%;
-    text-align: center;
-    padding: 0.2rem 0.5rem;
-    font-size: inherit;
-    &:hover {
-      background-color: ${ theme.colors.red.hover };
-    }
-  `;
-
   const openUrl = data => {
     browser.runtime.sendMessage({
       type: 'openUrl',
@@ -118,48 +83,13 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
     });
   };
 
-  const beginDelete = () => {
-    setDeleting(true);
-  };
-
-  const deleteItem = () => {
-    deleteHelper({
-      type: 'url',
-      id: data.id
-    });
-    setDeleted(true);
-  };
-
   const cancelDeletion = () => {
     setDeleting(false);
   };
 
-  const deleteOption = () => {
-    let deleteUI;
-
-    if ( deletable ) {
-      deleteUI = (
-        <Delete
-          onClick={ () => beginDelete() }>
-          <MdClose />
-        </Delete>
-      );
-    }
-
-    if ( deleting ) {
-      deleteUI = (
-        <Deleting>
-          <Confirm
-            onClick={ () => deleteItem() }>
-            Delete</Confirm>
-          <Cancel
-            onClick={ () => cancelDeletion() }>
-            Cancel</Cancel>
-        </Deleting>
-      );
-    }
-
-    return deleteUI;
+  const deleteConfirmed = () => {
+    setDeleting(false);
+    setDeleted(true);
   };
 
   return (
@@ -173,10 +103,22 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
               <PrimaryText>{ type === 'host' ? host : title }</PrimaryText>
               <SecondaryText>{ type === 'host' ? title : host }</SecondaryText>
             </div>
-            { deleteOption() }
+            { deletable ?
+              <DeleteCross onClick={ () => setDeleting(true) }>
+                <MdClose />
+              </DeleteCross> : null
+            }
           </UrlButtonContainer>
         </Wrapper>
       }
+      { deleting ? 
+        <DeleteModal
+          type={ 'url'}
+          id={ data.id }
+          title={ data.title }
+          cancelClick={ () => cancelDeletion() } 
+          confirmClick={ () => deleteConfirmed() } /> 
+        : null }
     </div>
   );
 };

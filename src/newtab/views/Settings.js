@@ -71,7 +71,7 @@ const Settings = () => {
     blacklist.map( (item, index) => {
       return <BlacklistButton
         key={index}
-        text={item.term}
+        blacklistTerm={item}
         // clicked={() => clicked(input)} 
       />;
     })
