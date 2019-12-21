@@ -106,6 +106,7 @@
     "react-dev-utils": "^7.0.1",
     "react-dom": "next",
     "react-icons": "^3.8.0",
+    "react-loader-spinner": "^3.1.5",
     "react-router-dom": "^5.1.2",
     "resolve": "1.8.1",
     "sass-loader": "7.1.0",

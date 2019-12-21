@@ -1,13 +1,14 @@
 /* eslint-disable no-undef */
 /** @jsx jsx */
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { withTheme } from 'emotion-theming';
 import { css, jsx } from '@emotion/core';
 import TextInput from '../../../components/TextInput';
 import Layout from '../../../components/Layout';
 import Summary from './Summary';
 import Button from '../../../components/Button';
+import Spinner from '../../../components/Spinner';
 import SearchResults from '../SearchResults';
 import {
   withRouter,
@@ -15,7 +16,6 @@ import {
 
 const Dashboard = () => {
   const [ projects, setProjects ] = useState();
-  const [ urls, setUrls ] = useState();
   const [ topUrls, setTopUrls ] = useState();
   const [ error, setError ] = useState();
   const [ optionData, setOptionData ] = useState();
@@ -44,9 +44,6 @@ const Dashboard = () => {
       switch (message.type) {
         case 'allProjects':
           setProjects(message.data);
-          break;
-        case 'allUrls':
-          setUrls(message.data);
           break;
         case 'topUrls':
           setTopUrls(message.data);
@@ -151,35 +148,39 @@ const Dashboard = () => {
 
   return (
     <div>
-      <Layout
-        topComponents={{
-          left: <div>
-            <TextInput
-              text={'Create new project'}
-              type={'action'}
+      { projects && topUrls ?
+        <Layout
+          topComponents={{
+            left: <div>
+              <TextInput
+                text={'Create new project'}
+                type={'action'}
+                size={'regular'}
+                clicked={ (newTitle) => createHandler(newTitle) } 
+                error={ error ? error : null}
+                option={ optionData ? Option : null } />
+            </div>,
+            right: <TextInput
+              text={'Search project'}
+              type={'search'}
               size={'regular'}
-              clicked={ (newTitle) => createHandler(newTitle) } 
-              error={ error ? error : null}
-              option={ optionData ? Option : null } />
-          </div>,
-          right: <TextInput
-            text={'Search project'}
-            type={'search'}
-            size={'regular'}
-            clicked={ (term) => handleSearch(term) } />
-        }}
-      >
-        { searching ? 
-          <SearchResults 
-            list={ projects ? projects : null }
-            term={ searchTerm } 
-            close={() => closeSearch()}/> 
-          : <Summary 
-            projects={projects ? projects : null}
-            urls={urls ? urls : null}
-            topUrls={ topUrls ? topUrls : null }/> 
-        }
-      </Layout>
+              clicked={ (term) => handleSearch(term) } />
+          }}
+        >
+          { searching ? 
+            <SearchResults 
+              list={ projects ? projects : null }
+              term={ searchTerm } 
+              close={() => closeSearch()}/> 
+            : <Summary 
+              projects={projects ? projects : null}
+              topUrls={ topUrls ? topUrls : null }/> 
+          }
+        </Layout>
+        :
+        <Spinner />
+      }
+      
     </div>
   );
 };

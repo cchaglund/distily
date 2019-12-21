@@ -9,13 +9,14 @@ import SearchResults from '../SearchResults';
 import Overview from './Overview';
 import History from './History';
 import Charts from './Charts';
+import Spinner from '../../../components/Spinner';
 import styled from '@emotion/styled';
 import exportProject from '../../../helpers/exportProject';
 
 // import BarChart from './Charts/BarChart/chart.js';
 // import BubbleChart from './Charts/BubbleChart/chart.js';
 
-const Project = (props) => {
+const Project = ({ currentProject, location}) => {
   const [ urls, setUrls ] = useState();
   const [ project, setProject ] = useState();
   const [ createdDate, setCreatedDate ] = useState();
@@ -27,7 +28,7 @@ const Project = (props) => {
   const [ searchTerm, setSearchTerm ] = useState();
 
   useEffect(() => {
-    const currProject = props.currentProject || props.location.state.params.data;
+    const currProject = currentProject || location.state.params.data;
     setProject(currProject);
 
     browser.runtime.sendMessage({
@@ -157,22 +158,28 @@ const Project = (props) => {
     urls={urls}/> */}
 
   return (
-    <Layout
-      projectTitle={ project ? project.title : null}
-      topComponents={{
-        left: leftComponent,
-        right: rightComponent
-      }}
-    >
-      { searching ? 
-        <SearchResults 
-          list={ urls ? urls : null }
-          term={ searchTerm } 
-          resultsType={'url'}
-          close={() => closeSearch()}/> 
-        : panel ? panel : <Overview urls={urls ? urls : null } project={project ? project : null} />
+    <div>
+      { project ?
+        <Layout
+          projectTitle={ project ? project.title : null}
+          topComponents={{
+            left: leftComponent,
+            right: rightComponent
+          }}
+        >
+          { searching ? 
+            <SearchResults 
+              list={ urls ? urls : null }
+              term={ searchTerm } 
+              resultsType={'url'}
+              close={() => closeSearch()}/> 
+            : panel ? panel : <Overview urls={urls ? urls : null } project={project ? project : null} />
+          }
+        </Layout>
+        :
+        <Spinner />
       }
-    </Layout>
+    </div>
   );
 };
 

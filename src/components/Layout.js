@@ -1,8 +1,6 @@
-/** @jsx jsx */
 /* eslint-disable no-undef */
 
-import { css, jsx } from '@emotion/core';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import {
   Link,
