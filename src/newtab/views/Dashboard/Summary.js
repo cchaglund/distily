@@ -14,6 +14,8 @@ const Summary = ({ history, projects, topUrls, theme }) => {
   const [ top10Urls, setTop10Urls ] = useState();
   const [ top20Urls, setTop20Urls ] = useState();
   const [ showMoreTopUrls, setShowMoreTopUrls ] = useState(false);
+  const [ recent10Projects, setRecent10Projects ] = useState();
+  const [ showMoreRecentProjects, setShowMoreRecentProjects ] = useState(false);
   
   useEffect( () => {
     let top10 = [];
@@ -31,10 +33,20 @@ const Summary = ({ history, projects, topUrls, theme }) => {
 
     setTop10Urls(top10);
     setTop20Urls(topAll);
+
+    let recent10 = [];
+
+    for (let i = 0; i < 10; i++) {
+      if (projects.length === i) break;
+      recent10.push(projects[i]);
+    }
+
+    setRecent10Projects(recent10);
   }, []);
 
-  const showMore = () => {
-    setShowMoreTopUrls(true);
+  const showMore = (type) => {
+    if (type === 'urls') setShowMoreTopUrls(true);
+    if (type === 'projects') setShowMoreRecentProjects(true);
   };
 
   const openProject = project => {
@@ -72,16 +84,18 @@ const Summary = ({ history, projects, topUrls, theme }) => {
     <BottomSection>
       <Column area={ 'left' }>
         <h4>Jump back in</h4>
-        { projects ? <ProjectsList 
-          projects={projects}
+        { recent10Projects ? <ProjectsList 
+          projects={ showMoreRecentProjects ? projects : recent10Projects }
           clickAction={'resume'}
           type={'recent'}
           clicked={(projIndex, openType, tabCount) => resumeProject(projIndex, openType, tabCount)} /> : null }
-        <Button 
-          btnClass={'nav'}
-          text={'Show more'}
-          size={'regular'}
-          clicked={() => showMore()} />
+        { projects.length > 11 && ! showMoreRecentProjects ?
+          <Button 
+            btnClass={'nav'}
+            text={'Show all'}
+            size={'regular'}
+            clicked={() => showMore('projects')} /> : null
+        }
       </Column>
       <Column area={ 'mid' }>
         <h4>Top URLS</h4>
@@ -92,21 +106,23 @@ const Summary = ({ history, projects, topUrls, theme }) => {
             btnClass={'nav'}
             text={'Show more'}
             size={'regular'}
-            clicked={() => showMore()} /> : null
+            clicked={() => showMore('urls')} /> : null
         }
       </Column>
       <Column area={ 'right' }>
         <h4>Manage</h4>
-        { projects ? <ProjectsList
-          projects={projects}
+        { recent10Projects ? <ProjectsList
+          projects={ showMoreRecentProjects ? projects : recent10Projects }
           clickAction={'open'}
           type={'neutral'}
           clicked={(project) => openProject(project)} /> : null }
-        <Button 
-          btnClass={'nav'}
-          text={'Show more'}
-          size={'regular'}
-          clicked={() => showMore()} />
+        { projects.length > 11 && ! showMoreRecentProjects ?
+          <Button 
+            btnClass={'nav'}
+            text={'Show all'}
+            size={'regular'}
+            clicked={() => showMore()} /> : null
+        }
       </Column>
     </BottomSection>
   );
