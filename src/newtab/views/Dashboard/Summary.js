@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { withTheme } from 'emotion-theming';
 import ProjectsList from '../../../components/ProjectsList';
@@ -11,8 +11,30 @@ import {
 } from 'react-router-dom';
 
 const Summary = ({ history, projects, topUrls, theme }) => {
+  const [ top10Urls, setTop10Urls ] = useState();
+  const [ top20Urls, setTop20Urls ] = useState();
+  const [ showMoreTopUrls, setShowMoreTopUrls ] = useState(false);
+  
+  useEffect( () => {
+    let top10 = [];
+    let topAll = [];
+
+    for (let i = 0; i < 20; i++) {
+      if (topUrls.length === i) break;
+      if (top10.length < 10) {
+        top10.push(topUrls[i]);
+        topAll.push(topUrls[i]);
+      } else {
+        topAll.push(topUrls[i]);
+      }
+    }
+
+    setTop10Urls(top10);
+    setTop20Urls(topAll);
+  }, []);
+
   const showMore = () => {
-    console.log('showing more');
+    setShowMoreTopUrls(true);
   };
 
   const openProject = project => {
@@ -63,13 +85,15 @@ const Summary = ({ history, projects, topUrls, theme }) => {
       </Column>
       <Column area={ 'mid' }>
         <h4>Top URLS</h4>
-        { topUrls ? <UrlsList 
-          urls={topUrls} /> : null }
-        <Button 
-          btnClass={'nav'}
-          text={'Show more'}
-          size={'regular'}
-          clicked={() => showMore()} />
+        { top10Urls ? <UrlsList 
+          urls={ showMoreTopUrls ? top20Urls : top10Urls } /> : null }
+        { topUrls.length > 11 && ! showMoreTopUrls ?
+          <Button 
+            btnClass={'nav'}
+            text={'Show more'}
+            size={'regular'}
+            clicked={() => showMore()} /> : null
+        }
       </Column>
       <Column area={ 'right' }>
         <h4>Manage</h4>

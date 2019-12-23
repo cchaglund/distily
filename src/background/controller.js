@@ -145,9 +145,16 @@ class Controller  {
   updateAllTopUrls() {
     this.getAllURLS()
       .then(urls => {
+        const sortedUrls = sort(urls, 'visits');
+        let top20 = [];
+        for ( let i = 0; i < 20; i++) {
+          if (sortedUrls.length === i) break;
+          top20.push(sortedUrls[i]);
+        }
+
         this.browser.runtime.sendMessage({
           type: 'topUrls',
-          data: sort(urls, 'visits')
+          data: sortedUrls
         });
       });
   }
