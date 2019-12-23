@@ -59,6 +59,7 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
   const SecondaryText = styled.div`
     font-size: 0.7rem;
     padding-top: 0.4rem;
+    color: gray;
   `;
 
   const DeleteCross = styled.div`
