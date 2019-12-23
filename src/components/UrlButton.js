@@ -15,17 +15,14 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
   const [ deleted, setDeleted ] = useState(false);
 
   useEffect(() => {
+    let cleanHostName = data.host;
+    
+    if (data.host.includes('www.')) {
+      cleanHostName = data.host.replace('www.', ''); 
+    }
+
+    setHost(cleanHostName);
     setTitle(data.title);
-    setHost(data.host);
-
-    // if (data.title.length > 50) {
-    //   setTitle(data.title.substring(0,49) + '...');
-    // }
-
-    // if (data.host.includes('www.')) {
-    //   setHost(data.host.replace('www.', ''));
-    // }
-
   }, []);
 
   const Color = require('color');
