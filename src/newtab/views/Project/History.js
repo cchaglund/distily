@@ -42,7 +42,7 @@ const History = (props) => {
   `;
 
   const BottomSection = styled.div`
-    ${props.theme.BottomSection}
+    ${props.theme.BottomSectionTwoColumns}
   `;
 
   const Column = styled.div`
@@ -58,7 +58,7 @@ const History = (props) => {
 
   return (
     <BottomSection>
-      <Column area={ 'left' }>
+      {/* <Column area={ 'left' }>
         <h4>Previous session tabs</h4>
         <h6>Bulk open</h6>
         <Div>
@@ -77,8 +77,8 @@ const History = (props) => {
           text={'Show more'}
           size={'regular'}
           clicked={() => showMore()} />
-      </Column>
-      <Column area={ 'mid' }>
+      </Column> */}
+      <Column area={ 'left' }>
         <h4>History</h4>
         <h6>Sort</h6>
         <Div>
@@ -106,7 +106,7 @@ const History = (props) => {
           size={'regular'}
           clicked={() => showMore()} />
       </Column>
-      <Column area={ 'right' }>
+      {/* <Column area={ 'right' }>
         <h4>By domain</h4>
         { urls ? <UrlsList 
           key='3'
@@ -118,7 +118,7 @@ const History = (props) => {
           text={'Show more'}
           size={'regular'}
           clicked={() => showMore()} />
-      </Column>
+      </Column> */}
     </BottomSection>
   );
 };
