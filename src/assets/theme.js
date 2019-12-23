@@ -90,7 +90,7 @@ const theme = {
     },
     blue: {
       color: '#F2F9FF',
-      hover: Color('#A0CFF7').darken(0.05).hsl().string()
+      hover: '#A0CFF7'
     },
     red: {
       color: '#edb1b6',
