@@ -43,6 +43,7 @@ const Layout = (props) => {
     width: 90vw;
     height: 100%;
     margin: auto;
+    margin-top: 6rem;
   `;
 
   const TopSection = styled.div`
@@ -61,7 +62,7 @@ const Layout = (props) => {
     margin-left: auto;
     text-align: center;
     min-width: 4rem;
-    padding: 0.5rem 0.8rem;
+    padding: 0.3rem 1.7rem;
     border-radius: 0 0 0 0.1rem;
     background-color: ${theme.colors.orange.color};
     color: white;
@@ -76,8 +77,14 @@ const Layout = (props) => {
   `;
 
   const StyledNav = styled.nav`
-    padding: ${ currentProject ? '0 0 0 1rem' : '0 1rem' };
+    background-color: white;
+    top: 0;
+    height: auto;
+    width: 100vw;
+    position: fixed;
+    border-bottom: 1px solid lightgray;
     display: flex;
+    padding: ${ currentProject ? '0 0 0 1rem' : '0 1rem' };
   `;
 
   return (
