@@ -19,7 +19,7 @@ const UrlsList = ({urls, clicked, type, deletable }) => {
         renderedList = makeButtons( sorted );
         break;
       case 'top':
-        sorted = sort(urls, 'visits');
+        sorted = sort(urls, 'top');
         renderedList = makeButtons( sorted );
         break;
       case 'host':

@@ -13,11 +13,11 @@ const sort = (data, type) => {
 };
 
 const sortBy = (property, data) => {
-  let maxVisits = 0;
+  let maxCount = 0;
   let sortedData = data;
 
-  // get the highest visits value
-  if (property === 'visits') {
+  // get the highest combined visits and focuses value
+  if (property === 'top') {
     let tempUrls = {};
 
     data.forEach( url => {
@@ -27,34 +27,40 @@ const sortBy = (property, data) => {
         tempUrls[hrefString] = {...url};
       } else {
         tempUrls[hrefString].visits = tempUrls[hrefString].visits + url.visits;
+        tempUrls[hrefString].focuses = tempUrls[hrefString].focuses + url.focuses;
       }
     });
 
     sortedData = [];
 
     sortedData = Object.keys(tempUrls).map( item => {
+      tempUrls[item].activity = parseInt(tempUrls[item].focuses) + parseInt(tempUrls[item].visits);
       return tempUrls[item];
     });
     
     sortedData.forEach( item => {
-      const itemVisits = parseInt(item.visits);
-
-      if (itemVisits > maxVisits ) {
-        maxVisits = itemVisits;
+      if ( item.activity > maxCount ) {
+        maxCount = item.activity;
       }
     });
 
     sortedData = sortedData.map( item => {
-      let propor = parseInt(item.visits)/maxVisits;
+      let propor = item.activity/maxCount;
       let percent = Math.round(propor * 100) / 100;
       item.proportion = percent;
       return item;
     });
   }
 
-  sortedData.sort( (itemA, itemB) => {
-    return (itemA[property] < itemB[property]) ? 1 : -1;
-  });
+  if (property === 'top') {
+    sortedData.sort( (itemA, itemB) => {
+      return (itemA.activity < itemB.activity) ? 1 : -1;
+    });
+  } else {
+    sortedData.sort( (itemA, itemB) => {
+      return (itemA[property] < itemB[property]) ? 1 : -1;
+    });
+  }
 
   return sortedData;
 };

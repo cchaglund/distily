@@ -130,8 +130,12 @@ class Controller  {
     this.updateProject(data.projID, { notes: data.notes });
   }
 
-  updateURL (url) {
-    url.visits = url.visits + 1;
+  updateURL (url, type) {
+    console.log(url)
+    if (type === 'visit') {
+      url.visits = url.visits + 1;
+    }
+    
     url.focuses = url.focuses + 1;
     url.lastOpened = Date.now();
     return new Promise( resolve => {
@@ -465,18 +469,42 @@ class Controller  {
   // }
 
   tabActivated (activeInfo) {
-    this.getStorage()
-      .then( results => {
-        Object.keys(results.projects).forEach( project => {
-          const currentProject = results.projects[project];
-          if (currentProject.currentWindowID === activeInfo.windowId) {
-            if ( currentProject.urls[activeInfo.url] ) {
-              currentProject.urls[activeInfo.url].focused = currentProject.urls[activeInfo.url].focused + 1;
-              this.setStorage(results);
-            }
-          }
+    this.browser.windows.getCurrent()
+      .then(res => {
+        if (res.id === activeInfo.windowId) {
+          let url = new URL(activeInfo.url);
+
+
+          const windowID = activeInfo.windowId;
+
+          // TODO: this is similar code to handleUrl method
+          this.getAllProjects()
+            .then(projects => {
+              const activeProjects = projects.filter( project => {
+                return project.active === true;
+              });
+
+              activeProjects.forEach( project => {
+                if (project.activeWindow === windowID) {
+                  // this seems unecessary to add url.host to url.host...?
+                  url = {
+                    hash: hash.sha256().update(activeInfo.url + project.id ).digest('hex'),
+                    host: url.host,
+                    href: url.href
+                  };
+                  this.checkURLexists(url.hash, project.id)
+                    .then(res => {
+                      if (res.exists === true) {
+                        console.log('asdfad??')
+                        this.updateURL(res.URL);
+                      }
+                    });
+                }
+              });
+            });
+
+          
         }
-        );
       });
   }
 
@@ -525,7 +553,7 @@ class Controller  {
                 this.checkURLexists(url.hash, project.id)
                   .then(res => {
                     if (res.exists === true) {
-                      this.updateURL(res.URL);
+                      this.updateURL(res.URL, 'visit');
                     } else {
                       this.browser.tabs.get(tabID)
                         .then( tab => {
