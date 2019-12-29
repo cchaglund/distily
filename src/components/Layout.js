@@ -77,12 +77,11 @@ const Layout = (props) => {
   `;
 
   const StyledNav = styled.nav`
-    background-color: white;
+    background-color: #f9f9f9;
     top: 0;
     height: auto;
     width: 100vw;
     position: fixed;
-    border-bottom: 1px solid lightgray;
     display: flex;
     padding: ${ currentProject ? '0 0 0 1rem' : '0 1rem' };
   `;
