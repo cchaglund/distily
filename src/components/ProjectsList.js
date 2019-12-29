@@ -20,6 +20,9 @@ const ProjectsList = ({ projects, clicked, clickAction, type }) => {
       case 'top':
         sorted = sortProjects('timesOpened', projects);
         break;
+      case 'single':
+        sorted = projects;
+        break;
     }
 
     setProjectsList(sorted);
@@ -41,23 +44,23 @@ const ProjectsList = ({ projects, clicked, clickAction, type }) => {
       <Div>
         <Button
           clicked={ () => console.log('trying to open previous session')}
-          text={'Open previous session'} 
+          text={'Previous session'} 
           btnClass={'action'}
           wide />
         <Button
           clicked={ () => clicked(project.id, 'recent', 5)}
-          text={'Open with recent urls'} 
+          text={'Recent urls'} 
           btnClass={'action'}
           wide />
         <Button
           clicked={ () => clicked(project.id, 'top', 5)}
-          text={'Open top urls'} 
+          text={'Top urls'} 
           btnClass={'action'}
           wide />
       </Div>
     );
 
-    options = projects.active ? null : options;
+    options = project.active ? null : options;
 
     setOpenOptions({
       id: project.id,

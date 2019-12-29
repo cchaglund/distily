@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { withTheme } from 'emotion-theming';
 import Button from '../../../components/Button';
 import Notes from './Notes';
+import ProjectsList from '../../../components/ProjectsList';
 import UrlsList from '../../../components/UrlsList';
 import styled from '@emotion/styled';
 
@@ -16,19 +17,18 @@ const Overview = (props) => {
   const [ project, setProject ] = useState();
 
   useEffect(() => {
-    if (props.project && props.urls) {
-      const project = props.project;
+    const project = props.project;
+    
+    setProject(project);
+    setUrls(props.urls);
 
-      setProject(project);
-      setUrls(props.urls);
-    }
   }, [props]);
 
-  const resumeProject = (openType, tabCount) => {
+  const resumeProject = (projId, openType, tabCount) => {
     browser.runtime.sendMessage({
       type: 'resumeProject',
       data: {
-        projectId: project.id,
+        projectId: projId,
         openType: openType,
         tabCount: tabCount
       }
@@ -60,6 +60,12 @@ const Overview = (props) => {
   return (
     <BottomSection>
       <Column area={ 'left' }>
+        { project ? <ProjectsList 
+          projects={ [project] }
+          type={'single'}
+          clickAction={'resume'}
+          clicked={(projIndex, openType, tabCount) => resumeProject(projIndex, openType, tabCount)} />
+          : null }
         <Notes 
           projectID={ project ? project.id : null }
           notes={ project ? project.notes : null }/>
@@ -71,12 +77,12 @@ const Overview = (props) => {
             btnClass={'action'}
             size={'regular'}
             text={'Open recent 5'}
-            clicked={() => resumeProject('recent', 5)} />
+            clicked={() => resumeProject(project.id, 'recent', 5)} />
           <Button
             btnClass={'action'}
             size={'regular'}
             text={'Recent 10'} 
-            clicked={() => resumeProject('recent', 10)} />
+            clicked={() => resumeProject(project.id, 'recent', 10)} />
         </Div>
         { urls ? <UrlsList
           key='1'

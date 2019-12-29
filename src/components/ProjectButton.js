@@ -13,6 +13,10 @@ const ProjectButton = ({ text, clicked, activeClicked, activeButton, activeText,
     color = '#e5edeb';
   }
 
+  if ( type === 'single') {
+    color = theme.colors.green.color;
+  }
+
   let hoverColor = Color(color).darken(0.05).hsl().string();
 
   const ProjectButtonContainer = styled.div`
@@ -44,10 +48,17 @@ const ProjectButton = ({ text, clicked, activeClicked, activeButton, activeText,
     line-height: 180%
   `;
 
+  const SingleProjectText = styled.h6`
+    margin: 0;
+  `;
+
   return (
     <ProjectButtonContainer onClick={() => activeButton ? activeClicked() : clicked() }>
       <div css={ css`${ theme.WideButton }` }>
-        <Text>{ text }</Text>
+        { type !== 'single' ?
+          <Text>{ text }</Text>
+          : <SingleProjectText>OPEN</SingleProjectText>
+        }
       </div>
       { activeButton ? <ActiveText>{ activeText }</ActiveText> : null }
     </ProjectButtonContainer>
