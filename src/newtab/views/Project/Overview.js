@@ -15,9 +15,15 @@ import styled from '@emotion/styled';
 const Overview = (props) => {
   const [ urls, setUrls ] = useState();
   const [ project, setProject ] = useState();
+  const [ projectWindowMatch, setProjectWindowMatch ] = useState(false);
 
   useEffect(() => {
     const project = props.project;
+
+    browser.windows.getCurrent()
+      .then( windowInfo => {
+        if (windowInfo.id === props.project.activeWindow) setProjectWindowMatch(true);
+      });
     
     setProject(project);
     setUrls(props.urls);
@@ -60,7 +66,7 @@ const Overview = (props) => {
   return (
     <BottomSection>
       <Column area={ 'left' }>
-        { project ? <ProjectsList 
+        { project && ! projectWindowMatch ? <ProjectsList 
           projects={ [project] }
           type={'single'}
           clickAction={'resume'}
