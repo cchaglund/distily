@@ -60,6 +60,8 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
     font-size: 0.7rem;
     padding-top: 0.4rem;
     color: gray;
+    display: flex;
+    align-items: center;
   `;
 
   const DeleteCross = styled.div`
@@ -96,10 +98,15 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
         <Wrapper>
           <UrlButtonContainer>
             <div
-              css={ css`${ theme.WideButton } width:100%` }
+              css={ css`${ theme.WideButton } width:100%; display: flex; padding-left: 0.6rem` }
               onClick={ () => openUrl(data) }>
-              <PrimaryText>{ type === 'host' ? host : title }</PrimaryText>
-              <SecondaryText>{ type === 'host' ? title : host }</SecondaryText>
+              <div>
+                <img css={ css`padding-right: 0.5rem;` } src={ 'https://www.google.com/s2/favicons?domain=' + host } ></img>
+              </div>
+              <div>
+                <PrimaryText>{ type === 'host' ? host : title }</PrimaryText>
+                <SecondaryText>{ type === 'host' ? title : host }</SecondaryText>
+              </div>
             </div>
             { deletable ?
               <DeleteCross onClick={ () => setDeleting(true) }>
