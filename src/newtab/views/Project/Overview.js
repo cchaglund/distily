@@ -28,7 +28,7 @@ const Overview = (props) => {
     setProject(project);
     setUrls(props.urls);
 
-  }, [props]);
+  }, []);
 
   const resumeProject = (projId, openType, tabCount) => {
     browser.runtime.sendMessage({

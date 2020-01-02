@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import {
   Link,
@@ -8,37 +8,7 @@ import {
 } from 'react-router-dom';
 import theme from '../assets/theme';
 
-const Layout = (props) => {
-  const [ currentProject, setCurrentProject ] = useState();
-
-  useEffect( () => {
-    browser.runtime.sendMessage({
-      type: 'getCurrentProject'
-    });
-
-    const handleMessages = message => {
-      switch (message.type) {
-        case 'currentProject': {
-          // makes sure project which user wants to open matches the window they're in
-          browser.windows.getCurrent()
-            .then( window => {
-              if (message.windowID === window.id) {
-                setCurrentProject(message.data.title);
-              }
-            });
-          break;
-        }
-      }
-    };
-
-    browser.runtime.onMessage.addListener( handleMessages );
-
-    return () => {
-      console.log('removing listener');
-      browser.runtime.onMessage.removeListener( handleMessages );
-    };
-  }, []);
-
+const Layout = ({topComponents, children, currentProject}) => {
   const LayoutContainer = styled.div`
     width: 90vw;
     height: 100%;
@@ -109,14 +79,14 @@ const Layout = (props) => {
       <LayoutContainer>
         <TopSection>
           <div>
-            { props.topComponents.left }
+            { topComponents.left }
           </div>
           <div>
-            { props.topComponents.right }
+            { topComponents.right }
           </div>
         </TopSection>
         <div>
-          {props.children}
+          {children}
         </div>
       </LayoutContainer>
     </div>

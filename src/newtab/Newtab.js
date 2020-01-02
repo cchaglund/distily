@@ -57,7 +57,8 @@ const Newtab = () => {
             <Settings />
           </Route>
           <Route path="/dashboard">
-            <Dashboard />
+            <Dashboard
+              currentProject={ currentProject }/>
           </Route>
           <Route path="/project">
             <Project />
@@ -66,9 +67,10 @@ const Newtab = () => {
             {
               currentProject ? 
                 <Project 
-                  currentProject={ currentProject }/>
+                  currProject={ currentProject }/>
                 : 
-                <Dashboard/>
+                <Dashboard
+                  currentProject={ currentProject }/>
             }
           </Route>
         </Switch>

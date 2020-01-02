@@ -14,20 +14,15 @@ import {
   withRouter,
 } from 'react-router-dom';
 
-const Dashboard = () => {
+const Dashboard = ({currentProject}) => {
   const [ projects, setProjects ] = useState();
   const [ topUrls, setTopUrls ] = useState();
   const [ error, setError ] = useState();
   const [ optionData, setOptionData ] = useState();
   const [ searching, setSearching ] = useState(false);
   const [ searchTerm, setSearchTerm ] = useState();
-  const [ currentProject, setCurrentProject ] = useState();
 
   useEffect(() => {
-    browser.runtime.sendMessage({
-      type: 'getCurrentProject'
-    });
-
     browser.runtime.sendMessage({
       type: 'getAllProjects'
     });
@@ -47,9 +42,6 @@ const Dashboard = () => {
           break;
         case 'topUrls':
           setTopUrls(message.data);
-          break;
-        case 'currentProject':
-          setCurrentProject(message.data);
           break;
       }
     };
@@ -150,6 +142,7 @@ const Dashboard = () => {
     <div>
       { projects && topUrls ?
         <Layout
+          currentProject={ currentProject ? currentProject.title : null }
           topComponents={{
             left: <div>
               <TextInput

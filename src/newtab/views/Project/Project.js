@@ -9,7 +9,7 @@ import SearchResults from '../SearchResults';
 import Overview from './Overview';
 import History from './History';
 import Charts from './Charts';
-import Spinner from '../../../components/Spinner';
+// import Spinner from '../../../components/Spinner';
 import styled from '@emotion/styled';
 import exportProject from '../../../helpers/exportProject';
 import DeleteModal from '../../../components/DeleteModal';
@@ -17,12 +17,10 @@ import DeleteModal from '../../../components/DeleteModal';
 // import BarChart from './Charts/BarChart/chart.js';
 // import BubbleChart from './Charts/BubbleChart/chart.js';
 
-const Project = ({ currentProject, location, history}) => {
+const Project = ({ currProject, location, history}) => {
   const [ urls, setUrls ] = useState();
   const [ project, setProject ] = useState();
-  const [ createdDate, setCreatedDate ] = useState();
-  const [ lastOpenedDate, setLastOpenedDate ] = useState();
-  const [ timesOpened, setTimesOpened ] = useState();
+  const [ currentProject, setCurrentProject ] = useState();
   const [ panelType, setPanelType ] = useState('overview');
   const [ panel, setPanel ] = useState();
   const [ searching, setSearching ] = useState(false);
@@ -30,12 +28,13 @@ const Project = ({ currentProject, location, history}) => {
   const [ deleting, setDeleting ] = useState(false);
 
   useEffect(() => {
-    const currProject = currentProject || location.state.params.data;
-    setProject(currProject);
+    const proj = currProject || location.state.params.data;
+    setProject(proj);
+    setCurrentProject(currProject || null);
 
     browser.runtime.sendMessage({
       type: 'getAllProjectUrls',
-      data: currProject.id
+      data: proj.id
     });
 
     const handleMessages = message => {
@@ -47,10 +46,6 @@ const Project = ({ currentProject, location, history}) => {
     };
 
     browser.runtime.onMessage.addListener( handleMessages );
-
-    setCreatedDate(new Date(currProject.created).toLocaleDateString());
-    setLastOpenedDate(new Date(currProject.lastOpened).toLocaleDateString());
-    setTimesOpened(currProject.timesOpened);
 
     return () => {
       console.log('removing listener');
@@ -64,6 +59,10 @@ const Project = ({ currentProject, location, history}) => {
     > * {
       margin-right: 0.7rem;
     }
+  `;
+
+  const Container = styled.div`
+    height: 100vh;
   `;
 
   const Span = styled.span`
@@ -105,52 +104,52 @@ const Project = ({ currentProject, location, history}) => {
     history.push({ pathname: '/dashboard' });
   };
 
-  const leftComponent = (
-    <div>
-      <Header>
-        <h3>{ project ? project.title : null }</h3>
-        <ProjectSettings 
-          onClick={ () => exportProject({ project: project, urls: urls }, project.title)}>
-          Export
-        </ProjectSettings>
-        <ProjectSettings
-          onClick={ () => setDeleting( true) }>
-          Delete
-        </ProjectSettings>
-      </Header>
-      <Div>
-        <Span>URLs visited: { urls ? urls.length : '-' }</Span>
-        <Span>Times opened: { timesOpened }</Span>
-        <Span>Created: { createdDate }</Span>
-        <Span>Last Opened: { lastOpenedDate }</Span>
-      </Div>
-      <Div>
-        <Button
-          btnClass={'nav'}
-          text={'Overview'}
-          inactive={ panelType === 'overview' ? true : false }
-          clicked={() => changeView('overview')} />
-        <Button
-          btnClass={'nav'}
-          text={'History'} 
-          inactive={ panelType === 'history' ? true : false }
-          clicked={() => changeView('history')}/>
-        <Button
-          btnClass={'nav'}
-          text={'Charts'} 
-          inactive={ panelType === 'charts' ? true : false }
-          clicked={() => changeView('charts')}/>
-      </Div>
-    </div>
-  );
+  // const leftComponent = (
+  //   <div>
+  //     <Header>
+  //       <h3>{ project ? project.title : null }</h3>
+  //       <ProjectSettings 
+  //         onClick={ () => exportProject({ project: project, urls: urls }, project.title)}>
+  //         Export
+  //       </ProjectSettings>
+  //       <ProjectSettings
+  //         onClick={ () => setDeleting( true) }>
+  //         Delete
+  //       </ProjectSettings>
+  //     </Header>
+  //     <Div>
+  //       <Span>URLs visited: { urls ? urls.length : '-' }</Span>
+  //       <Span>Times opened: { project.timesOpened }</Span>
+  //       <Span>Created: { new Date(project.created).toLocaleDateString() }</Span>
+  //       <Span>Last Opened: { new Date(project.lastOpened).toLocaleDateString() }</Span>
+  //     </Div>
+  //     <Div>
+  //       <Button
+  //         btnClass={'nav'}
+  //         text={'Overview'}
+  //         inactive={ panelType === 'overview' ? true : false }
+  //         clicked={() => changeView('overview')} />
+  //       <Button
+  //         btnClass={'nav'}
+  //         text={'History'} 
+  //         inactive={ panelType === 'history' ? true : false }
+  //         clicked={() => changeView('history')}/>
+  //       <Button
+  //         btnClass={'nav'}
+  //         text={'Charts'} 
+  //         inactive={ panelType === 'charts' ? true : false }
+  //         clicked={() => changeView('charts')}/>
+  //     </Div>
+  //   </div>
+  // );
 
-  const rightComponent = (
-    <TextInput
-      text={'Search for URL'}
-      type={'search'}
-      size={'regular'}
-      clicked={ (term) => handleSearch(term) }/>
-  );
+  // const rightComponent = (
+  //   <TextInput
+  //     text={'Search for URL'}
+  //     type={'search'}
+  //     size={'regular'}
+  //     clicked={ (term) => handleSearch(term) }/>
+  // );
 
   const changeView = (panelType) => {
     switch(panelType) {
@@ -176,27 +175,63 @@ const Project = ({ currentProject, location, history}) => {
     urls={urls}/> */}
 
   return (
-    <div>
-      { project ?
-        <Layout
-          projectTitle={ project ? project.title : null}
-          topComponents={{
-            left: leftComponent,
-            right: rightComponent
-          }}
-        >
-          { searching ? 
-            <SearchResults 
-              list={ urls ? urls : null }
-              term={ searchTerm } 
-              resultsType={'url'}
-              close={() => closeSearch()}/> 
-            : panel ? panel : <Overview urls={urls ? urls : null } project={project ? project : null} />
-          }
-        </Layout>
-        :
-        <Spinner />
-      }
+    <Container>
+      <Layout
+        projectTitle={ project ? project.title : null}
+        currentProject={ currentProject ? currentProject.title : null }
+        topComponents={{
+          left: <div>
+            <Header>
+              <h3>{ project ? project.title : null }</h3>
+              <ProjectSettings 
+                onClick={ () => exportProject({ project: project, urls: urls }, project.title)}>
+                Export
+              </ProjectSettings>
+              <ProjectSettings
+                onClick={ () => setDeleting( true) }>
+                Delete
+              </ProjectSettings>
+            </Header>
+            <Div>
+              <Span>URLs visited: { urls ? urls.length : '-' }</Span>
+              <Span>Times opened: { project ? project.timesOpened : null }</Span>
+              <Span>Created: { project ? new Date(project.created).toLocaleDateString() : null }</Span>
+              <Span>Last Opened: { project ? new Date(project.lastOpened).toLocaleDateString() : null }</Span>
+            </Div>
+            <Div>
+              <Button
+                btnClass={'nav'}
+                text={'Overview'}
+                inactive={ panelType === 'overview' ? true : false }
+                clicked={() => changeView('overview')} />
+              <Button
+                btnClass={'nav'}
+                text={'History'} 
+                inactive={ panelType === 'history' ? true : false }
+                clicked={() => changeView('history')}/>
+              <Button
+                btnClass={'nav'}
+                text={'Charts'} 
+                inactive={ panelType === 'charts' ? true : false }
+                clicked={() => changeView('charts')}/>
+            </Div>
+          </div>,
+          right: <TextInput
+            text={'Search for URL'}
+            type={'search'}
+            size={'regular'}
+            clicked={ (term) => handleSearch(term) }/>
+        }}
+      >
+        { searching &&
+          <SearchResults 
+            list={ urls ? urls : null }
+            term={ searchTerm } 
+            resultsType={'url'}
+            close={() => closeSearch()}/> 
+        }
+        { panel ? panel : urls && project && <Overview urls={ urls } project={ project } /> }
+      </Layout>
       { deleting ? 
         <DeleteModal
           type={ 'project'}
@@ -205,7 +240,7 @@ const Project = ({ currentProject, location, history}) => {
           cancelClick={ () => cancelDeletion() } 
           confirmClick={ () => deleteConfirmed() } /> 
         : null }
-    </div>
+    </Container>
   );
 };
 
