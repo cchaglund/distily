@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 /** @jsx jsx */
 
-import React, { useState, useEffect} from 'react';
+import { useState, useEffect} from 'react';
 import { withRouter } from 'react-router-dom';
 import Layout from '../../../components/Layout';
 import TextInput from '../../../components/TextInput';
@@ -31,7 +31,7 @@ const Project = ({ currProject, location, history}) => {
   const [ deleting, setDeleting ] = useState(false);
 
   useEffect(() => {
-    const proj = currProject || location.state.params.data;
+    const proj = (location.state && location.state.params.data) || currProject;
     setProject(proj);
     setCurrentProject(currProject || null);
 
@@ -90,7 +90,7 @@ const Project = ({ currProject, location, history}) => {
   `;
 
   const DivConstrained = styled.div`
-    max-width: 18rem;
+    max-width: 17rem;
   `;
 
   const handleSearch = (term) => {
@@ -234,13 +234,13 @@ const Project = ({ currProject, location, history}) => {
                   inactive={ panelType === 'charts' ? true : false }
                   clicked={() => changeView('charts')}/>
               </div>
-              { project && ! currentProject ? 
+              { project && project.id !== currentProject.id &&
                 <ProjectsList 
                   projects={ [project] }
                   type={'single'}
                   clickAction={'resume'}
                   clicked={(projIndex, openType, tabCount) => resumeProject(projIndex, openType, tabCount)} />
-                : null }
+              }
             </DivConstrained>
           </div>,
           right: <TextInput

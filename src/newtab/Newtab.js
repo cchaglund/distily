@@ -61,7 +61,8 @@ const Newtab = () => {
               currentProject={ currentProject }/>
           </Route>
           <Route path="/project">
-            <Project />
+            <Project
+              currProject={ currentProject }/>
           </Route>
           <Route path="/">
             {

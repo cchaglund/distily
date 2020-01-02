@@ -18,11 +18,6 @@ const Overview = (props) => {
 
   useEffect(() => {
     const project = props.project;
-
-    browser.windows.getCurrent()
-      .then( windowInfo => {
-        if (windowInfo.id === props.project.activeWindow) setProjectWindowMatch(true);
-      });
     
     setProject(project);
     setUrls(props.urls);
