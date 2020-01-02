@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+/** @jsx jsx */
 
 import React, { useState, useEffect} from 'react';
 import { withRouter } from 'react-router-dom';
@@ -9,8 +10,10 @@ import SearchResults from '../SearchResults';
 import Overview from './Overview';
 import History from './History';
 import Charts from './Charts';
+import ProjectsList from '../../../components/ProjectsList';
 // import Spinner from '../../../components/Spinner';
 import styled from '@emotion/styled';
+import { css, jsx } from '@emotion/core';
 import exportProject from '../../../helpers/exportProject';
 import DeleteModal from '../../../components/DeleteModal';
 
@@ -76,13 +79,18 @@ const Project = ({ currProject, location, history}) => {
 
   const ProjectSettings = styled.h6`
     display: flex;
-    align-items: center;
+    align-items: flex-end;
+    margin: 0;
     padding-left: 1rem;
     color: lightgray;
     cursor: pointer;
     &:hover {
       color: black;
     }
+  `;
+
+  const DivConstrained = styled.div`
+    max-width: 18rem;
   `;
 
   const handleSearch = (term) => {
@@ -168,6 +176,17 @@ const Project = ({ currProject, location, history}) => {
     }
   };
 
+  const resumeProject = (projId, openType, tabCount) => {
+    browser.runtime.sendMessage({
+      type: 'resumeProject',
+      data: {
+        projectId: projId,
+        openType: openType,
+        tabCount: tabCount
+      }
+    });
+  };
+
   {/*
   <BarChart 
     urls={adjustedData}/>
@@ -182,7 +201,7 @@ const Project = ({ currProject, location, history}) => {
         topComponents={{
           left: <div>
             <Header>
-              <h3>{ project ? project.title : null }</h3>
+              <h3 css={ css`margin-bottom: 0` }>{ project ? project.title : null }</h3>
               <ProjectSettings 
                 onClick={ () => exportProject({ project: project, urls: urls }, project.title)}>
                 Export
@@ -192,29 +211,37 @@ const Project = ({ currProject, location, history}) => {
                 Delete
               </ProjectSettings>
             </Header>
-            <Div>
-              <Span>URLs visited: { urls ? urls.length : '-' }</Span>
-              <Span>Times opened: { project ? project.timesOpened : null }</Span>
+            <Div css={ css`margin-bottom: 1.5rem` }>
+              <Span>Urls: { urls ? urls.length : '-' }</Span>
               <Span>Created: { project ? new Date(project.created).toLocaleDateString() : null }</Span>
               <Span>Last Opened: { project ? new Date(project.lastOpened).toLocaleDateString() : null }</Span>
             </Div>
-            <Div>
-              <Button
-                btnClass={'nav'}
-                text={'Overview'}
-                inactive={ panelType === 'overview' ? true : false }
-                clicked={() => changeView('overview')} />
-              <Button
-                btnClass={'nav'}
-                text={'History'} 
-                inactive={ panelType === 'history' ? true : false }
-                clicked={() => changeView('history')}/>
-              <Button
-                btnClass={'nav'}
-                text={'Charts'} 
-                inactive={ panelType === 'charts' ? true : false }
-                clicked={() => changeView('charts')}/>
-            </Div>
+            <DivConstrained>
+              <div css={ css`display: flex; justify-content: space-between;` }>
+                <Button
+                  btnClass={'nav'}
+                  text={'Overview'}
+                  inactive={ panelType === 'overview' ? true : false }
+                  clicked={() => changeView('overview')} />
+                <Button
+                  btnClass={'nav'}
+                  text={'History'} 
+                  inactive={ panelType === 'history' ? true : false }
+                  clicked={() => changeView('history')}/>
+                <Button
+                  btnClass={'nav'}
+                  text={'Charts'} 
+                  inactive={ panelType === 'charts' ? true : false }
+                  clicked={() => changeView('charts')}/>
+              </div>
+              { project && ! currentProject ? 
+                <ProjectsList 
+                  projects={ [project] }
+                  type={'single'}
+                  clickAction={'resume'}
+                  clicked={(projIndex, openType, tabCount) => resumeProject(projIndex, openType, tabCount)} />
+                : null }
+            </DivConstrained>
           </div>,
           right: <TextInput
             text={'Search for URL'}

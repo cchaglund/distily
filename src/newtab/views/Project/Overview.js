@@ -5,7 +5,6 @@ import { withRouter } from 'react-router-dom';
 import { withTheme } from 'emotion-theming';
 import Button from '../../../components/Button';
 import Notes from './Notes';
-import ProjectsList from '../../../components/ProjectsList';
 import UrlsList from '../../../components/UrlsList';
 import styled from '@emotion/styled';
 import FadeWrapper from '../../../HOC/FadeWrapper';
@@ -16,7 +15,6 @@ import FadeWrapper from '../../../HOC/FadeWrapper';
 const Overview = (props) => {
   const [ urls, setUrls ] = useState();
   const [ project, setProject ] = useState();
-  const [ projectWindowMatch, setProjectWindowMatch ] = useState(false);
 
   useEffect(() => {
     const project = props.project;
@@ -30,17 +28,6 @@ const Overview = (props) => {
     setUrls(props.urls);
 
   }, []);
-
-  const resumeProject = (projId, openType, tabCount) => {
-    browser.runtime.sendMessage({
-      type: 'resumeProject',
-      data: {
-        projectId: projId,
-        openType: openType,
-        tabCount: tabCount
-      }
-    });
-  };
 
   const Div = styled.div`
     display: flex;
@@ -68,12 +55,6 @@ const Overview = (props) => {
     <FadeWrapper>
       <BottomSection>
         <Column area={ 'left' }>
-          { project && ! projectWindowMatch ? <ProjectsList 
-            projects={ [project] }
-            type={'single'}
-            clickAction={'resume'}
-            clicked={(projIndex, openType, tabCount) => resumeProject(projIndex, openType, tabCount)} />
-            : null }
           <Notes 
             projectID={ project ? project.id : null }
             notes={ project ? project.notes : null }/>
