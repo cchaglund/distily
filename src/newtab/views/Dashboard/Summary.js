@@ -6,6 +6,7 @@ import { withTheme } from 'emotion-theming';
 import ProjectsList from '../../../components/ProjectsList';
 import UrlsList from '../../../components/UrlsList';
 import Button from '../../../components/Button';
+import FadeWrapper from '../../../HOC/FadeWrapper';
 import {
   withRouter,
 } from 'react-router-dom';
@@ -81,50 +82,52 @@ const Summary = ({ history, projects, topUrls, theme }) => {
   `;
 
   return(
-    <BottomSection>
-      <Column area={ 'left' }>
-        <h4>Jump back in</h4>
-        { recent10Projects ? <ProjectsList 
-          projects={ showMoreRecentProjects ? projects : recent10Projects }
-          clickAction={'resume'}
-          type={'recent'}
-          clicked={(projIndex, openType, tabCount) => resumeProject(projIndex, openType, tabCount)} /> : null }
-        { projects.length > 11 && ! showMoreRecentProjects ?
-          <Button 
-            btnClass={'nav'}
-            text={'Show all'}
-            size={'regular'}
-            clicked={() => showMore('projects')} /> : null
-        }
-      </Column>
-      <Column area={ 'mid' }>
-        <h4>Top URLS</h4>
-        { top10Urls ? <UrlsList 
-          urls={ showMoreTopUrls ? top20Urls : top10Urls } /> : null }
-        { topUrls.length > 11 && ! showMoreTopUrls ?
-          <Button 
-            btnClass={'nav'}
-            text={'Show more'}
-            size={'regular'}
-            clicked={() => showMore('urls')} /> : null
-        }
-      </Column>
-      <Column area={ 'right' }>
-        <h4>Manage</h4>
-        { recent10Projects ? <ProjectsList
-          projects={ showMoreRecentProjects ? projects : recent10Projects }
-          clickAction={'open'}
-          type={'neutral'}
-          clicked={(project) => openProject(project)} /> : null }
-        { projects.length > 11 && ! showMoreRecentProjects ?
-          <Button 
-            btnClass={'nav'}
-            text={'Show all'}
-            size={'regular'}
-            clicked={() => showMore()} /> : null
-        }
-      </Column>
-    </BottomSection>
+    <FadeWrapper>
+      <BottomSection>
+        <Column area={ 'left' }>
+          <h4>Jump back in</h4>
+          { recent10Projects ? <ProjectsList 
+            projects={ showMoreRecentProjects ? projects : recent10Projects }
+            clickAction={'resume'}
+            type={'recent'}
+            clicked={(projIndex, openType, tabCount) => resumeProject(projIndex, openType, tabCount)} /> : null }
+          { projects.length > 11 && ! showMoreRecentProjects ?
+            <Button 
+              btnClass={'nav'}
+              text={'Show all'}
+              size={'regular'}
+              clicked={() => showMore('projects')} /> : null
+          }
+        </Column>
+        <Column area={ 'mid' }>
+          <h4>Top URLS</h4>
+          { top10Urls ? <UrlsList 
+            urls={ showMoreTopUrls ? top20Urls : top10Urls } /> : null }
+          { topUrls.length > 11 && ! showMoreTopUrls ?
+            <Button 
+              btnClass={'nav'}
+              text={'Show more'}
+              size={'regular'}
+              clicked={() => showMore('urls')} /> : null
+          }
+        </Column>
+        <Column area={ 'right' }>
+          <h4>Manage</h4>
+          { recent10Projects ? <ProjectsList
+            projects={ showMoreRecentProjects ? projects : recent10Projects }
+            clickAction={'open'}
+            type={'neutral'}
+            clicked={(project) => openProject(project)} /> : null }
+          { projects.length > 11 && ! showMoreRecentProjects ?
+            <Button 
+              btnClass={'nav'}
+              text={'Show all'}
+              size={'regular'}
+              clicked={() => showMore()} /> : null
+          }
+        </Column>
+      </BottomSection>
+    </FadeWrapper>
   );
 };
 

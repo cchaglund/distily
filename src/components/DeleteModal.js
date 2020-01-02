@@ -4,6 +4,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import deleteHelper from '../helpers/delete';
 import Button from '../components/Button';
+import FadeWrapper from '../HOC/FadeWrapper';
 
 const DeleteModal = ({ type, id, title, confirmClick, cancelClick}) => {
   const Modal = styled.div`
@@ -47,21 +48,23 @@ const DeleteModal = ({ type, id, title, confirmClick, cancelClick}) => {
   };
 
   return(
-    <Modal onClick={ () => cancelClick() }>
-      <Div>
-        <p>Delete '{ title }'?</p>
-        <BtnContainer>
-          <Button
-            clicked={ () => confirmDeletion()}
-            text={'Delete'} 
-            btnClass={'warning'} />
-          <Button
-            clicked={ () => cancelClick()}
-            text={'Cancel'} 
-            btnClass={'action'} />
-        </BtnContainer>
-      </Div>
-    </Modal>
+    <FadeWrapper>
+      <Modal onClick={ () => cancelClick() }>
+        <Div>
+          <p>Delete '{ title }'?</p>
+          <BtnContainer>
+            <Button
+              clicked={ () => confirmDeletion()}
+              text={'Delete'} 
+              btnClass={'warning'} />
+            <Button
+              clicked={ () => cancelClick()}
+              text={'Cancel'} 
+              btnClass={'action'} />
+          </BtnContainer>
+        </Div>
+      </Modal>
+    </FadeWrapper>
   );
 };
 

@@ -8,7 +8,6 @@ import TextInput from '../../../components/TextInput';
 import Layout from '../../../components/Layout';
 import Summary from './Summary';
 import Button from '../../../components/Button';
-import Spinner from '../../../components/Spinner';
 import SearchResults from '../SearchResults';
 import {
   withRouter,
@@ -139,42 +138,35 @@ const Dashboard = ({currentProject}) => {
   };
 
   return (
-    <div>
-      { projects && topUrls ?
-        <Layout
-          currentProject={ currentProject ? currentProject.title : null }
-          topComponents={{
-            left: <div>
-              <TextInput
-                text={'Create new project'}
-                type={'action'}
-                size={'regular'}
-                clicked={ (newTitle) => createHandler(newTitle) } 
-                error={ error ? error : null}
-                option={ optionData ? Option : null } />
-            </div>,
-            right: <TextInput
-              text={'Search project'}
-              type={'search'}
-              size={'regular'}
-              clicked={ (term) => handleSearch(term) } />
-          }}
-        >
-          { searching ? 
-            <SearchResults 
-              list={ projects ? projects : null }
-              term={ searchTerm } 
-              close={() => closeSearch()}/> 
-            : <Summary 
-              projects={projects ? projects : null}
-              topUrls={ topUrls ? topUrls : null }/> 
-          }
-        </Layout>
-        :
-        <Spinner />
+    <Layout
+      currentProject={ currentProject ? currentProject.title : null }
+      topComponents={{
+        left: <div>
+          <TextInput
+            text={'Create new project'}
+            type={'action'}
+            size={'regular'}
+            clicked={ (newTitle) => createHandler(newTitle) } 
+            error={ error ? error : null}
+            option={ optionData ? Option : null } />
+        </div>,
+        right: <TextInput
+          text={'Search project'}
+          type={'search'}
+          size={'regular'}
+          clicked={ (term) => handleSearch(term) } />
+      }}
+    >
+      { searching ? 
+        <SearchResults 
+          list={ projects ? projects : null }
+          term={ searchTerm } 
+          close={() => closeSearch()}/> 
+        : projects && topUrls && <Summary 
+          projects={ projects }
+          topUrls={ topUrls }/> 
       }
-      
-    </div>
+    </Layout>      
   );
 };
 
