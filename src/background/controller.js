@@ -149,7 +149,7 @@ class Controller  {
   updateAllTopUrls() {
     this.getAllURLS()
       .then(urls => {
-        const sortedUrls = sort(urls, 'visits');
+        const sortedUrls = sort(urls, 'top');
         let top20 = [];
         for ( let i = 0; i < 20; i++) {
           if (sortedUrls.length === i) break;
