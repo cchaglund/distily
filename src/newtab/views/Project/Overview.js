@@ -4,23 +4,55 @@ import React, { useState, useEffect} from 'react';
 import { withRouter } from 'react-router-dom';
 import { withTheme } from 'emotion-theming';
 import Button from '../../../components/Button';
+import sort from '../../../helpers/sort';
 import Notes from './Notes';
 import UrlsList from '../../../components/UrlsList';
 import styled from '@emotion/styled';
 import FadeWrapper from '../../../HOC/FadeWrapper';
 
-// import BarChart from './Charts/BarChart/chart.js';
-// import BubbleChart from './Charts/BubbleChart/chart.js';
-
-const Overview = (props) => {
-  const [ urls, setUrls ] = useState();
-  const [ project, setProject ] = useState();
+const Overview = ({ theme, project, urls}) => {
+  const [ top10Urls, setTop10Urls ] = useState();
+  const [ top20Urls, setTop20Urls ] = useState();
+  const [ showMoreTopUrls, setShowMoreTopUrls ] = useState(false);
+  const [ recent10Urls, setRecent10Urls ] = useState();
+  const [ recent20Urls, setRecent20Urls ] = useState();
+  const [ showMoreRecentUrls, setShowMoreRecentUrls ] = useState(false);
 
   useEffect(() => {
-    const project = props.project;
-    
-    setProject(project);
-    setUrls(props.urls);
+    const sortedTopUrls = sort(urls, 'top');
+    const sortedRecentUrls = sort(urls, 'recent');
+
+    let top10 = [];
+    let topAll = [];
+
+    for (let i = 0; i < 20; i++) {
+      if (sortedTopUrls.length === i) break;
+      if (top10.length < 10) {
+        top10.push(sortedTopUrls[i]);
+        topAll.push(sortedTopUrls[i]);
+      } else {
+        topAll.push(sortedTopUrls[i]);
+      }
+    }
+
+    setTop10Urls(top10);
+    setTop20Urls(topAll);
+
+    let recent10 = [];
+    let recentAll = [];
+
+    for (let i = 0; i < 20; i++) {
+      if (sortedRecentUrls.length === i) break;
+      if (recent10.length < 10) {
+        recent10.push(sortedRecentUrls[i]);
+        recentAll.push(sortedRecentUrls[i]);
+      } else {
+        recentAll.push(sortedRecentUrls[i]);
+      }
+    }
+
+    setRecent10Urls(recent10);
+    setRecent20Urls(recentAll);
 
   }, []);
 
@@ -32,19 +64,18 @@ const Overview = (props) => {
   `;
 
   const BottomSection = styled.div`
-    ${props.theme.BottomSectionFourColumns}
+    ${theme.BottomSectionFourColumns}
   `;
 
   const Column = styled.div`
-    ${ props.theme.Column}
+    ${ theme.Column}
     grid-area: ${ props => props.area};
   `;
 
-  {/*
-  <BarChart 
-    urls={adjustedData}/>
-  <BubbleChart
-    urls={urls}/> */}
+  const showMore = (type) => {
+    if (type === 'top') setShowMoreTopUrls(true);
+    if (type === 'recent') setShowMoreRecentUrls(true);
+  };
 
   return (
     <FadeWrapper>
@@ -68,10 +99,15 @@ const Overview = (props) => {
               text={'Recent 10'} 
               clicked={() => resumeProject(project.id, 'recent', 10)} />
           </Div>
-          { urls ? <UrlsList
-            key='1'
-            urls={urls}
-            type={'recent'} /> : null }
+          { recent10Urls ? <UrlsList 
+            urls={ showMoreRecentUrls ? recent20Urls : recent10Urls } type={'recent'} /> : null }
+          { urls.length > 11 && ! showMoreRecentUrls ?
+            <Button 
+              btnClass={'nav'}
+              text={'Show more'}
+              size={'regular'}
+              clicked={() => showMore('recent')} /> : null
+          }
         </Column>
         <Column area={ 'mid-right' }>
           <h4>Top URLS</h4>
@@ -87,11 +123,15 @@ const Overview = (props) => {
               text={'Top 10'} 
               clicked={() => resumeProject('top', 10)} />
           </Div>
-          { urls ? <UrlsList 
-            key='2'
-            urls={urls}
-            type={'top'}
-            clicked={(id) => console.log('trying to open url', id)} /> : null }
+          { top10Urls ? <UrlsList 
+            urls={ showMoreTopUrls ? top20Urls : top10Urls } type={'top'} /> : null }
+          { urls.length > 11 && ! showMoreTopUrls ?
+            <Button 
+              btnClass={'nav'}
+              text={'Show more'}
+              size={'regular'}
+              clicked={() => showMore('top')} /> : null
+          }
         </Column>
         <Column area={ 'right' }>
           <h4>By domain</h4>

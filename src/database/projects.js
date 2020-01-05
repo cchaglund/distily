@@ -96,7 +96,6 @@ class ProjectsDB {
   }
 
   updateProject (id, newData) {
-    console.log(newData);
     let promise = new Promise( resolve => {
       this.getProject(id)
         .then( res => {

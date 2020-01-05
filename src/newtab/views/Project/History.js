@@ -8,9 +8,6 @@ import UrlsList from '../../../components/UrlsList';
 import styled from '@emotion/styled';
 import FadeWrapper from '../../../HOC/FadeWrapper';
 
-// import BarChart from './Charts/BarChart/chart.js';
-// import BubbleChart from './Charts/BubbleChart/chart.js';
-
 const History = (props) => {
   const [ urls, setUrls ] = useState();
   const [ project, setProject ] = useState();
@@ -50,12 +47,6 @@ const History = (props) => {
     ${ props.theme.Column}
     grid-area: ${ props => props.area};
   `;
-
-  {/*
-  <BarChart 
-    urls={adjustedData}/>
-  <BubbleChart
-    urls={urls}/> */}
 
   return (
     <FadeWrapper>
@@ -102,11 +93,6 @@ const History = (props) => {
             type={'top'}
             deletable
             clicked={(id) => console.log('trying to open url', id)} /> : null }
-          <Button 
-            btnClass={'nav'}
-            text={'Show more'}
-            size={'regular'}
-            clicked={() => showMore()} />
         </Column>
         {/* <Column area={ 'right' }>
           <h4>By domain</h4>
