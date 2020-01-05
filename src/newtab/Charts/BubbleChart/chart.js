@@ -30,13 +30,13 @@ const MyResponsiveBubble = ({urls}) => {
         };
       }
 
-      const shortTitle = urls[url].title.slice(0,10);
+      const shortTitle = urls[url].title;
 
       tempDomains[host].children.push({
         name: shortTitle,
         fullUrl: url,
-        focused: urls[url].focused,
-        visited: urls[url].visited
+        focused: urls[url].focuses,
+        visited: urls[url].visits
       });
       
     });
@@ -47,8 +47,6 @@ const MyResponsiveBubble = ({urls}) => {
       });
     });
 
-    console.log(domains);
-    console.log(domains);
     setData(domains);
   };
 
@@ -59,10 +57,11 @@ const MyResponsiveBubble = ({urls}) => {
         margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
         identity="name"
         value="focused"
-        colors={{ scheme: 'set3' }}
-        padding={6}
+        colors={{ scheme: 'blues' }}
+        padding={10}
         // labelTextColor={{ from: 'color', modifiers: [ [ 'darker', 0.8 ] ] }}
-        borderWidth={2}
+        borderWidth={1}
+        // enableLabel={false}
         borderColor={{ theme: 'labels.text.fill' }}
         defs={[
           {

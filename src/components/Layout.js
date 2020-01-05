@@ -25,7 +25,7 @@ const Layout = ({topComponents, children, currentProject}) => {
   `;
 
   const LinkWrapper = styled.div`
-    padding: 0.5rem 0.8rem;
+    padding: 0.5rem 0 0.5rem 1.6rem;
   `;
 
   const CurrentProject = styled.div`
@@ -53,7 +53,6 @@ const Layout = ({topComponents, children, currentProject}) => {
     width: 100vw;
     position: fixed;
     display: flex;
-    padding: ${ currentProject ? '0 0 0 1rem' : '0 1rem' };
   `;
 
   return (

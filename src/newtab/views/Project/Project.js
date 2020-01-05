@@ -17,9 +17,6 @@ import { css, jsx } from '@emotion/core';
 import exportProject from '../../../helpers/exportProject';
 import DeleteModal from '../../../components/DeleteModal';
 
-// import BarChart from './Charts/BarChart/chart.js';
-// import BubbleChart from './Charts/BubbleChart/chart.js';
-
 const Project = ({ currProject, location, history}) => {
   const [ urls, setUrls ] = useState();
   const [ project, setProject ] = useState();
@@ -171,7 +168,7 @@ const Project = ({ currProject, location, history}) => {
         break;
       case 'charts':
         setPanelType('charts');
-        setPanel(<Charts urls={urls ? urls : null } project={project ? project : null} />);
+        setPanel(urls && project && <Charts urls={ urls } project={ project } />);
         break;
     }
   };
@@ -186,12 +183,6 @@ const Project = ({ currProject, location, history}) => {
       }
     });
   };
-
-  {/*
-  <BarChart 
-    urls={adjustedData}/>
-  <BubbleChart
-    urls={urls}/> */}
 
   return (
     <Container>

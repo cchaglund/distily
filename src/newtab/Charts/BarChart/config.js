@@ -1,7 +1,7 @@
 export default {
   keys: [
-    'visited',
-    'focused',
+    'visits',
+    'focuses',
   ],
   margin: {
     'top': 50,

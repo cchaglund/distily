@@ -9,35 +9,35 @@ import './chart.css';
 const BarChart = (props) => {
   const [data, setData] = useState(props.urls);
 
-  const updateData = () => {
-    const updatedData = data.map( country => {
-      const ran = Math.floor(Math.random() * 40);
-      if (country.country === 'AE') {
-        country['hot dog'] = country['hot dog'] + ran;
-      }
+  // const updateData = () => {
+  //   const updatedData = data.map( country => {
+  //     const ran = Math.floor(Math.random() * 40);
+  //     if (country.country === 'AE') {
+  //       country['hot dog'] = country['hot dog'] + ran;
+  //     }
 
-      return {
-        ...country
-      };
-    });
+  //     return {
+  //       ...country
+  //     };
+  //   });
     
-    setData(updatedData);
-  };
+  //   setData(updatedData);
+  // };
+
+  console.log(props.urls)
 
   return (
-    <div 
-      className="chart"
-      onClick={() => updateData()}>
+    <div className="chart">
       <ResponsiveBar
         data={data}
         keys={config.keys}
         indexBy="host"
-        groupMode='stacked'
-        layout="horizontal"
+        groupMode='grouped'
+        layout="vertical"
         margin={config.margin}
         padding={0.3}
         colors="nivo"
-        colorBy="id"
+        colorBy="index"
         defs={config.defs}
         fill={config.fill}
         borderColor="inherit:darker(1.6)"
