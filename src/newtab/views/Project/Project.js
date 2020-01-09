@@ -42,7 +42,7 @@ const Project = ({ currProject, location, history, projects, theme }) => {
 
     const handleMessages = message => {
       switch (message.type) {
-        case 'projectUrls':
+        case 'projectUrls' + proj.id:
           setUrls(message.data);
           break;
       }

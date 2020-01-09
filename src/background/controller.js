@@ -93,7 +93,7 @@ class Controller  {
       DB.urls.getAllByProject(projectID)
         .then( res => {
           const sending = this.browser.runtime.sendMessage({
-            type: 'projectUrls',
+            type: 'projectUrls' + projectID,
             data: res
           });
           sending.then(() => console.log('sent'), (e) => console.log('error: ', e));
