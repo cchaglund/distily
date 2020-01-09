@@ -90,7 +90,7 @@ const Summary = ({ history, projects, topUrls, theme }) => {
             projects={ showMoreRecentProjects ? projects : recent10Projects }
             clickAction={'resume'}
             type={'recent'}
-            clicked={(projIndex, openType, tabCount) => resumeProject(projIndex, openType, tabCount)} /> : null }
+            clicked={(projIndex, openType, tabCount) => resumeProject(projIndex, openType, tabCount)} /> : <h6>No projects found</h6> }
           { projects.length > 11 && ! showMoreRecentProjects ?
             <Button 
               btnClass={'nav'}
@@ -108,7 +108,7 @@ const Summary = ({ history, projects, topUrls, theme }) => {
               btnClass={'nav'}
               text={'Show more'}
               size={'regular'}
-              clicked={() => showMore('urls')} /> : null
+              clicked={() => showMore('urls')} /> : <h6>No urls found</h6>
           }
         </Column>
         <Column area={ 'right' }>
@@ -117,7 +117,7 @@ const Summary = ({ history, projects, topUrls, theme }) => {
             projects={ showMoreRecentProjects ? projects : recent10Projects }
             clickAction={'open'}
             type={'neutral'}
-            clicked={(project) => openProject(project)} /> : null }
+            clicked={(project) => openProject(project)} /> : <h6>No projects found</h6> }
           { projects.length > 11 && ! showMoreRecentProjects ?
             <Button 
               btnClass={'nav'}

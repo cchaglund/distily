@@ -265,8 +265,14 @@ const Project = ({ currProject, location, history, projects, theme }) => {
                   inactive={ panelType === 'charts' ? true : false }
                   clicked={() => changeView('charts')}/>
               </div>
-              { project && project.id !== currentProject.id &&
+              { currentProject ? 
+                project && project.id !== currentProject.id &&
                 <ProjectsList 
+                  projects={ [project] }
+                  type={'single'}
+                  clickAction={'resume'}
+                  clicked={(projIndex, openType, tabCount) => resumeProject(projIndex, openType, tabCount)} />
+                : <ProjectsList 
                   projects={ [project] }
                   type={'single'}
                   clickAction={'resume'}
