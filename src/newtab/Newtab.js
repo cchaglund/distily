@@ -17,10 +17,15 @@ import './Newtab.css';
 
 const Newtab = () => {
   const [ currentProject, setCurrentProject ] = useState();
+  const [ projects, setProjects ] = useState();
 
   useEffect( () => {
     browser.runtime.sendMessage({
       type: 'getCurrentProject'
+    });
+
+    browser.runtime.sendMessage({
+      type: 'getAllProjects'
     });
 
     const handleMessages = message => {
@@ -35,6 +40,9 @@ const Newtab = () => {
             });
           break;
         }
+        case 'allProjects':
+          setProjects(message.data);
+          break;
       }
     };
 
@@ -58,20 +66,24 @@ const Newtab = () => {
           </Route>
           <Route path="/dashboard">
             <Dashboard
-              currentProject={ currentProject }/>
+              currentProject={ currentProject }
+              projects={ projects } />
           </Route>
           <Route path="/project">
             <Project
-              currProject={ currentProject }/>
+              currProject={ currentProject } 
+              projects={ projects } />
           </Route>
           <Route path="/">
             {
               currentProject ? 
                 <Project 
-                  currProject={ currentProject }/>
+                  currProject={ currentProject }
+                  projects={ projects } />
                 : 
                 <Dashboard
-                  currentProject={ currentProject }/>
+                  currentProject={ currentProject }
+                  projects={ projects } />
             }
           </Route>
         </Switch>

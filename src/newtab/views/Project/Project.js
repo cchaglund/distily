@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 /** @jsx jsx */
 
-import { useState, useEffect} from 'react';
+import React, { useState, useEffect} from 'react';
 import { withRouter } from 'react-router-dom';
 import Layout from '../../../components/Layout';
 import TextInput from '../../../components/TextInput';
@@ -14,10 +14,13 @@ import ProjectsList from '../../../components/ProjectsList';
 // import Spinner from '../../../components/Spinner';
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
+import { withTheme } from 'emotion-theming';
 import exportProject from '../../../helpers/exportProject';
 import DeleteModal from '../../../components/DeleteModal';
+import Tippy from '@tippy.js/react';
+import 'tippy.js/dist/tippy.css';
 
-const Project = ({ currProject, location, history}) => {
+const Project = ({ currProject, location, history, projects, theme }) => {
   const [ urls, setUrls ] = useState();
   const [ project, setProject ] = useState();
   const [ currentProject, setCurrentProject ] = useState();
@@ -84,6 +87,16 @@ const Project = ({ currProject, location, history}) => {
     &:hover {
       color: black;
     }
+  `;
+
+  const StyledTippy = styled(Tippy)`
+    background: white;
+    color: black;
+    box-shadow: lightgray 0 1px;
+  `;
+
+  const TippyContent = styled.div`
+  
   `;
 
   const DivConstrained = styled.div`
@@ -184,6 +197,16 @@ const Project = ({ currProject, location, history}) => {
     });
   };
 
+  const renameProjectTitle = (title) => {
+    browser.runtime.sendMessage({
+      type: 'renameProject',
+      data: {
+        id: project.id,
+        title: title
+      }
+    });
+  };
+
   return (
     <Container>
       <Layout
@@ -192,7 +215,24 @@ const Project = ({ currProject, location, history}) => {
         topComponents={{
           left: <div>
             <Header>
-              <h3 css={ css`margin-bottom: 0` }>{ project ? project.title : null }</h3>
+              <StyledTippy 
+                arrow={false}
+                interactive={true}
+                trigger={'click'}
+                placement={'right-start'} 
+                content={<TippyContent>
+                  <h6>Rename project</h6>
+                  <TextInput
+                    text={'Rename'}
+                    type={'action'}
+                    inputType={'rename'}
+                    size={'regular'}
+                    initialValue={ project && project.title}
+                    clicked={ (newTitle) => renameProjectTitle(newTitle)}
+                    projects={projects} />
+                </TippyContent>} >
+                <h3 css={ css`margin-bottom: 0` }>{ project ? project.title : null }</h3>
+              </StyledTippy>
               <ProjectSettings 
                 onClick={ () => exportProject({ project: project, urls: urls }, project.title)}>
                 Export
@@ -248,7 +288,7 @@ const Project = ({ currProject, location, history}) => {
             resultsType={'url'}
             close={() => closeSearch()}/> 
         }
-        { panel ? panel : urls && project && <Overview urls={ urls } project={ project } /> }
+        { panel ? panel : urls && project && !searching && <Overview urls={ urls } project={ project } /> }
       </Layout>
       { deleting ? 
         <DeleteModal
@@ -262,4 +302,4 @@ const Project = ({ currProject, location, history}) => {
   );
 };
 
-export default withRouter(Project);
+export default withTheme(withRouter(Project));

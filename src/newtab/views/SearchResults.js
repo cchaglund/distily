@@ -27,7 +27,6 @@ const Search = ({list, term, theme, close, resultsType}) => {
     grid-area: ${ props => props.area};
     position: relative;
     z-index: 3;
-    background-color: white;
     padding: 1rem;
   `;
 

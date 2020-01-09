@@ -13,19 +13,13 @@ import {
   withRouter,
 } from 'react-router-dom';
 
-const Dashboard = ({currentProject}) => {
-  const [ projects, setProjects ] = useState();
+const Dashboard = ({currentProject, projects}) => {
   const [ topUrls, setTopUrls ] = useState();
-  const [ error, setError ] = useState();
   const [ optionData, setOptionData ] = useState();
   const [ searching, setSearching ] = useState(false);
   const [ searchTerm, setSearchTerm ] = useState();
 
   useEffect(() => {
-    browser.runtime.sendMessage({
-      type: 'getAllProjects'
-    });
-
     browser.runtime.sendMessage({
       type: 'getAllUrls'
     });
@@ -36,9 +30,6 @@ const Dashboard = ({currentProject}) => {
 
     const handleMessages = message => {
       switch (message.type) {
-        case 'allProjects':
-          setProjects(message.data);
-          break;
         case 'topUrls':
           setTopUrls(message.data);
           break;
@@ -54,16 +45,6 @@ const Dashboard = ({currentProject}) => {
   }, []);
 
   const createHandler = (title) => {
-    // TODO: use controller's uniqueProjectTitleCheck instead
-    const titleExists = projects ? projects.filter( project => {
-      return project.title === title;
-    }) : null;
-
-    if (titleExists && titleExists.length !== 0) {
-      setError(`Project '${title}' already exists`);
-      return;
-    }
-
     browser.windows.getCurrent({ populate: true})
       .then( window => {
         if (currentProject && currentProject.activeWindow === window.id) {
@@ -146,8 +127,8 @@ const Dashboard = ({currentProject}) => {
             text={'Create new project'}
             type={'action'}
             size={'regular'}
+            inputType={'create'}
             clicked={ (newTitle) => createHandler(newTitle) } 
-            error={ error ? error : null}
             option={ optionData ? Option : null } />
         </div>,
         right: <TextInput

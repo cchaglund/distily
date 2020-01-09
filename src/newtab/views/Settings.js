@@ -118,6 +118,7 @@ const Settings = () => {
             text={'Add to blacklist'}
             type={'action'}
             size={'regular'}
+            inputType={'search'}
             placeholder={'e.g. gmail.com'}
             clicked={ (term) => addToBlacklist(term) } />
           <h6>Domains here won't be tracked</h6>

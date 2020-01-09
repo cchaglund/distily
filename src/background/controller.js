@@ -146,6 +146,12 @@ class Controller  {
     });
   }
 
+  renameProject(data) {
+    this.updateProject(data.id, {
+      title: data.title
+    });
+  }
+
   updateAllTopUrls() {
     this.getAllURLS()
       .then(urls => {

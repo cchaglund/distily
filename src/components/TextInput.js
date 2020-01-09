@@ -5,10 +5,12 @@ import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import Button from './Button';
 
-const TextInput = ({type, text, size, clicked, error, option, placeholder}) => {
+const TextInput = ({type, text, size, clicked, option, placeholder, projects, inputType, initialValue }) => {
   const [ input, setInput ] = useState('');
+  const [ error, setError ] = useState('');
 
   useEffect( ()=> {
+    setInput(initialValue);
   }, []);
 
   const style = css`
@@ -22,7 +24,7 @@ const TextInput = ({type, text, size, clicked, error, option, placeholder}) => {
     flex: 1;
     padding-left: 1rem;
     border: none;
-    background-color: #f9f9f9;
+    background-color: transparent;
     border-bottom: 1px solid #707070;
     margin-right: 0.4rem;
     width: 15rem;
@@ -44,6 +46,20 @@ const TextInput = ({type, text, size, clicked, error, option, placeholder}) => {
     }    
   };
 
+  const titleChangeHandler = (title) => {
+    // TODO: use controller's uniqueProjectTitleCheck instead
+    const titleExists = projects ? projects.filter( project => {
+      return project.title === title;
+    }) : null;
+
+    if (titleExists && titleExists.length !== 0) {
+      setError(`Project '${title}' already exists`);
+      return;
+    }
+
+    clicked(title);
+  };
+
   return (
     <div>
       <div css={style}>
@@ -58,7 +74,13 @@ const TextInput = ({type, text, size, clicked, error, option, placeholder}) => {
           btnClass={type}
           text={text}
           size={size}
-          clicked={() => clicked(input)} 
+          clicked={() => {
+            if (inputType !== 'search' ) {
+              titleChangeHandler(input);  
+            } else {
+              clicked(input);
+            }
+          }} 
           inactive={ option ? true : false } />
       </div>
       { error ? <Error>{ error }</Error> : null }
