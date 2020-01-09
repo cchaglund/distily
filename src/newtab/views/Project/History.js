@@ -11,6 +11,8 @@ import FadeWrapper from '../../../HOC/FadeWrapper';
 const History = (props) => {
   const [ urls, setUrls ] = useState();
   const [ project, setProject ] = useState();
+  const [ type, setType ] = useState('recent');
+  const [ reverse, setReverse ] = useState(false);
 
   useEffect(() => {
     if (props.project && props.urls) {
@@ -21,22 +23,24 @@ const History = (props) => {
     }
   }, [props]);
 
-  const resumeProject = (openType, tabCount) => {
-    browser.runtime.sendMessage({
-      type: 'resumeProject',
-      data: {
-        projectId: project.id,
-        openType: openType,
-        tabCount: tabCount
-      }
-    });
-  };
+  //  const sort = () => {
+
+  //  }
 
   const Div = styled.div`
     display: flex;
     > * {
       margin: 0.5rem 0.7rem 0.5rem 0;
     }
+  `;
+
+  const H6 = styled.h6`
+    margin-right: 1rem;
+  `;
+
+  const SortDiv = styled.div`
+    display: flex;
+    align-items: center;
   `;
 
   const BottomSection = styled.div`
@@ -51,46 +55,51 @@ const History = (props) => {
   return (
     <FadeWrapper>
       <BottomSection>
-        {/* <Column area={ 'left' }>
-          <h4>Previous session tabs</h4>
-          <h6>Bulk open</h6>
-          <Div>
-            <Button
-              btnClass={'action'}
-              size={'regular'}
-              text={'Resume session'}
-              clicked={() => resumeProject('recent', 10)} />
-          </Div>
-          { urls ? <UrlsList
-            key='1'
-            urls={urls}
-            type={'recent'} /> : null }
-          <Button 
-            btnClass={'nav'}
-            text={'Show more'}
-            size={'regular'}
-            clicked={() => showMore()} />
-        </Column> */}
         <Column area={ 'left' }>
           <h4>History</h4>
-          <h6>Sort</h6>
-          <Div>
-            <Button
-              btnClass={'action'}
-              size={'regular'}
-              text={'By data'} 
-              clicked={() => resumeProject('top', 5)} />
-            <Button
-              btnClass={'action'}
-              size={'regular'}
-              text={'By activity'} 
-              clicked={() => resumeProject('top', 10)} />
-          </Div>
-          <h6>(click again to reverse order)</h6>
+          <SortDiv>
+            <H6>Sort by</H6>
+            <Div>
+              <Button
+                btnClass={'action'}
+                size={'regular'}
+                text={'Date added'} 
+                clicked={() => {
+                  if (type === 'added') {
+                    setReverse(! reverse);
+                  } else {
+                    setType('added');
+                  }
+                }} />
+              <Button
+                btnClass={'action'}
+                size={'regular'}
+                text={'Activity'} 
+                clicked={() => {
+                  if (type === 'top') {
+                    setReverse(! reverse);
+                  } else {
+                    setType('top');
+                  }
+                }} />
+              <Button
+                btnClass={'action'}
+                size={'regular'}
+                text={'Recent'} 
+                clicked={() => {
+                  if (type === 'recent') {
+                    setReverse(! reverse);
+                  } else {
+                    setType('recent');
+                  }
+                }} />
+            </Div>
+          </SortDiv>
           { urls ? <UrlsList 
             key='2'
             urls={urls}
-            type={'top'}
+            type={type}
+            reversed={reverse}
             deletable
             clicked={(id) => console.log('trying to open url', id)} /> : null }
         </Column>

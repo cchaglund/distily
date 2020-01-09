@@ -6,7 +6,7 @@ import styled from '@emotion/styled';
 import UrlButton from './UrlButton';
 import sort from '../helpers/sort';
 
-const UrlsList = ({urls, clicked, type, deletable }) => {
+const UrlsList = ({urls, clicked, type, deletable, reversed }) => {
   const [urlsList, setUrlsList ] = useState();
 
   useEffect(() => {
@@ -16,6 +16,10 @@ const UrlsList = ({urls, clicked, type, deletable }) => {
     switch (type) {
       case 'recent':
         sorted = sort(urls, 'lastOpened');
+        renderedList = makeButtons( sorted );
+        break;
+      case 'added':
+        sorted = sort(urls, 'added');
         renderedList = makeButtons( sorted );
         break;
       case 'top':
@@ -31,7 +35,7 @@ const UrlsList = ({urls, clicked, type, deletable }) => {
         break;
     }
 
-    setUrlsList(renderedList);
+    setUrlsList(reversed ? renderedList.reverse() : renderedList);
   }, []);
 
   const makeHostButtons = (list) => {
