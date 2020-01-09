@@ -214,34 +214,34 @@ const Project = ({ currProject, location, history, projects, theme }) => {
         currentProject={ currentProject ? currentProject.title : null }
         topComponents={{
           left: <div>
-            <Header>
-              <StyledTippy 
-                arrow={false}
-                interactive={true}
-                trigger={'click'}
-                placement={'right-start'} 
-                content={<TippyContent>
-                  <h6>Rename project</h6>
-                  <TextInput
-                    text={'Rename'}
-                    type={'action'}
-                    inputType={'rename'}
-                    size={'regular'}
-                    initialValue={ project && project.title}
-                    clicked={ (newTitle) => renameProjectTitle(newTitle)}
-                    projects={projects} />
-                </TippyContent>} >
+            <StyledTippy 
+              arrow={false}
+              interactive={true}
+              trigger={'click'}
+              placement={'right-start'} 
+              content={<TippyContent>
+                <h6>Rename project</h6>
+                <TextInput
+                  text={'Rename'}
+                  type={'action'}
+                  inputType={'rename'}
+                  size={'regular'}
+                  initialValue={ project && project.title}
+                  clicked={ (newTitle) => renameProjectTitle(newTitle)}
+                  projects={projects} />
+              </TippyContent>} >
+              <Header>
                 <h3 css={ css`margin-bottom: 0` }>{ project ? project.title : null }</h3>
-              </StyledTippy>
-              <ProjectSettings 
-                onClick={ () => exportProject({ project: project, urls: urls }, project.title)}>
-                Export
-              </ProjectSettings>
-              <ProjectSettings
-                onClick={ () => setDeleting( true) }>
-                Delete
-              </ProjectSettings>
-            </Header>
+                <ProjectSettings 
+                  onClick={ () => exportProject({ project: project, urls: urls }, project.title)}>
+                  Export
+                </ProjectSettings>
+                <ProjectSettings
+                  onClick={ () => setDeleting( true) }>
+                  Delete
+                </ProjectSettings>
+              </Header>
+            </StyledTippy>
             <Div css={ css`margin-bottom: 1.5rem` }>
               <Span>Urls: { urls ? urls.length : '-' }</Span>
               <Span>Created: { project ? new Date(project.created).toLocaleDateString() : null }</Span>
