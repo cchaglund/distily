@@ -22,6 +22,7 @@ const TextInput = ({type, text, size, clicked, error, option, placeholder}) => {
     flex: 1;
     padding-left: 1rem;
     border: none;
+    background-color: #f9f9f9;
     border-bottom: 1px solid #707070;
     margin-right: 0.4rem;
     width: 15rem;

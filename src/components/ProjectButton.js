@@ -29,8 +29,9 @@ const ProjectButton = ({ text, clicked, activeClicked, activeButton, activeText,
     cursor: pointer;
     border-radius: 0.1rem;
     box-shadow: lightgray 0 1px;
+    transition: transform 0.1s;
     &:hover {
-      background-color: ${ activeButton ? theme.colors.green.hover : hoverColor };
+      transform: scale(1.05);
     }
   `;
 
