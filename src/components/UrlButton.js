@@ -7,6 +7,7 @@ import styled from '@emotion/styled';
 import DeleteModal from '../components/DeleteModal';
 import { withTheme } from 'emotion-theming';
 import { MdClose } from 'react-icons/md';
+import cleanHost from '../helpers/cleanHost';
 
 const UrlButton = ({ data, proportion, theme, type, deletable }) => {
   const [ title, setTitle ] = useState();
@@ -15,12 +16,8 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
   const [ deleted, setDeleted ] = useState(false);
 
   useEffect(() => {
-    let cleanHostName = data.host;
+    let cleanHostName = cleanHost(data.host);
     
-    if (data.host.includes('www.')) {
-      cleanHostName = data.host.replace('www.', ''); 
-    }
-
     setHost(cleanHostName);
     setTitle(data.title);
   }, []);
@@ -102,11 +99,11 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
               css={ css`${ theme.WideButton } width:100%; display: flex; padding-left: 0.6rem` }
               onClick={ () => openUrl(data) }>
               <div>
-                <img css={ css`padding-right: 0.5rem;` } src={ 'https://www.google.com/s2/favicons?domain=' + host } ></img>
+                <img css={ css`padding-right: 0.5rem;` } src={ 'https://www.google.com/s2/favicons?domain=' + data.host } ></img>
               </div>
               <div>
-                <PrimaryText>{ type === 'host' ? host : title }</PrimaryText>
-                <SecondaryText>{ type === 'host' ? title : host }</SecondaryText>
+                <PrimaryText>{ title }</PrimaryText>
+                <SecondaryText>{ host }</SecondaryText>
               </div>
             </div>
             { deletable ?

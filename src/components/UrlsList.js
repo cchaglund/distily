@@ -1,10 +1,12 @@
 /** @jsx jsx */
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import UrlButton from './UrlButton';
 import sort from '../helpers/sort';
+import Masonry from '../HOC/Masonry';
+import cleanHost from '../helpers/cleanHost';
 
 const UrlsList = ({urls, clicked, type, deletable, reversed }) => {
   const [urlsList, setUrlsList ] = useState();
@@ -42,16 +44,20 @@ const UrlsList = ({urls, clicked, type, deletable, reversed }) => {
     let ready = Object.keys(list).map( host => {
       let urls = makeButtons(list[host]);
 
-      host = host.includes('www.') ? host.replace('www.', '') : host;
+      const hostName = cleanHost(host);
       
       return (
-        <div 
-          key={host}
-          css={ css`margin-bottom: 1.2rem` }>
-          {urls}
-        </div>
+        <>
+          <h6>{hostName}</h6>
+          <div 
+            css={ css`margin-bottom: 1.2rem` }>
+            {urls}
+          </div>
+        </>
       );
     });
+
+    ready = <Masonry>{ready}</Masonry>;
 
     return ready;
   };

@@ -133,14 +133,14 @@ const Overview = ({ theme, project, urls}) => {
               clicked={() => showMore('top')} /> : null
           }
         </Column>
-        <Column area={ 'right' }>
+        {/* <Column area={ 'right' }>
           <h4>By domain</h4>
           { urls ? <UrlsList 
             key='3'
             urls={urls}
             type={'host'}
             clicked={(id) => console.log('trying to open url', id)} /> : null }
-        </Column>
+        </Column> */}
       </BottomSection>
     </FadeWrapper>
   );

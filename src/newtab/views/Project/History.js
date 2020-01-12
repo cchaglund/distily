@@ -1,8 +1,10 @@
 /* eslint-disable no-undef */
+/** @jsx jsx */
 
 import React, { useState, useEffect} from 'react';
 import { withRouter } from 'react-router-dom';
 import { withTheme } from 'emotion-theming';
+import { css, jsx } from '@emotion/core';
 import Button from '../../../components/Button';
 import UrlsList from '../../../components/UrlsList';
 import styled from '@emotion/styled';
@@ -44,7 +46,7 @@ const History = (props) => {
   `;
 
   const BottomSection = styled.div`
-    ${props.theme.BottomSectionTwoColumns}
+    ${props.theme.BottomSectionOneTwoColumns}
   `;
 
   const Column = styled.div`
@@ -56,45 +58,43 @@ const History = (props) => {
     <FadeWrapper>
       <BottomSection>
         <Column area={ 'left' }>
-          <h4>History</h4>
-          <SortDiv>
-            <H6>Sort by</H6>
-            <Div>
-              <Button
-                btnClass={'action'}
-                size={'regular'}
-                text={'Date added'} 
-                clicked={() => {
-                  if (type === 'added') {
-                    setReverse(! reverse);
-                  } else {
-                    setType('added');
-                  }
-                }} />
-              <Button
-                btnClass={'action'}
-                size={'regular'}
-                text={'Activity'} 
-                clicked={() => {
-                  if (type === 'top') {
-                    setReverse(! reverse);
-                  } else {
-                    setType('top');
-                  }
-                }} />
-              <Button
-                btnClass={'action'}
-                size={'regular'}
-                text={'Recent'} 
-                clicked={() => {
-                  if (type === 'recent') {
-                    setReverse(! reverse);
-                  } else {
-                    setType('recent');
-                  }
-                }} />
-            </Div>
-          </SortDiv>
+          <h4>All urls</h4>
+          <H6>Sort by</H6>
+          <Div>
+            <Button
+              btnClass={'action'}
+              size={'regular'}
+              text={'Date added'} 
+              clicked={() => {
+                if (type === 'added') {
+                  setReverse(! reverse);
+                } else {
+                  setType('added');
+                }
+              }} />
+            <Button
+              btnClass={'action'}
+              size={'regular'}
+              text={'Activity'} 
+              clicked={() => {
+                if (type === 'top') {
+                  setReverse(! reverse);
+                } else {
+                  setType('top');
+                }
+              }} />
+            <Button
+              btnClass={'action'}
+              size={'regular'}
+              text={'Recent'} 
+              clicked={() => {
+                if (type === 'recent') {
+                  setReverse(! reverse);
+                } else {
+                  setType('recent');
+                }
+              }} />
+          </Div>
           { urls ? <UrlsList 
             key='2'
             urls={urls}
@@ -103,19 +103,14 @@ const History = (props) => {
             deletable
             clicked={(id) => console.log('trying to open url', id)} /> : null }
         </Column>
-        {/* <Column area={ 'right' }>
-          <h4>By domain</h4>
-          { urls ? <UrlsList 
+        <Column area={ 'right' }>
+          <h4>Domains</h4>
+          { urls ? <UrlsList
             key='3'
             urls={urls}
             type={'host'}
             clicked={(id) => console.log('trying to open url', id)} /> : null }
-          <Button 
-            btnClass={'nav'}
-            text={'Show more'}
-            size={'regular'}
-            clicked={() => showMore()} />
-        </Column> */}
+        </Column>
       </BottomSection>
     </FadeWrapper>
   );
