@@ -64,7 +64,7 @@ const Overview = ({ theme, project, urls}) => {
   `;
 
   const BottomSection = styled.div`
-    ${theme.BottomSectionFourColumns}
+    ${theme.BottomSectionThreeColumns}
   `;
 
   const Column = styled.div`
@@ -85,7 +85,7 @@ const Overview = ({ theme, project, urls}) => {
             projectID={ project ? project.id : null }
             notes={ project ? project.notes : null }/>
         </Column>
-        <Column area={ 'mid-left'}>
+        <Column area={ 'mid'}>
           <h4>Recent URLs</h4>
           <Div>
             <Button
@@ -109,7 +109,7 @@ const Overview = ({ theme, project, urls}) => {
               clicked={() => showMore('recent')} /> : null
           }
         </Column>
-        <Column area={ 'mid-right' }>
+        <Column area={ 'right' }>
           <h4>Top URLS</h4>
           <Div>
             <Button

@@ -131,7 +131,6 @@ class Controller  {
   }
 
   updateURL (url, type) {
-    console.log(url)
     if (type === 'visit') {
       url.visits = url.visits + 1;
     }
@@ -207,6 +206,8 @@ class Controller  {
             host: url.host,
             href: url.href,
             title: url.title,
+            visits: url.visits,
+            focuses: url.focuses,
             project: projectId
           });
         });
@@ -501,7 +502,6 @@ class Controller  {
                   this.checkURLexists(url.hash, project.id)
                     .then(res => {
                       if (res.exists === true) {
-                        console.log('asdfad??')
                         this.updateURL(res.URL);
                       }
                     });

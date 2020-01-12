@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 /** @jsx jsx */
 
-import React, { useState, useEffect} from 'react';
+import { useState, useEffect} from 'react';
 import { withRouter } from 'react-router-dom';
 import Layout from '../../../components/Layout';
 import TextInput from '../../../components/TextInput';
@@ -20,7 +20,7 @@ import DeleteModal from '../../../components/DeleteModal';
 import Tippy from '@tippy.js/react';
 import 'tippy.js/dist/tippy.css';
 
-const Project = ({ currProject, location, history, projects, theme }) => {
+const Project = ({ currProject, location, history, projects }) => {
   const [ urls, setUrls ] = useState();
   const [ project, setProject ] = useState();
   const [ currentProject, setCurrentProject ] = useState();
@@ -73,15 +73,11 @@ const Project = ({ currProject, location, history, projects, theme }) => {
     font-size: 0.7rem;
   `;
 
-  const Header = styled.div`
-    display: flex;
-  `;
-
   const ProjectSettings = styled.h6`
+    margin: 0;
+    margin-left: 1rem;
     display: flex;
     align-items: flex-end;
-    margin: 0;
-    padding-left: 1rem;
     color: lightgray;
     cursor: pointer;
     &:hover {
@@ -93,14 +89,6 @@ const Project = ({ currProject, location, history, projects, theme }) => {
     background: white;
     color: black;
     box-shadow: lightgray 0 1px;
-  `;
-
-  const TippyContent = styled.div`
-  
-  `;
-
-  const DivConstrained = styled.div`
-    max-width: 17rem;
   `;
 
   const handleSearch = (term) => {
@@ -219,7 +207,7 @@ const Project = ({ currProject, location, history, projects, theme }) => {
               interactive={true}
               trigger={'click'}
               placement={'right-start'} 
-              content={<TippyContent>
+              content={<div>
                 <h6>Rename project</h6>
                 <TextInput
                   text={'Rename'}
@@ -229,10 +217,10 @@ const Project = ({ currProject, location, history, projects, theme }) => {
                   initialValue={ project && project.title}
                   clicked={ (newTitle) => renameProjectTitle(newTitle)}
                   projects={projects} />
-              </TippyContent>} >
-              <Header>
+              </div>} >
+              <div css={ css`display: flex; align-items: flex-end;` }>
                 <h3 css={ css`margin-bottom: 0` }>{ project ? project.title : null }</h3>
-                <ProjectSettings 
+                <ProjectSettings
                   onClick={ () => exportProject({ project: project, urls: urls }, project.title)}>
                   Export
                 </ProjectSettings>
@@ -240,31 +228,25 @@ const Project = ({ currProject, location, history, projects, theme }) => {
                   onClick={ () => setDeleting( true) }>
                   Delete
                 </ProjectSettings>
-              </Header>
+              </div>
             </StyledTippy>
-            <Div css={ css`margin-bottom: 1.5rem` }>
+            <Div css={ css`margin-bottom: 1rem;` }>
               <Span>Urls: { urls ? urls.length : '-' }</Span>
               <Span>Created: { project ? new Date(project.created).toLocaleDateString() : null }</Span>
               <Span>Last Opened: { project ? new Date(project.lastOpened).toLocaleDateString() : null }</Span>
             </Div>
-            <DivConstrained>
-              <div css={ css`display: flex; justify-content: space-between;` }>
-                <Button
-                  btnClass={'nav'}
-                  text={'Overview'}
-                  inactive={ panelType === 'overview' ? true : false }
-                  clicked={() => changeView('overview')} />
-                <Button
-                  btnClass={'nav'}
-                  text={'History'} 
-                  inactive={ panelType === 'history' ? true : false }
-                  clicked={() => changeView('history')}/>
-                <Button
-                  btnClass={'nav'}
-                  text={'Charts'} 
-                  inactive={ panelType === 'charts' ? true : false }
-                  clicked={() => changeView('charts')}/>
-              </div>
+            {/* <div css={ css`display: flex; margin-bottom: 1rem; align-items: flex-start;` }>
+              <ProjectSettings
+                css={ css`margin-right: 1.2rem;` }
+                onClick={ () => exportProject({ project: project, urls: urls }, project.title)}>
+                Export
+              </ProjectSettings>
+              <ProjectSettings
+                onClick={ () => setDeleting( true) }>
+                Delete
+              </ProjectSettings>
+            </div> */}
+            <div>
               { currentProject ? 
                 project && project.id !== currentProject.id &&
                 <ProjectsList 
@@ -278,7 +260,7 @@ const Project = ({ currProject, location, history, projects, theme }) => {
                   clickAction={'resume'}
                   clicked={(projIndex, openType, tabCount) => resumeProject(projIndex, openType, tabCount)} />
               }
-            </DivConstrained>
+            </div>
           </div>,
           right: <TextInput
             text={'Search for URL'}
@@ -287,6 +269,26 @@ const Project = ({ currProject, location, history, projects, theme }) => {
             clicked={ (term) => handleSearch(term) }/>
         }}
       >
+        <div>
+          <div css={ css`display: flex; justify-content: center; margin-bottom: -1.5rem;` }>
+            <Button
+              btnClass={'nav'}
+              text={'Overview'}
+              inactive={ panelType === 'overview' ? true : false }
+              clicked={() => changeView('overview')} />
+            <Button
+              btnClass={'nav'}
+              text={'History'} 
+              inactive={ panelType === 'history' ? true : false }
+              clicked={() => changeView('history')}/>
+            {/* <Button
+              btnClass={'nav'}
+              text={'Charts'} 
+              inactive={ panelType === 'charts' ? true : false }
+              clicked={() => changeView('charts')}/> */}
+          </div>
+          <hr css={ css`border: 1px solid #efedec; border-radius: 100%;` }></hr>
+        </div>
         { searching &&
           <SearchResults 
             list={ urls ? urls : null }

@@ -28,7 +28,7 @@ const Button = ({ text, btnClass, clicked, inactive, theme, wide }) => {
     background-color: ${ inactive ? '#f4f4ed' : theme.colors[colorName].color };
     width: ${ wide ? 'auto' : 'max-content' };
     margin-top: 0.3rem;
-    margin-bottom: 0.3rem;
+    margin-bottom: ${ btnClass === 'action' || btnClass === 'search' ? '0' : '0.3rem' };
     cursor: pointer;
     border-radius: 0.1rem;
     &:hover {

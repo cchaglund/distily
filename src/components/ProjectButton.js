@@ -7,7 +7,7 @@ import { withTheme } from 'emotion-theming';
 
 const ProjectButton = ({ text, clicked, activeClicked, activeButton, activeText, proportion, type, theme }) => {
   const Color = require('color');
-  let color = proportion ? Color('#fcca92').fade(1-proportion).string() : '#FDEBD6';
+  let color = proportion ? Color(theme.colors.orange.color).fade(1-proportion).string() : theme.colors.orange.color;
 
   if ( type === 'neutral') {
     color = '#e5edeb';
@@ -17,13 +17,13 @@ const ProjectButton = ({ text, clicked, activeClicked, activeButton, activeText,
     color = theme.colors.green.color;
   }
 
-  let hoverColor = Color(color).darken(0.05).hsl().string();
+  // let hoverColor = Color(color).darken(0.05).hsl().string();
 
   const ProjectButtonContainer = styled.div`
     display: flex;
     justify-content: space-between;
     background-color: ${ activeButton ? theme.colors.green.color : color };
-    width: 100%;
+    ${ type === 'single' && 'width: max-content;'}
     margin-top: 0.3rem;
     margin-bottom: 0.3rem;
     cursor: pointer;
@@ -31,7 +31,7 @@ const ProjectButton = ({ text, clicked, activeClicked, activeButton, activeText,
     box-shadow: lightgray 0 1px;
     transition: transform 0.1s;
     &:hover {
-      transform: scale(1.05);
+      ${ activeButton ? 'background-color:' + theme.colors.green.hover : 'transform: scale(1.02)' };
     }
   `;
 

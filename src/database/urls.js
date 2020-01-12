@@ -20,8 +20,8 @@ class URLsDB {
       let newURL = {
         title: url.title,
         time: null,
-        visits: 1,
-        focuses: 1,
+        visits: url.visits ? url.visits : 1,
+        focuses: url.focuses ? url.focuses : 1,
         lastOpened: Date.now(),
         added: Date.now(),
         hash: url.hash,

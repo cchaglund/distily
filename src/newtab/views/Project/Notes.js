@@ -31,7 +31,7 @@ const Notes = ({ projectID, notes}) => {
     box-shadow: lightgray 0 1px;
     font-family: inherit;
     font-size: 0.7rem;
-    background-color: #FFF7E5;
+    background-color: #f9f5d8;
     padding: 0.5rem 1rem;
     width: 100%;
     box-sizing: border-box;
@@ -40,7 +40,7 @@ const Notes = ({ projectID, notes}) => {
     outline: none;
     resize: none;
     &:hover {
-      background-color: rgb(255, 242, 212);
+      background-color: #faf6df;
     }
   `;
 

@@ -1,10 +1,9 @@
 /* eslint-disable no-undef */
-/** @jsx jsx */
 
 import React, { useState, useEffect} from 'react';
 import { withRouter } from 'react-router-dom';
 import { withTheme } from 'emotion-theming';
-import { css, jsx } from '@emotion/core';
+// import { css, jsx } from '@emotion/core';
 import Button from '../../../components/Button';
 import UrlsList from '../../../components/UrlsList';
 import styled from '@emotion/styled';
@@ -12,17 +11,18 @@ import FadeWrapper from '../../../HOC/FadeWrapper';
 
 const History = (props) => {
   const [ urls, setUrls ] = useState();
-  const [ project, setProject ] = useState();
+  // const [ project, setProject ] = useState();
   const [ type, setType ] = useState('recent');
   const [ reverse, setReverse ] = useState(false);
 
   useEffect(() => {
-    if (props.project && props.urls) {
-      const project = props.project;
+    // if (props.project && props.urls) {
+    //   const project = props.project;
 
-      setProject(project);
-      setUrls(props.urls);
-    }
+    //   // setProject(project);
+      
+    // }
+    setUrls(props.urls);
   }, [props]);
 
   //  const sort = () => {
@@ -38,11 +38,6 @@ const History = (props) => {
 
   const H6 = styled.h6`
     margin-right: 1rem;
-  `;
-
-  const SortDiv = styled.div`
-    display: flex;
-    align-items: center;
   `;
 
   const BottomSection = styled.div`
@@ -62,7 +57,7 @@ const History = (props) => {
           <H6>Sort by</H6>
           <Div>
             <Button
-              btnClass={'action'}
+              btnClass={'nav'}
               size={'regular'}
               text={'Date added'} 
               clicked={() => {
@@ -73,7 +68,7 @@ const History = (props) => {
                 }
               }} />
             <Button
-              btnClass={'action'}
+              btnClass={'nav'}
               size={'regular'}
               text={'Activity'} 
               clicked={() => {
@@ -84,7 +79,7 @@ const History = (props) => {
                 }
               }} />
             <Button
-              btnClass={'action'}
+              btnClass={'nav'}
               size={'regular'}
               text={'Recent'} 
               clicked={() => {

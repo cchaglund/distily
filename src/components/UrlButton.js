@@ -9,7 +9,7 @@ import { withTheme } from 'emotion-theming';
 import { MdClose } from 'react-icons/md';
 import cleanHost from '../helpers/cleanHost';
 
-const UrlButton = ({ data, proportion, theme, type, deletable }) => {
+const UrlButton = ({ data, proportion, theme, deletable }) => {
   const [ title, setTitle ] = useState();
   const [ host, setHost ] = useState();
   const [ deleting, setDeleting ] = useState(false);
@@ -23,9 +23,8 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
   }, []);
 
   const Color = require('color');
-  let color = proportion ? '#b1d7f8' : theme.colors.blue.color;
-  color = proportion ? Color(color).fade(1-proportion).string() : color;
-  let hoverColor = theme.colors.blue.hover;
+  let color = proportion ? Color(theme.colors.blue.color).fade(1-proportion).string() : theme.colors.blue.color;
+  // let hoverColor = theme.colors.blue.hover;
 
   const Wrapper = styled.div`
     display: flex;
@@ -44,7 +43,7 @@ const UrlButton = ({ data, proportion, theme, type, deletable }) => {
     box-shadow: lightgray 0 1px;
     transition: transform 0.1s;
     &:hover {
-      transform: scale(1.05);
+      transform: scale(1.02);
     }
   `;
 

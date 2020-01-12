@@ -34,8 +34,6 @@ const Layout = ({topComponents, children, currentProject}) => {
     min-width: 4rem;
     padding: 0.3rem 1.7rem;
     border-radius: 0 0 0 0.1rem;
-    background-color: ${theme.colors.orange.color};
-    color: white;
     & > h4 {
       font-weight: bold;
     }

@@ -58,11 +58,21 @@ const theme = {
     margin-top: 2rem;
     margin-bottom: 2rem;
     display: grid;
-    grid-template-columns: 1fr 3fr;
-    grid-column-gap: 50px;
+    grid-template-columns: 2fr 5fr;
+    grid-column-gap: 100px;
     grid-template-rows: 1fr;
     grid-template-areas: 
       "left right"
+  `,
+  BottomSectionThreeColumns: `
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: 2fr 3fr 3fr;
+    grid-column-gap: 50px;
+    grid-template-rows: 1fr;
+    grid-template-areas: 
+      "left mid right"
   `,
   BottomSectionFull: `
     margin-top: 2rem;
@@ -83,32 +93,36 @@ const theme = {
   },
   colors: {
     purple: {
-      color: '#F6EFFF',
-      hover: Color('#F6EFFF').darken(0.05).hsl().string()
+      color: '#E8E1EF',
+      hover: Color('#E8E1EF').darken(0.03).hsl().string()
     },
     green: {
-      color: '#D1FFDB',
-      hover: Color('#D1FFDB').darken(0.05).hsl().string()
+      color: '#d4f7d6',
+      hover: Color('#d4f7d6').darken(0.03).hsl().string()
     },
     yellow: {
-      color: '#FDFFD1',
-      hover: Color('#FDFFD1').darken(0.05).hsl().string()
+      color: '#f8f7c4',
+      hover: Color('#f8f7c4').darken(0.03).hsl().string()
     },
     orange: {
-      color: '#FF9277',
-      hover: Color('#FF9277').darken(0.05).hsl().string()
+      color: '#f4d4ab',
+      hover: Color('#f4d4ab').darken(0.03).hsl().string()
     },
     blue: {
-      color: '#F2F9FF',
+      color: '#cce7ff',
       hover: '#A0CFF7'
     },
     red: {
-      color: '#edb1b6',
-      hover: Color('#edb1b6').darken(0.05).hsl().string()
+      color: '#EBB3A9',
+      hover: Color('#EBB3A9').darken(0.03).hsl().string()
     },
     black: {
-      color: '#485050',
-      hover: Color('#485050').lighten(0.2).hsl().string()
+      color: '#565554',
+      hover: Color('#565554').lighten(0.2).hsl().string()
+    },
+    offWhite: {
+      color: '#f9f9f9',
+      hover: Color('#f9f9f9').lighten(0.2).hsl().string()
     }
   },
   breakpoints: {
