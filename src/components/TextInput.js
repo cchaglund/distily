@@ -65,7 +65,7 @@ const TextInput = ({type, text, size, clicked, option, placeholder, projects, in
       <div css={style}>
         <input
           css={inputStyle}
-          value={ input } 
+          value={ input || '' } 
           onChange={ updateTitle }
           type='text' 
           placeholder={ placeholder ? placeholder : 'Project title' } 
