@@ -86,7 +86,7 @@ const Summary = ({ history, projects, topUrls, theme }) => {
       <BottomSection>
         <Column area={ 'left' }>
           <h4>Jump back in</h4>
-          { recent10Projects ? <ProjectsList 
+          { recent10Projects !== undefined && recent10Projects.length !== 0 ? <ProjectsList 
             projects={ showMoreRecentProjects ? projects : recent10Projects }
             clickAction={'resume'}
             type={'recent'}
@@ -101,19 +101,19 @@ const Summary = ({ history, projects, topUrls, theme }) => {
         </Column>
         <Column area={ 'mid' }>
           <h4>Top URLS</h4>
-          { top10Urls ? <UrlsList 
-            urls={ showMoreTopUrls ? top20Urls : top10Urls } /> : null }
+          { top10Urls !== undefined && top10Urls.length !== 0 ? <UrlsList 
+            urls={ showMoreTopUrls ? top20Urls : top10Urls } /> : <h6>No urls found</h6> }
           { topUrls.length > 11 && ! showMoreTopUrls ?
             <Button 
               btnClass={'nav'}
               text={'Show more'}
               size={'regular'}
-              clicked={() => showMore('urls')} /> : <h6>No urls found</h6>
+              clicked={() => showMore('urls')} /> : null
           }
         </Column>
         <Column area={ 'right' }>
           <h4>Manage</h4>
-          { recent10Projects ? <ProjectsList
+          { recent10Projects !== undefined && recent10Projects.length !== 0 ? <ProjectsList
             projects={ showMoreRecentProjects ? projects : recent10Projects }
             clickAction={'open'}
             type={'neutral'}

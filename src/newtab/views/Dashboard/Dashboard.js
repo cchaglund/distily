@@ -124,7 +124,7 @@ const Dashboard = ({currentProject, projects}) => {
       topComponents={{
         left: <div>
           <TextInput
-            text={'Create new project'}
+            text={'New project'}
             type={'action'}
             size={'regular'}
             inputType={'create'}
@@ -132,7 +132,7 @@ const Dashboard = ({currentProject, projects}) => {
             option={ optionData ? Option : null } />
         </div>,
         right: <TextInput
-          text={'Search project'}
+          text={'Search'}
           type={'search'}
           size={'regular'}
           clicked={ (term) => handleSearch(term) } />
