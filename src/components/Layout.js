@@ -6,7 +6,6 @@ import {
   Link,
   withRouter,
 } from 'react-router-dom';
-import theme from '../assets/theme';
 
 const Layout = ({topComponents, children, currentProject}) => {
   const LayoutContainer = styled.div`

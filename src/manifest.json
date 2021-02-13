@@ -10,6 +10,7 @@
   "description": "Modern React boilerplate for Firefox and Chrome extensions.",
   "content_scripts": [
     {
+      "run_at": "document_end",
       "matches": [
         "<all_urls>"
       ],
